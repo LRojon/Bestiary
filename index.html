@@ -9,11 +9,25 @@
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="http://cdn.dhtmlx.com/edge/dhtmlx.css" type="text/css"> 
         <script src="http://cdn.dhtmlx.com/edge/dhtmlx.js" type="text/javascript"></script>
+
+        <style>
+            .dhx_pager_item{
+                border-radius: 5px;
+                padding-bottom: 20px;
+                background-color: #ff8c00;
+            }
+            .dhx_pager_item_selected{
+                border-radius: 5px;
+                padding-bottom: 20px;
+                background-color: #c96e00;
+            }
+        </style>
+
         <title>Document</title>
     </head>
     <body style="background-color: white;">
         <div style="margin-left:5px;margin-right:5px;">
-            <div class="fluid-container">
+            <div class="container">
                 <div class="row">
                     <div class="col-sm-5" style="border-right: grey solid 1px;">
                         <div id="menu"></div>
@@ -40,22 +54,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
-        var menu = new dhtmlXMenuObject({
+        var menu = new dhtmlXToolbarObject({
             parent:"menu",
             iconset: "awesome",
             items:[
-                {
-                    id: "new",
-                    text: "New",
-                    img: "fas fa-plus"
-                },
-                {
-                    id: "modify",
-                    text: "Modify",
-                    img: "fas fa-edit"
-                }
+                {id: "new", type: "button", text: "New", img: "fas fa-plus"},
+                {id: "edit", type: "button", text: "Edit", img: "fas fa-edit"},
+                {id: "sep", type: "separator"},
+                {id: "search", type: "buttonInput", text: "Name"},
+                {id: "nc", type: "buttonInput", text: "nc"},
+                {id: "go", type: "button", img: "fas fa-search"}
             ]
         });
+
         var list = new dhtmlXList({
             container:"list",
             type:{
@@ -63,9 +74,9 @@
             },
             pager:{
                 container: "paging",
-                size: 5,
+                size: 10,
                 group: 5,
-                template: "<div class='btn btn-primary'>{common.first()}</div><div class='btn btn-primary'>{common.pages()}</div>{common.last()}"
+                template: "{common.first()}{common.pages()}{common.last()}"
             }
         });
         for (let i = 1; i < 31; i++) {
@@ -76,5 +87,21 @@
                 nc: "1/2"
             });
         }
+        
+        list.add({
+            id:31,
+            name: "Kobold",
+            location: "Désert",
+            nc: "1/2"
+        });
+
+        
+        menu.attachEvent("onClick", function(id){
+            switch(id){
+                case 'go':
+                    list.filter("#name#", menu.getValue('search'));
+                    break;
+            }
+        });
     </script>
 </html>
