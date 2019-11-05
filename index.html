@@ -30,7 +30,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-5" style="border-right: grey solid 1px;">
-                        <div id="menu"></div>
+                        <!--<div id="menu"></div>
                         <div id="list">
                             <textarea id="template" class="table-responsive-sm">
                                 <table class="table table-borderless center">
@@ -43,7 +43,7 @@
                                 </table>
                             </textarea>
                         </div>
-                        <div id="paging"></div>
+                        <div id="paging"></div>-->
                     </div>
                     <div class="col-sm-7"></div>
                 </div>
@@ -54,7 +54,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
-        var menu = new dhtmlXToolbarObject({
+        //var xhr = new XMLHttpRequest();
+
+        var myTabbar = new dhtmlXTabBar({
+            parent: "tabbarObj",
+            close_button: true,
+            tabs: [
+                {id: "a1", text: "Tab 1", active: true},
+                {id: "a2", text: "Tab 2"},
+                {id: "a3", text: "Tab 3", close: false} // tab w/o close button
+            ]
+        });
+
+        /*var menu = new dhtmlXToolbarObject({
             parent:"menu",
             iconset: "awesome",
             items:[
@@ -79,20 +91,15 @@
                 template: "{common.first()}{common.pages()}{common.last()}"
             }
         });
-        for (let i = 1; i < 31; i++) {
-            list.add({
-                id:i,
-                name: "Gobelin",
-                location: "Fôret",
-                nc: "1/2"
-            });
-        }
-        
-        list.add({
-            id:31,
-            name: "Kobold",
-            location: "Désert",
-            nc: "1/2"
+
+        xhr.open("POST","script/select.php", false);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send("table=monster");
+        var res = JSON.parse(xhr.responseText.substring(1, xhr.responseText.length));
+        console.log(res);
+
+        res.forEach(elem => {
+            list.add(elem);
         });
 
         
@@ -102,6 +109,6 @@
                     list.filter("#name#", menu.getValue('search'));
                     break;
             }
-        });
+        });*/
     </script>
 </html>
