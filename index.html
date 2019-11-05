@@ -30,7 +30,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-5" style="border-right: grey solid 1px;">
-                        <!--<div id="menu"></div>
+                        <div id="tabbar" onload="doOnLoad()"></div>
+                        <div id="menu"></div>
                         <div id="list">
                             <textarea id="template" class="table-responsive-sm">
                                 <table class="table table-borderless center">
@@ -43,7 +44,7 @@
                                 </table>
                             </textarea>
                         </div>
-                        <div id="paging"></div>-->
+                        <div id="paging"></div>
                     </div>
                     <div class="col-sm-7"></div>
                 </div>
@@ -54,19 +55,31 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
-        //var xhr = new XMLHttpRequest();
+        var xhr = new XMLHttpRequest();
+        
+        var myTabbar;
+        function doOnLoad()
+        {
+            var myTabbar = new dhtmlXTabBar({
+                parent:         "tabbar",
+                close_button:   true,
+                tabs: [
+                    {id: "a1", text: "Tab 1", active: true},
+                    {id: "a2", text: "Tab 2"},
+                    {id: "a3", text: "Tab 3", close: false} // tab w/o close button
+                ]
+            });
+            myTabbar.addTab(
+                "a4",       // id
+                "Tab 4",    // tab text
+                null,       // auto width
+                null,       // last position
+                false,      // inactive
+                false       // disable close button <-- this one
+            );
+        }
 
-        var myTabbar = new dhtmlXTabBar({
-            parent: "tabbarObj",
-            close_button: true,
-            tabs: [
-                {id: "a1", text: "Tab 1", active: true},
-                {id: "a2", text: "Tab 2"},
-                {id: "a3", text: "Tab 3", close: false} // tab w/o close button
-            ]
-        });
-
-        /*var menu = new dhtmlXToolbarObject({
+        var menu = new dhtmlXToolbarObject({
             parent:"menu",
             iconset: "awesome",
             items:[
@@ -109,6 +122,6 @@
                     list.filter("#name#", menu.getValue('search'));
                     break;
             }
-        });*/
+        });
     </script>
 </html>
