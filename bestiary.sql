@@ -1,4 +1,6 @@
-﻿CREATE DATABASE IF NOT EXISTS bestiary;
+﻿DROP DATABASE IF EXISTS bestiary;
+
+CREATE DATABASE bestiary CHARACTER SET utf8 COLLATE utf8_bin;
 USE bestiary;
 
 DROP TABLE IF EXISTS crea_skill;
@@ -96,3 +98,10 @@ INSERT INTO family(label) VALUES('Ancien'),('Animal'),('Démon'),('Dinosaures'),
 INSERT INTO type(label) VALUES('Animal'),('Dragonoïde'),('Goblinoïde'),('Humanoïde'),('Hybride'),('Insectoïde'),('Non-vivant');
 
 INSERT INTO size(label) VALUES('Minuscule'),('Très petit'),('Petit'),('Moyen'),('Grand'),('Enorme'),('Colossale'),('Titanesque');
+
+INSERT INTO creature(`name`,description,nc,stats,attack,family_id,type_id,size_id)
+VALUES("Ankheg","L\'ankheg est une horrible créature souterraine qui ressemble au croisement d'un crustacé et d'un insecte géant. Son crops est muni d'une épaisse carapace de chitine et de six pattes, sa tête est pourvue de 2 énormes mandibules. Il mesure environ 3 mètres pour 400 Kg.","3","+6,+1,+6,-4,+2,-4,16,30,17","Mandibules +8 DM 2d6+6+1d6 acide",2,6,5);
+
+INSERT INTO environment(name) VALUES('Désert'),('Fôret'),('Grotte'),('Grotte profonde'),('Montagne'),('Océan');
+
+INSERT INTO crea_env(creature_id,environment_id,rate,quantity) VALUES(1,4,"0-7","1d4");
