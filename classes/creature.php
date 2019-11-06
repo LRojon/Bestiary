@@ -23,8 +23,10 @@ class Creature{
     public $size;           // string
     public $family;         // string
     public $environments;   // array(environment);
+    public $skills;         // array(skill);
+    public $abilities;      // array(ability);
 
-    public function __construct($id, $name, $description, $nc, $stats, $attack, $type, $size, $family, $environments, $bossRank = 0)
+    public function __construct($id, $name, $description, $nc, $stats, $attack, $type, $size, $family, $environments, $abilities, $skills, $bossRank = 0)
     {
         $this->id = $id;
         $this->name = $name;
@@ -35,6 +37,8 @@ class Creature{
         $this->family = $family;
         $this->bossRank = $bossRank;
         $this->environments = $environments;
+        $this->skills = $skills;
+        $this->abilities = $abilities;
 
         $statsTab = explode(',', $stats);
         $this->for = $statsTab[0];

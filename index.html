@@ -55,7 +55,7 @@
                         <div id="paging"></div>
                     </div>
                     <div class="col-sm-7">
-                        
+                        <div id="details"></div>
                     </div>
                 </div>
             </div>
@@ -115,17 +115,19 @@
             }
         });
         list.attachEvent("onItemClick", function (id){
-            xhr.open("POST", "script/getCreature.php",true);
+            xhr.open("GET", "script/getCreature.php?id="+id,true);
             xhr.onreadystatechange = function(){
                 if(xhr.readyState == 4)
                 {
                     if(xhr.status == 200)
                     {
-                        var creature = JSON.parse(xhr.responseText);
+                        var creature = JSON.parse(xhr.responseText.substring(3, xhr.responseText.length));
+
+                        // aff here with #details
                     }
                 }
             };
-            xhr.send("id="+id);
+            xhr.send();
         });
 
         xhr.open("GET", "script/getListCreature.php", true);
