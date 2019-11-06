@@ -114,6 +114,19 @@
                 template: "{common.first()}{common.pages()}{common.last()}"
             }
         });
+        list.attachEvent("onItemClick", function (id){
+            xhr.open("POST", "script/getCreature.php",true);
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState == 4)
+                {
+                    if(xhr.status == 200)
+                    {
+                        var creature = JSON.parse(xhr.responseText);
+                    }
+                }
+            };
+            xhr.send("id="+id);
+        });
 
         xhr.open("GET", "script/getListCreature.php", true);
         xhr.onreadystatechange = function(){
@@ -121,7 +134,6 @@
             {
                 if(xhr.status == 200)
                 {
-                    console.log(xhr.responseText);
                     var res = JSON.parse(xhr.responseText.substring(1, xhr.responseText.length));
                     res.forEach(elem => {
                         list.add(elem);
