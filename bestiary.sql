@@ -105,3 +105,16 @@ VALUES("Ankheg","L\'ankheg est une horrible créature souterraine qui ressemble 
 INSERT INTO environment(name) VALUES('Désert'),('Fôret'),('Grotte'),('Grotte profonde'),('Montagne'),('Océan');
 
 INSERT INTO crea_env(creature_id,environment_id,rate,quantity) VALUES(1,4,"0-7","1d4");
+
+INSERT INTO ability(name, effect, `limit`) VALUES
+("Jet d'acide", "Une fois par combat, la créature peut cracher un jet d'acide à une distance de 10 mètres. Il inflige 4d6 DM et la cible peut faire un test de DEX difficulté 12 pour ne subir que la moitié des DM.", 1),
+("Creuser", "Au pris d'une action limité, la créature est capable de creuser sur une profondeur de 10 mètres par tour. Il peut utiliser sa capacité embuscade pour surgir su sol et attaquer.", 1);
+
+INSERT INTO skill(name, path, rank, effect, `limit`) VALUES
+("Embuscade", "Voie du prédateur", 1, "Au premier tour de combat, si l'environnement permet à la créature de se dissimuler, la cible doit faire un test de SAG difficulté [15 + Mod. DEX] ou être Surpris. Si elle attaque aveec succès une cible Surprise, la créature inflige +1d6 DM et toute créature dont la FOR est inferieur à la sienne est Renversée. La créatureobtient un bonus de +5 au jet de discrétion et en Initiative.", 0);
+
+INSERT INTO crea_skill(creature_id, skill_id) VALUES(1, 1);
+
+INSERT INTO crea_ability(creature_id, ability_id) VALUES
+(1,1),
+(1,2);
