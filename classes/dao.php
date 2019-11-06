@@ -7,7 +7,7 @@ class dao{
 
     public function __construct()
     {
-        $this->db = new PDO("mysql:dbname=bestiary;host=localhost","root","");
+        $this->db = new PDO("mysql:dbname=bestiary;host=localhost;charset=utf8","root","");
     }
 /*
     public getInstance()
