@@ -54,3 +54,20 @@ class Creature{
         $this->attack = explode(',',$attack);
     }
 }
+
+class Encounter{
+
+    public $id;
+    public $name;
+    public $rate;
+    public $quantity;
+
+    public function __construct($id, $name, $rate, $quantity)
+    {
+        $this->id = $id;
+        $this->name = $name;
+        $this->rate = $rate;
+        $this->quantity = $quantity;
+    }
+
+}

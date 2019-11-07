@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link rel="stylesheet" href="https://bootswatch.com/4/united/bootstrap.min.css">
+        <link rel="stylesheet" href="https://bootswatch.com/4/superhero/bootstrap.min.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="http://cdn.dhtmlx.com/edge/dhtmlx.css" type="text/css"> 
@@ -14,22 +14,22 @@
             .dhx_pager_item{
                 border-radius: 5px;
                 padding-bottom: 20px;
-                background-color: #ff8c00;
+                background-color: #DF691A;
             }
             .dhx_pager_item_selected{
                 border-radius: 5px;
                 padding-bottom: 20px;
-                background-color: #c96e00;
+                background-color: #df691ac2;
             }
         </style>
 
         <title>Document</title>
     </head>
-    <body style="background-color: white;">
+    <body>
         <div style="width: 99%;">
             <div class="fluid-container">
                 <div class="row">
-                    <div class="col-sm-5" style="border-right: grey solid 1px;">
+                    <div class="col-sm-4" style="border-right: grey solid 1px;">
                         <div id="tabbar" onload="doOnLoad()"></div>
                         <div id="menu"></div>
                         <div class="table-responsive-sm">
@@ -47,19 +47,94 @@
                                     <tr>
                                         <td style="width: 10%;">#nc#</td>
                                         <td style="width: 30%;">#name#</td>
-                                        <td style="width: 60%;">#description#</td>
+                                        <td style="width: 60%; font-size:smaller;">#description#</td>
                                     </tr>
                                 </table>
                             </textarea>
                         </div>
                         <div id="paging"></div>
+                        <div id="footerMenu" style="position:absolute; bottom:0"></div>
                     </div>
-                    <div class="col-sm-7">
-                        <div id="details"></div>
+                    <div class="col-sm-8">
+                        <br>
+                        <div id="details" style="height: 700px;overflow: scroll; padding-right: 1%;">
+                            <table class="table table-responsive-sm table-striped" style="text-align: center;">
+                                <tr>
+                                    <td colspan="4">
+                                        <table style="margin: -12px">
+                                            <tr class="table-primary">
+                                                <th style="width: 10%;">Nom</th>
+                                                <td id="name" style="width: 70%;"></td>
+                                                <th style="width: 10%;">NC</th>
+                                                <td id="nc" style="width: 10%;"></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <th colspan="8">Description</th>
+                                </tr>
+                                <tr>
+                                    <th style="width: 12.5%;">FOR</th>
+                                    <td id="for" style="width: 12.5%;"></td>
+                                    <th style="width: 12.5%;">INT</th>
+                                    <td id="int" style="width: 12.5%;"></td>
+                                    <td id="description" colspan="8" rowspan="5" style="width: 50%;"></td>
+                                </tr>
+                                <tr>
+                                    <th>DEX</th>
+                                    <td id="dex"></td>
+                                    <th>SAG</th>
+                                    <td id="sag"></td>
+                                </tr>
+                                <tr>
+                                    <th>CON</th>
+                                    <td id="con"></td>
+                                    <th>CHA</th>
+                                    <td id="cha"></td>
+                                </tr>
+                                <tr>
+                                    <th>PV</th>
+                                    <td id="pv"></td>
+                                    <th>DEF</th>
+                                    <td id="def"></td>
+                                </tr>
+                                <tr>
+                                    <th>Init</th>
+                                    <td id="init"></td>
+                                    <th>Boss</th>
+                                    <td id="boss"></td>
+                                </tr>
+                                <tr>
+                                    <td id="size" colspan="4">Taille</td>
+                                    <td id="family" colspan="4">Famille</td>
+                                    <td id="type" colspan="4">Type</td>
+                                </tr>
+                            </table>
+                            <table id="attacks" class="table table-responsive-sm table-striped" style="text-align: center;">
+                                <tr class="table-primary">
+                                    <th colspan="12">Attaque</th>
+                                </tr>
+                            </table>
+                            <table id="skills" class="table table-responsive-sm table-striped" style="text-align:center;">
+                                <tr class="table-primary">
+                                    <th colspan="12" >Skill</th>
+                                </tr>
+                            </table>
+                            <table class="table table-responsive-sm table-striped" id="abilities" style="text-align:center">
+                                <tr class="table-primary">
+                                    <th colspan="12">Ability</th>
+                                </tr>
+                            </table>
+                            <table class="table table-responsive-sm table-striped" id="environments" style="text-align:center">
+                                <tr class="table-primary">
+                                    <th colspan="12">Environnement</th>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div id="encounterModal"></div>
     </body>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -67,7 +142,30 @@
     <script>
         var xhr = new XMLHttpRequest();
         
-        var myTabbar;
+        var footerMenu = new dhtmlXMenuObject({
+            parent:"footerMenu",
+            iconset: "awesome",
+            items:[
+                {
+                    id:"newCreature",
+                    text:"Nouvelle créature",
+                    img:"fas fa-plus"
+                },
+                {
+                    id:"newSkill",
+                    text:"Nouvelle compétence",
+                    img:"fas fa-plus"
+                },
+                {
+                    id:"newAbility",
+                    text:"Nouvelle capacité",
+                    img:"fas fa-plus"
+                }
+            ]
+        });
+
+
+        /*var myTabbar;
         function doOnLoad()
         {
             var myTabbar = new dhtmlXTabBar({
@@ -87,7 +185,7 @@
                 false,      // inactive
                 false       // disable close button <-- this one
             );
-        }
+        }*/
 
         var menu = new dhtmlXToolbarObject({
             parent:"menu",
@@ -96,14 +194,17 @@
                 {id: "new", type: "button", text: "New", img: "fas fa-plus"},
                 {id: "edit", type: "button", text: "Edit", img: "fas fa-edit"},
                 {id: "sep", type: "separator"},
+                {id: "go", type: "button", img: "fas fa-search"},
                 {id: "search", type: "buttonInput", text: "Name"},
-                {id: "nc", type: "buttonInput", text: "nc"},
-                {id: "go", type: "button", img: "fas fa-search"}
+                //{id: "nc", type: "buttonInput", text: "nc"}
             ]
         });
 
         var list = new dhtmlXList({
             container:"list",
+            height: "auto",
+            drag: false,
+            select: false,
             type:{
                 template: "html->template"
             },
@@ -123,7 +224,26 @@
                     {
                         var creature = JSON.parse(xhr.responseText.substring(3, xhr.responseText.length));
 
-                        // aff here with #details
+                        $("#name").html(creature.name);
+                        $("#nc").html(creature.nc);
+                        $("#for").html(creature.for);
+                        $("#int").html(creature.int);
+                        $("#description").html(creature.description);
+                        $("#dex").html(creature.dex);
+                        $("#sag").html(creature.sag);
+                        $("#con").html(creature.con);
+                        $("#cha").html(creature.cha);
+                        $("#pv").html(creature.pv);
+                        $("#def").html(creature.def);
+                        $("#init").html(creature.init);
+                        $("#boss").html(creature.bossRank);
+                        $("#family").html(creature.family);
+                        $("#type").html(creature.type);
+                        $("#size").html(creature.size);
+                        $("#attacks").html(genHTMLFromAttack(creature));
+                        $("#skills").html(genHTMLFromSkill(creature));
+                        $("#abilities").html(genHTMLFromAbility(creature));
+                        $("#environments").html(genHTMLFromEnvironment(creature));
                     }
                 }
             };
@@ -152,5 +272,97 @@
                     break;
             }
         });
+
+        function genHTMLFromAttack(creature)
+        {
+            var tmp = "<tr class='table-primary'><th colspan='12'>Attaque</th></tr>";
+
+            creature.attack.forEach(elem => {
+                tmp += "<tr><td colspan='12'>"+ elem +"</td></tr>";
+            });
+
+            return tmp;
+        }
+        function genHTMLFromSkill(creature)
+        {
+            if(creature.skills.length >0)
+            {
+                var tmp = "<tr class='table-primary'><th colspan='12'>Compétence</th></tr>";
+
+                creature.skills.forEach(elem => {
+                    tmp += "<tr><td style='width: 20%'>";
+                    tmp += elem.name;
+                    elem.limit ? tmp += " (L)" : false;
+                    tmp += "<p style='font-size: smaller;'>";
+                    tmp += elem.path + " - rang " + elem.rank;
+                    tmp += "</p></td><td>";
+                    tmp += elem.effect;
+                    tmp += "</td></tr>";
+                });
+
+                return tmp;
+            }
+            else
+            {
+                return "";
+            }
+        }
+        function genHTMLFromAbility(creature)
+        {
+            if(creature.abilities.length > 0)
+            {
+                var tmp = "<tr class='table-primary'><th colspan='12'>Capacité</th></tr>";
+
+                creature.abilities.forEach(elem => {
+                    tmp += "<tr><td style='width: 20%'>";
+                    tmp += elem.name + (elem.limit ? " (L)" : false);
+                    tmp += "</td><td>" + elem.effect + "</td></tr>";
+                });
+
+                return tmp;
+            }
+            else
+            {
+                return "";
+            }
+        }
+        function genHTMLFromEnvironment(creature)
+        {
+            if(creature.environments.length > 0)
+            {
+                var tmp = "<tr class='table-primary'><th>Environnement</th></tr>";
+                var enc = "";
+
+                creature.environments.forEach(elem => {
+                    tmp += "<tr><td><button class='btn btn-link' type='button' data-toggle='modal' data-target='#modal" + elem.id + "'>"+ elem.name +"</button></td></tr>";
+
+                    enc += "<div class='modal fade' id='modal" + elem.id + "' tabindex='-1' role='dialog' aria-hidden='true'><div class='modal-dialog' role='document'><div class='modal-content'><div class='modal-header'>";
+                    enc += "<h5 class='modal-title'>" + elem.name + "</h5>";
+                    enc += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+                    enc += "<div class='modal-body'>"
+                    
+                    xhr.open("GET","script/getEncounterTable.php?id="+elem.id, false);
+                    xhr.send();
+                    var table = JSON.parse(xhr.responseText.substring(2,xhr.responseText.length));
+
+                    enc += "<table class='table table-responsive-sm table-striped'>";
+                    enc += "<tr><th>Nom</th><th>Taux</th><th>Nombre</th>";
+                    table.creatures.forEach(elem => {
+                        enc += "<tr><td>"+ elem.name +"</td><td>"+ elem.rate +"</td><td>"+ elem.quantity +"</td></tr>"
+                    });
+                    enc += "</table>";
+
+                    enc += "</div></div></div></div>";
+
+                });
+
+                $('#encounterModal').html(enc);
+                return tmp;
+            }
+            else
+            {
+                return "";
+            }
+        }
     </script>
 </html>
