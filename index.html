@@ -195,23 +195,60 @@
                                         <td><input class="form-control" type="number" name="bossRank"></td>
                                     </tr>
                                     <tr>
-                                        <td id="selectSize" colspan="4"></td>       <!-- Changer en combobox -->
-                                        <td colspan="4"><input class="form-control" type="text" name="family" placeholder="Famille"></td>
-                                        <td colspan="4"><input class="form-control" type="text" name="type" placeholder="Type"></td>
+                                        <td colspan="12">
+                                            <div class="form-inline">
+                                                <select name="size" id="selectSize" class="form-control" style="width:33%;"></select>
+                                                <select name="family" id="selectFamily" class="form-control" style="width:33%;"></select>
+                                                <select name="type" id="selectType" class="form-control" style="width:33%;"></select>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="12">
+                                            <div class="form-inline">
+                                                <select name="environment" id="selectEnvironment" class="form-control" style="width:50%;"></select>
+                                                <input class="form-control" type="text" name="rate" style="width: 25%;" placeholder="Taux d'apparition">
+                                                <input class="form-control" type="text" name="quantity" style="width: 25%;" placeholder="Quantité">
+                                            </div>
+                                        </td>
                                     </tr>
                                 </table>
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary">Ajouter</button>
+                            <button type="button" class="btn btn-info">Ajouter</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            <!-- Modal Environment -->
+            <div class="modal fade" id="newEnvironment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Nouvel environnemnt</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="" class="form-group">
+                                <input type="text" name="nameEnvironment" id="" class="form-control" placeholder="Nom">
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info">Ajouter</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </body>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
@@ -222,19 +259,27 @@
             iconset: "awesome",
             items:[
                 {
-                    id:"newCreature",
-                    text:"Nouvelle créature",
-                    img:"fas fa-plus"
-                },
-                {
-                    id:"newSkill",
-                    text:"Nouvelle compétence",
-                    img:"fas fa-plus"
-                },
-                {
-                    id:"newAbility",
-                    text:"Nouvelle capacité",
-                    img:"fas fa-plus"
+                    id:"new",
+                    text:"",
+                    img:"fas fa-plus",
+                    items:[
+                        {
+                            id:"newCreature",
+                            text:"Nouvelle créature"
+                        },
+                        {
+                            id:"newSkill",
+                            text:"Nouvelle compétence"
+                        },
+                        {
+                            id:"newAbility",
+                            text:"Nouvelle capacité"
+                        },
+                        {
+                            id:"newEnvironment",
+                            text:"Nouvel environnement"
+                        }
+                    ]
                 }
             ]
         });
@@ -293,72 +338,75 @@
             }
         });
         list.attachEvent("onItemClick", function (id){
-            xhr.open("GET", "script/getCreature.php?id="+id,true);
-            xhr.onreadystatechange = function(){
-                if(xhr.readyState == 4)
-                {
-                    if(xhr.status == 200)
-                    {
-                        var creature = JSON.parse(xhr.responseText.substring(3, xhr.responseText.length));
+            $.get("script/getCreature.php",{id: id}, function(data){
+                console.log(data);
+                var creature = JSON.parse(data.substring(3, data.length));
 
-                        $("#name").html(creature.name);
-                        $("#nc").html(creature.nc);
-                        $("#for").html(creature.for);
-                        $("#int").html(creature.int);
-                        $("#description").html(creature.description);
-                        $("#dex").html(creature.dex);
-                        $("#sag").html(creature.sag);
-                        $("#con").html(creature.con);
-                        $("#cha").html(creature.cha);
-                        $("#pv").html(creature.pv);
-                        $("#def").html(creature.def);
-                        $("#init").html(creature.init);
-                        $("#boss").html(creature.bossRank);
-                        $("#family").html(creature.family);
-                        $("#type").html(creature.type);
-                        $("#size").html(creature.size);
-                        $("#attacks").html(genHTMLFromAttack(creature));
-                        $("#skills").html(genHTMLFromSkill(creature));
-                        $("#abilities").html(genHTMLFromAbility(creature));
-                        $("#environments").html(genHTMLFromEnvironment(creature));
-                    }
-                }
-            };
-            xhr.send();
+                $("#name").html(creature.name);
+                $("#nc").html(creature.nc);
+                $("#for").html(creature.for);
+                $("#int").html(creature.int);
+                $("#description").html(creature.description);
+                $("#dex").html(creature.dex);
+                $("#sag").html(creature.sag);
+                $("#con").html(creature.con);
+                $("#cha").html(creature.cha);
+                $("#pv").html(creature.pv);
+                $("#def").html(creature.def);
+                $("#init").html(creature.init);
+                $("#boss").html(creature.bossRank);
+                $("#family").html(creature.family);
+                $("#type").html(creature.type);
+                $("#size").html(creature.size);
+                $("#attacks").html(genHTMLFromAttack(creature));
+                $("#skills").html(genHTMLFromSkill(creature));
+                $("#abilities").html(genHTMLFromAbility(creature));
+                $("#environments").html(genHTMLFromEnvironment(creature));
+            });
         });
 
-        xhr.open("GET", "script/getListCreature.php", false);
-        xhr.onreadystatechange = function(){
-            if(xhr.readyState == 4)
-            {
-                if(xhr.status == 200)
-                {
-                    var res = JSON.parse(xhr.responseText.substring(1, xhr.responseText.length));
-                    res.forEach(elem => {
-                        list.add(elem);
-                    });
-                }
-            }
-        };
-        xhr.send();
+        $.post("script/getListCreature.php", function(data){
+            var res = JSON.parse(data.substring(1, data.length));
+            res.forEach(elem => {
+                list.add(elem);
+            });
+        });
 
-        xhr.open("GET", "script/getListSize.php");
-        xhr.onreadystatechange = function(){
-            if(xhr.readyState == 4)
-            {
-                if(xhr.status == 200)
-                {
-                    var res = JSON.parse(xhr.responseText);
-                    var tmp = "<select class='form-control'>";
-                    res.forEach(elem => {
-                        tmp += "<option>" + elem.label + "</option>";
-                    });
-                    tmp += "</select>";
-                    $("#selectSize").html(tmp);
-                }
-            }
-        }
-        xhr.send();
+        $.post("script/getListSize.php", function(data){
+            var res = JSON.parse(data);
+            var tmp = "";
+            res.forEach(elem => {
+                tmp += "<option>" + elem.label + "</option>";
+            });
+            $("#selectSize").html(tmp);
+        });
+
+        $.post("script/getListFamily.php", function(data){
+            var res = JSON.parse(data);
+            var tmp = "";
+            res.forEach(elem => {
+                tmp += "<option>" + elem.label + "</option>";
+            });
+            $("#selectFamily").html(tmp);
+        });
+
+        $.post("script/getListType.php", function(data){
+            var res = JSON.parse(data);
+            var tmp = "";
+            res.forEach(elem => {
+                tmp += "<option>" + elem.label + "</option>";
+            });
+            $("#selectType").html(tmp);
+        });
+
+        $.post("script/getListEnvironment.php", function(data){
+            var res = JSON.parse(data);
+            var tmp = "";
+            res.forEach(elem => {
+                tmp += "<option>" + elem.name + "</option>";
+            });
+            $("#selectEnvironment").html(tmp);
+        });
         
         menu.attachEvent("onClick", function(id){
             switch(id){
