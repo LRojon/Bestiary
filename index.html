@@ -236,11 +236,11 @@
                         </div>
                         <div class="modal-body">
                             <form action="" class="form-group">
-                                <input type="text" name="nameEnvironment" id="" class="form-control" placeholder="Nom">
+                                <input type="text" name="insertNameEnvironment" id="insertNameEnvironment" class="form-control" placeholder="Nom">
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-info">Ajouter</button>
+                            <button id="insertEnvironment" type="button" class="btn btn-info">Ajouter</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
                         </div>
                     </div>
@@ -287,28 +287,6 @@
             $('#'+id).modal();
         });
 
-        /*var myTabbar;
-        function doOnLoad()
-        {
-            var myTabbar = new dhtmlXTabBar({
-                parent:         "tabbar",
-                close_button:   true,
-                tabs: [
-                    {id: "a1", text: "Tab 1", active: true},
-                    {id: "a2", text: "Tab 2"},
-                    {id: "a3", text: "Tab 3", close: false} // tab w/o close button
-                ]
-            });
-            myTabbar.addTab(
-                "a4",       // id
-                "Tab 4",    // tab text
-                null,       // auto width
-                null,       // last position
-                false,      // inactive
-                false       // disable close button <-- this one
-            );
-        }*/
-
         var menu = new dhtmlXToolbarObject({
             parent:"menu",
             iconset: "awesome",
@@ -338,7 +316,7 @@
             }
         });
         list.attachEvent("onItemClick", function (id){
-            $.get("script/getCreature.php",{id: id}, function(data){
+            $.get("script/get/Creature.php",{id: id}, function(data){
                 console.log(data);
                 var creature = JSON.parse(data.substring(3, data.length));
 
@@ -365,15 +343,15 @@
             });
         });
 
-        $.post("script/getListCreature.php", function(data){
-            var res = JSON.parse(data.substring(1, data.length));
+        $.post("script/get/ListCreature.php", function(data){
+            var res = JSON.parse(data.substring(3, data.length));
             res.forEach(elem => {
                 list.add(elem);
             });
         });
 
-        $.post("script/getListSize.php", function(data){
-            var res = JSON.parse(data);
+        $.post("script/get/ListSize.php", function(data){
+            var res = JSON.parse(data.substring(2));
             var tmp = "";
             res.forEach(elem => {
                 tmp += "<option>" + elem.label + "</option>";
@@ -381,8 +359,8 @@
             $("#selectSize").html(tmp);
         });
 
-        $.post("script/getListFamily.php", function(data){
-            var res = JSON.parse(data);
+        $.post("script/get/ListFamily.php", function(data){
+            var res = JSON.parse(data.substring(2, data.length));
             var tmp = "";
             res.forEach(elem => {
                 tmp += "<option>" + elem.label + "</option>";
@@ -390,8 +368,8 @@
             $("#selectFamily").html(tmp);
         });
 
-        $.post("script/getListType.php", function(data){
-            var res = JSON.parse(data);
+        $.post("script/get/ListType.php", function(data){
+            var res = JSON.parse(data.substring(2));
             var tmp = "";
             res.forEach(elem => {
                 tmp += "<option>" + elem.label + "</option>";
@@ -399,8 +377,8 @@
             $("#selectType").html(tmp);
         });
 
-        $.post("script/getListEnvironment.php", function(data){
-            var res = JSON.parse(data);
+        $.post("script/get/ListEnvironment.php", function(data){
+            var res = JSON.parse(data.substring(2));
             var tmp = "";
             res.forEach(elem => {
                 tmp += "<option>" + elem.name + "</option>";
@@ -414,6 +392,10 @@
                     list.filter("#name#", menu.getValue('search'));
                     break;
             }
+        });
+
+        $('#insertEnvironment').click(function(){
+            $.post("script/insert/Environment.php", {name: $('#insertNameEnvironment').val()})
         });
 
         function genHTMLFromAttack(creature)
@@ -484,11 +466,11 @@
                     enc += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
                     enc += "<div class='modal-body'>"
                     
-                    xhr.open("GET","script/getEncounterTable.php?id="+elem.id, false);
+                    xhr.open("GET","script/get/EncounterTable.php?id="+elem.id, false);
                     xhr.send();
                     var table = JSON.parse(xhr.responseText.substring(2,xhr.responseText.length));
 
-                    enc += "<table class='table table-responsive-sm table-striped'>";
+                    enc += "<table class='table table-responsive-sm table-sm table-striped'>";
                     enc += "<tr><th>Nom</th><th>Taux</th><th>Nombre</th>";
                     table.creatures.forEach(elem => {
                         enc += "<tr><td>"+ elem.name +"</td><td>"+ elem.rate +"</td><td>"+ elem.quantity +"</td></tr>"
