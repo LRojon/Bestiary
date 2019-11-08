@@ -205,24 +205,108 @@
                                     </tr>
                                     <tr>
                                         <td colspan="12">
+                                            <button style="width: 25%;" type="button" class="btn btn-info" onclick="$('#addAttack').modal('show')">Attaques</button>
+                                        </td>
+                                    </tr>
+                                    <!--<tr>
+                                        <td colspan="12">
                                             <div class="form-inline">
                                                 <select name="environment" id="selectEnvironment" class="form-control" style="width:50%;"></select>
                                                 <input class="form-control" type="text" name="rate" style="width: 25%;" placeholder="Taux d'apparition">
                                                 <input class="form-control" type="text" name="quantity" style="width: 25%;" placeholder="Quantité">
                                             </div>
                                         </td>
-                                    </tr>
+                                    </tr>-->
                                 </table>
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-info">Ajouter</button>
+                            <button id="" type="button" class="btn btn-info">Ajouter</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
                         </div>
                     </div>
                 </div>
             </div>
             
+            <!-- Modal add attack -->
+            <div class="modal fade" id="addAttack" tabindex="5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content bg-light">
+                        <div class="modal-header">
+                            <h5 class="modal-title" style="color: black" id="exampleModalLabel">Attaques</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="addAttackContent">
+                            <form action="" class="form-group form-inline" style="color: black">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <input type="text" name="addAttackName" id="addAttackName" class="form-control" placeholder="Nom">
+                                            <input type="number" name="addAttackMod" id="addAttackMod" class="form-control" placeholder="Mod. Atk">
+                                            <input type="text" name="addAttackDM" id="addAttackDM" class="form-control" placeholder="DM">
+                                            (Requis)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input type="text" name="addAttackName" id="addAttackName1" class="form-control" placeholder="Nom">
+                                            <input type="number" name="addAttackMod" id="addAttackMod1" class="form-control" placeholder="Mod. Atk">
+                                            <input type="text" name="addAttackDM" id="addAttackDM1" class="form-control" placeholder="DM">
+                                            (Facultatif)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input type="text" name="addAttackName" id="addAttackName2" class="form-control" placeholder="Nom">
+                                            <input type="number" name="addAttackMod" id="addAttackMod2" class="form-control" placeholder="Mod. Atk">
+                                            <input type="text" name="addAttackDM" id="addAttackDM2" class="form-control" placeholder="DM">
+                                            (Facultatif)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input type="text" name="addAttackName" id="addAttackName3" class="form-control" placeholder="Nom">
+                                            <input type="number" name="addAttackMod" id="addAttackMod3" class="form-control" placeholder="Mod. Atk">
+                                            <input type="text" name="addAttackDM" id="addAttackDM3" class="form-control" placeholder="DM">
+                                            (Facultatif)
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal add attack -->
+            <div class="modal fade" id="addAttack" tabindex="5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content bg-light">
+                        <div class="modal-header">
+                            <h5 class="modal-title" style="color: black" id="exampleModalLabel">Attaques</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="addAttackContent">
+                            <form action="" class="form-group form-inline">
+                                <input type="text" name="addAttackName" id="addAttackName" class="form-control" placeholder="Nom">
+                                <input type="number" name="addAttackMod" id="addAttackMod" class="form-control" placeholder="Mod. Atk">
+                                <input type="text" name="addAttackDM" id="addAttackDM" class="form-control" placeholder="DM">
+                                <button type="button" class="btn btn-secondary" id="addAttackRow"><i class="fas fa-plus"></i></button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Modal Environment -->
             <div class="modal fade" id="newEnvironment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -282,7 +366,45 @@
             ]
         });
         footerMenu.attachEvent('onclick', function(id){
-            $('#'+id).modal();
+            switch(id)
+            {
+                case 'newCreature':
+                    $.post("script/get/ListSize.php", function(data){
+                        var res = JSON.parse(data.substring(2));
+                        var tmp = "";
+                        res.forEach(elem => {
+                            tmp += "<option>" + elem.label + "</option>";
+                        });
+                        $("#selectSize").html(tmp);
+                    });
+                    $.post("script/get/ListFamily.php", function(data){
+                        var res = JSON.parse(data.substring(2, data.length));
+                        var tmp = "";
+                        res.forEach(elem => {
+                            tmp += "<option>" + elem.label + "</option>";
+                        });
+                        $("#selectFamily").html(tmp);
+                    });
+                    $.post("script/get/ListType.php", function(data){
+                        var res = JSON.parse(data.substring(2));
+                        var tmp = "";
+                        res.forEach(elem => {
+                            tmp += "<option>" + elem.label + "</option>";
+                        });
+                        $("#selectType").html(tmp);
+                    });
+                    $.post("script/get/ListEnvironment.php", function(data){
+                        var res = JSON.parse(data.substring(2));
+                        var tmp = "";
+                        res.forEach(elem => {
+                            tmp += "<option>" + elem.name + "</option>";
+                        });
+                        $("#selectEnvironment").html(tmp);
+                    });
+                    
+                    $('#'+id).modal('show');
+                    break;
+            }
         });
 
         var menu = new dhtmlXToolbarObject({
@@ -347,42 +469,6 @@
                 list.add(elem);
             });
         });
-
-        $.post("script/get/ListSize.php", function(data){
-            var res = JSON.parse(data.substring(2));
-            var tmp = "";
-            res.forEach(elem => {
-                tmp += "<option>" + elem.label + "</option>";
-            });
-            $("#selectSize").html(tmp);
-        });
-
-        $.post("script/get/ListFamily.php", function(data){
-            var res = JSON.parse(data.substring(2, data.length));
-            var tmp = "";
-            res.forEach(elem => {
-                tmp += "<option>" + elem.label + "</option>";
-            });
-            $("#selectFamily").html(tmp);
-        });
-
-        $.post("script/get/ListType.php", function(data){
-            var res = JSON.parse(data.substring(2));
-            var tmp = "";
-            res.forEach(elem => {
-                tmp += "<option>" + elem.label + "</option>";
-            });
-            $("#selectType").html(tmp);
-        });
-
-        $.post("script/get/ListEnvironment.php", function(data){
-            var res = JSON.parse(data.substring(2));
-            var tmp = "";
-            res.forEach(elem => {
-                tmp += "<option>" + elem.name + "</option>";
-            });
-            $("#selectEnvironment").html(tmp);
-        });
         
         menu.attachEvent("onClick", function(id){
             switch(id){
@@ -397,6 +483,16 @@
                 $('#selectEnvironment').html($('#selectEnvironment').html() + "<option>" + $('#insertNameEnvironment').val() + "</option>");
             });
             $('#newEnvironment').modal('hide');
+        });
+
+        $('#addAttackRow').click(function(){
+            tmp = $('#addAttackContent').html();
+            tmp += '<form action="" class="form-group form-inline">';
+            tmp += '<input type="text" name="addAttackName" id="addAttackName" class="form-control" placeholder="Nom">';
+            tmp += '<input type="number" name="addAttackMod" id="addAttackMod" class="form-control" placeholder="Mod. Atk">';
+            tmp += '<input type="text" name="addAttackDM" id="addAttackDM" class="form-control" placeholder="DM">';
+            tmp += '</form>';
+            $('#addAttackContent').html(tmp);
         });
 
         function genHTMLFromAttack(creature)
