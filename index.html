@@ -251,9 +251,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script>
-        var xhr = new XMLHttpRequest();
-        
+    <script>        
         var footerMenu = new dhtmlXMenuObject({
             parent:"footerMenu",
             iconset: "awesome",
@@ -315,7 +313,7 @@
                 template: "{common.first()}{common.pages()}{common.last()}"
             }
         });
-        list.attachEvent("onItemClick", function (id){
+        list.attachEvent("onItemClick", function(id){
             $.get("script/get/Creature.php",{id: id}, function(data){
                 console.log(data);
                 var creature = JSON.parse(data.substring(3, data.length));
@@ -395,7 +393,10 @@
         });
 
         $('#insertEnvironment').click(function(){
-            $.post("script/insert/Environment.php", {name: $('#insertNameEnvironment').val()})
+            $.post("script/insert/Environment.php", {name: $('#insertNameEnvironment').val()}, function(){
+                $('#selectEnvironment').html($('#selectEnvironment').html() + "<option>" + $('#insertNameEnvironment').val() + "</option>");
+            });
+            $('#newEnvironment').modal('hide');
         });
 
         function genHTMLFromAttack(creature)
