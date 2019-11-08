@@ -38,7 +38,7 @@ CREATE TABLE environment(
 CREATE TABLE skill(
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(25) NOT NULL,
-    path VARCHAR(25) NOT NULL,
+    path VARCHAR(50) NOT NULL,
     rank INT NOT NULL,
     `limit` TINYINT NOT NULL,
     effect TEXT NOT NULL
