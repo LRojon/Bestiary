@@ -462,12 +462,15 @@
                             <div id="listEnv"></div>
                             <div id="paginerEnv"></div>
                         </div>
-                        <div class="col-sm-8"></div>
+                        <div class="col-sm-8">
+                            <table class="table table-responsive-sm table-striped" id="encouterTable">
+
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
 
     </body>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -807,25 +810,7 @@
                 var enc = "";
 
                 creature.environments.forEach(elem => {
-                    tmp += "<tr><td><button class='btn btn-link' type='button' data-toggle='modal' data-target='#modal" + elem.id + "'>"+ elem.name +"</button></td></tr>";
-
-                    enc += "<div class='modal fade' id='modal" + elem.id + "' tabindex='-1' role='dialog' aria-hidden='true'><div class='modal-dialog' role='document'><div class='modal-content'><div class='modal-header'>";
-                    enc += "<h5 class='modal-title'>" + elem.name + "</h5>";
-                    enc += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
-                    enc += "<div class='modal-body'>"
-                    
-                    xhr.open("GET","script/get/EncounterTable.php?id="+elem.id, false);
-                    xhr.send();
-                    var table = JSON.parse(xhr.responseText.substring(2,xhr.responseText.length));
-
-                    enc += "<table class='table table-responsive-sm table-sm table-striped'>";
-                    enc += "<tr><th>Nom</th><th>Taux</th><th>Nombre</th>";
-                    table.creatures.forEach(elem => {
-                        enc += "<tr><td>"+ elem.name +"</td><td>"+ elem.rate +"</td><td>"+ elem.quantity +"</td></tr>"
-                    });
-                    enc += "</table>";
-
-                    enc += "</div></div></div></div>";
+                    tmp += "<tr><td><button class='btn btn-link' onclick='goEnv("+elem.id+")'>"+ elem.name +"</button></td></tr>";
 
                 });
 
@@ -837,10 +822,52 @@
                 return "";
             }
         }
+        
+        function goCreaFromEnv(id)
+        {
+            $.get("script/get/Creature.php",{id: id}, function(data){
+                console.log(data);
+                var creature = JSON.parse(data.substring(3, data.length));
+
+                $("#name").html(creature.name);
+                $("#nc").html(creature.nc);
+                $("#for").html(creature.for);
+                $("#int").html(creature.int);
+                $("#description").html(creature.description);
+                $("#dex").html(creature.dex);
+                $("#sag").html(creature.sag);
+                $("#con").html(creature.con);
+                $("#cha").html(creature.cha);
+                $("#pv").html(creature.pv);
+                $("#def").html(creature.def);
+                $("#init").html(creature.init);
+                $("#boss").html(creature.bossRank);
+                $("#family").html(creature.family);
+                $("#type").html(creature.type);
+                $("#size").html(creature.size);
+                $("#attacks").html(genHTMLFromAttack(creature));
+                $("#skills").html(genHTMLFromSkill(creature));
+                $("#abilities").html(genHTMLFromAbility(creature));
+                $("#environments").html(genHTMLFromEnvironment(creature));
+            });
+            switchTab('crea','env')
+        }
+        function goEnv(id)
+        {
+            $.get("script/get/EncounterTable.php",{id:id},function(data){
+                var res = JSON.parse(data.substring(2));
+                var tmp = "<tr><th>Nom</th><th>D100</th><th>Quantité<th></tr>";
+                res.creatures.forEach(elem => {
+                    tmp += "<tr><td>"+elem.name+"</td><td>"+elem.rate+"</td><td>"+elem.quantity+"</td></tr>"
+                });
+                $('#encouterTable').html(tmp);
+            });
+            switchTab('crea','env');
+        }
         function switchTab(tab1,tab2)
         {
-            $('#'+ tab1.substring(1) +'Tab').toggleClass('active');
-            $('#'+ tab2.substring(1) +'Tab').toggleClass('active');
+            $('#'+ tab1.substring(0,1) +'Tab').toggleClass('active');
+            $('#'+ tab2.substring(0,1) +'Tab').toggleClass('active');
 
             $('#'+ tab1 +'Tab').toggleClass('active show');
             $('#'+ tab2 +'Tab').toggleClass('active show');
@@ -849,7 +876,6 @@
     <script>// Gestion tab environnement
         var listEnv = new dhtmlXList({
             container: 'listEnv',
-            height: "auto",
             drag: false,
             select: false,
             type:{
@@ -871,7 +897,16 @@
             });
         }
         listEnv.attachEvent('onItemClick',function(id){
-            console.log(id);
+            $.get("script/get/EncounterTable.php",{id:id},function(data){
+                var res = JSON.parse(data.substring(2));
+                var tmp = "<tr><th>Nom</th><th>D100</th><th>Quantité<th></tr>";
+                res.creatures.forEach(elem => {
+                    tmp += "<tr><td><button class='btn btn-link' onclick='goCreaFromEnv("+elem.id+")'>"+elem.name+"</button></td><td>"+elem.rate+"</td><td>"+elem.quantity+"</td></tr>"
+                });
+                $('#encouterTable').html(tmp);
+            });
         })
+    </script>
+    <script>// Gestion tab compétence
     </script>
 </html>
