@@ -25,116 +25,126 @@
 
         <title>Bestiaire</title>
     </head>
-    <body>
-        <div style="width: 99%;max-height: max-content;height: 95%">
-            <div class="fluid-container">
-                <div class="row">
-                    <div class="col-4" style="border-right: grey solid 1px;">
-                        <div id="tabbar" onload="doOnLoad()"></div>
-                        <div id="menu"></div>
-                        <div class="table-responsive-sm">
-                            <table class="table table-borderless center">
-                                <tr>
-                                    <td style="width: 10%;">NC</td>
-                                    <td style="width: 30%;">Nom</td>
-                                    <td style="width: 60%;">Description</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div id="list">
-                            <textarea id="template" class="table-responsive-sm">
+    <body style="width: 99%;max-height: max-content;height: 95%">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a id="cTab" class="nav-link active" data-toggle="tab" href="#creaTab">Créature</a>
+            </li>
+            <li class="nav-item">
+                <a id="eTab" class="nav-link" data-toggle="tab" href="#envTab">Environnement</a>
+            </li>
+            <li><button type="button" onclick="switchTab('crea','env')"></button></li>
+        </ul>
+        <div class="tab-content">
+            <div id="creaTab" class="tab-pane fade active show">
+                <div class="fluid-container">
+                    <div class="row">
+                        <div class="col-4" style="border-right: grey solid 1px;">
+                            <div id="tabbar" onload="doOnLoad()"></div>
+                            <div id="menu"></div>
+                            <div class="table-responsive-sm">
                                 <table class="table table-borderless center">
                                     <tr>
-                                        <td style="width: 10%;">#nc#</td>
-                                        <td style="width: 30%;">#name#</td>
-                                        <td style="width: 60%; font-size:smaller;">#description#</td>
+                                        <td style="width: 10%;">NC</td>
+                                        <td style="width: 30%;">Nom</td>
+                                        <td style="width: 60%;">Description</td>
                                     </tr>
                                 </table>
-                            </textarea>
+                            </div>
+                            <div id="list">
+                                <textarea id="template" class="table-responsive-sm">
+                                    <table class="table table-borderless center">
+                                        <tr>
+                                            <td style="width: 10%;">#nc#</td>
+                                            <td style="width: 30%;">#name#</td>
+                                            <td style="width: 60%; font-size:smaller;">#description#</td>
+                                        </tr>
+                                    </table>
+                                </textarea>
+                            </div>
+                            <div id="paging"></div>
                         </div>
-                        <div id="paging"></div>
-                    </div>
-                    <div class="col-8">
-                        <br>
-                        <div id="details" style="height: 550px;overflow-y: scroll; padding-right: 1%;">
-                            <table class="table table-responsive-sm table-striped" style="text-align: center;">
-                                <tr>
-                                    <td colspan="4">
-                                        <table style="margin: -12px">
-                                            <tr class="table-primary">
-                                                <th style="width: 10%;">Nom</th>
-                                                <td id="name" style="width: 70%;"></td>
-                                                <th style="width: 10%;">NC</th>
-                                                <td id="nc" style="width: 10%;"></td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                    <th colspan="8">Description</th>
-                                </tr>
-                                <tr>
-                                    <th style="width: 12.5%;">FOR</th>
-                                    <td id="for" style="width: 12.5%;"></td>
-                                    <th style="width: 12.5%;">INT</th>
-                                    <td id="int" style="width: 12.5%;"></td>
-                                    <td id="description" colspan="8" rowspan="5" style="width: 50%;"></td>
-                                </tr>
-                                <tr>
-                                    <th>DEX</th>
-                                    <td id="dex"></td>
-                                    <th>SAG</th>
-                                    <td id="sag"></td>
-                                </tr>
-                                <tr>
-                                    <th>CON</th>
-                                    <td id="con"></td>
-                                    <th>CHA</th>
-                                    <td id="cha"></td>
-                                </tr>
-                                <tr>
-                                    <th>PV</th>
-                                    <td id="pv"></td>
-                                    <th>DEF</th>
-                                    <td id="def"></td>
-                                </tr>
-                                <tr>
-                                    <th>Init</th>
-                                    <td id="init"></td>
-                                    <th>Boss</th>
-                                    <td id="boss"></td>
-                                </tr>
-                                <tr>
-                                    <td id="size" colspan="4">Taille</td>
-                                    <td id="family" colspan="4">Famille</td>
-                                    <td id="type" colspan="4">Type</td>
-                                </tr>
-                            </table>
-                            <table id="attacks" class="table table-responsive-sm table-striped" style="text-align: center;">
-                                <tr class="table-primary">
-                                    <th colspan="12">Attaque</th>
-                                </tr>
-                            </table>
-                            <table id="skills" class="table table-responsive-sm table-striped" style="text-align:center;">
-                                <tr class="table-primary">
-                                    <th colspan="12" >Skill</th>
-                                </tr>
-                            </table>
-                            <table class="table table-responsive-sm table-striped" id="abilities" style="text-align:center">
-                                <tr class="table-primary">
-                                    <th colspan="12">Ability</th>
-                                </tr>
-                            </table>
-                            <table class="table table-responsive-sm table-striped" id="environments" style="text-align:center">
-                                <tr class="table-primary">
-                                    <th colspan="12">Environnement</th>
-                                </tr>
-                            </table>
+                        <div class="col-8">
+                            <br>
+                            <div id="details" style="height: 550px;overflow-y: scroll; padding-right: 1%;">
+                                <table class="table table-responsive-sm table-striped" style="text-align: center;">
+                                    <tr>
+                                        <td colspan="4">
+                                            <table style="margin: -12px">
+                                                <tr class="table-primary">
+                                                    <th style="width: 10%;">Nom</th>
+                                                    <td id="name" style="width: 70%;"></td>
+                                                    <th style="width: 10%;">NC</th>
+                                                    <td id="nc" style="width: 10%;"></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <th colspan="8">Description</th>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 12.5%;">FOR</th>
+                                        <td id="for" style="width: 12.5%;"></td>
+                                        <th style="width: 12.5%;">INT</th>
+                                        <td id="int" style="width: 12.5%;"></td>
+                                        <td id="description" colspan="8" rowspan="5" style="width: 50%;"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>DEX</th>
+                                        <td id="dex"></td>
+                                        <th>SAG</th>
+                                        <td id="sag"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>CON</th>
+                                        <td id="con"></td>
+                                        <th>CHA</th>
+                                        <td id="cha"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>PV</th>
+                                        <td id="pv"></td>
+                                        <th>DEF</th>
+                                        <td id="def"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Init</th>
+                                        <td id="init"></td>
+                                        <th>Boss</th>
+                                        <td id="boss"></td>
+                                    </tr>
+                                    <tr>
+                                        <td id="size" colspan="4">Taille</td>
+                                        <td id="family" colspan="4">Famille</td>
+                                        <td id="type" colspan="4">Type</td>
+                                    </tr>
+                                </table>
+                                <table id="attacks" class="table table-responsive-sm table-striped" style="text-align: center;">
+                                    <tr class="table-primary">
+                                        <th colspan="12">Attaque</th>
+                                    </tr>
+                                </table>
+                                <table id="skills" class="table table-responsive-sm table-striped" style="text-align:center;">
+                                    <tr class="table-primary">
+                                        <th colspan="12" >Skill</th>
+                                    </tr>
+                                </table>
+                                <table class="table table-responsive-sm table-striped" id="abilities" style="text-align:center">
+                                    <tr class="table-primary">
+                                        <th colspan="12">Ability</th>
+                                    </tr>
+                                </table>
+                                <table class="table table-responsive-sm table-striped" id="environments" style="text-align:center">
+                                    <tr class="table-primary">
+                                        <th colspan="12">Environnement</th>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div id="encounterModal"></div>
-        <div id="modal">
+                
+                <div id="encounterModal"></div>
+                <div id="modal">
 
             <!-- Modal New Creature -->
             <div class="modal fade" id="newCreature" tabindex="-1" role="dialog" aria-hidden="true">
@@ -443,13 +453,28 @@
                     </div>
                 </div>
             </div>
+                </div>
+            </div>
+            <div id="envTab" class="tab-pane fade">
+                <div class="fluid-container">
+                    <div class="row">
+                        <div class="col-sm-4" style="border-right: grey solid 1px;">
+                            <div id="listEnv"></div>
+                            <div id="paginerEnv"></div>
+                        </div>
+                        <div class="col-sm-8"></div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+
     </body>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script>
-        $('#details').height(window.innerHeight - 0.05*window.innerHeight)
+    <script>// Gestion tab créature
+        $('#details').height(window.innerHeight - 0.1*window.innerHeight)
         var xhr = new XMLHttpRequest();
 
         var list = new dhtmlXList({
@@ -510,7 +535,7 @@
             ['newSkill','obj','Compétence','fas fa-hat-wizard'],
             ['newEnvironment','obj','Environnement','fas fa-mountain'],
         ],"fas fa-plus","",true,true)
-        menu.addButtonSelect("edit",0,"Modifier",[
+        menu.addButtonSelect("edit",1,"Modifier",[
             ['editCreature','obj','Créature','fas fa-paw'],
             ['editAbility','obj','Capacité','fas fa-running'],
             ['editSkill','obj','Compétence','fas fa-hat-wizard'],
@@ -812,5 +837,41 @@
                 return "";
             }
         }
+        function switchTab(tab1,tab2)
+        {
+            $('#'+ tab1.substring(1) +'Tab').toggleClass('active');
+            $('#'+ tab2.substring(1) +'Tab').toggleClass('active');
+
+            $('#'+ tab1 +'Tab').toggleClass('active show');
+            $('#'+ tab2 +'Tab').toggleClass('active show');
+        }
+    </script>
+    <script>// Gestion tab environnement
+        var listEnv = new dhtmlXList({
+            container: 'listEnv',
+            height: "auto",
+            drag: false,
+            select: false,
+            type:{
+                template: "<p style='color:White; text-align:center'>#name#</p>"
+            },
+            pager:{
+                container: "paginerEnv",
+                size: 10,
+                group: 5,
+                template: "{common.first()}{common.pages()}{common.last()}"
+            }
+        });
+        document.body.onload = function(){
+            $.post("script/get/ListEnvironment.php", function(data){
+                var res = JSON.parse(data.substring(2));
+                res.forEach(elem => {
+                    listEnv.add(elem);
+                });
+            });
+        }
+        listEnv.attachEvent('onItemClick',function(id){
+            console.log(id);
+        })
     </script>
 </html>
