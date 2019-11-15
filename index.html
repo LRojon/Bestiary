@@ -56,7 +56,7 @@
                     </div>
                     <div class="col-8">
                         <br>
-                        <div id="details" style="height: 550px;overflow: scroll; padding-right: 1%;">
+                        <div id="details" style="height: 550px;overflow-y: scroll; padding-right: 1%;">
                             <table class="table table-responsive-sm table-striped" style="text-align: center;">
                                 <tr>
                                     <td colspan="4">
@@ -499,7 +499,6 @@
             parent:"menu",
             iconset: "awesome",
             items:[
-                {id: "edit", type: "button", text: "Edit", img: "fas fa-edit"},
                 {id: "sep", type: "separator"},
                 {id: "go", type: "button", img: "fas fa-search"},
                 {id: "search", type: "buttonInput", text: "Name"}
@@ -511,6 +510,12 @@
             ['newSkill','obj','Compétence','fas fa-hat-wizard'],
             ['newEnvironment','obj','Environnement','fas fa-mountain'],
         ],"fas fa-plus","",true,true)
+        menu.addButtonSelect("edit",0,"Modifier",[
+            ['editCreature','obj','Créature','fas fa-paw'],
+            ['editAbility','obj','Capacité','fas fa-running'],
+            ['editSkill','obj','Compétence','fas fa-hat-wizard'],
+            ['editEnvironment','obj','Environnement','fas fa-mountain'],
+        ],"fas fa-edit","",true,true)
         
         menu.attachEvent("onClick", function(id){
             console.log(id);
