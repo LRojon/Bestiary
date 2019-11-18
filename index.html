@@ -28,16 +28,19 @@
     <body style="width: 99%;max-height: max-content;height: 95%">
         <ul class="nav nav-tabs bg-dark">
             <li class="nav-item">
-                <a id="cTab" class="nav-link active" data-toggle="tab" href="#creaTab">Créature</a>
+                <a id="cTab" class="nav-link active" data-toggle="tab" href="#creaTab"><i class="fas fa-paw"></i> Céature</a>
             </li>
             <li class="nav-item">
-                <a id="eTab" class="nav-link" data-toggle="tab" href="#envTab">Environnement</a>
+                <a id="eTab" class="nav-link" data-toggle="tab" href="#envTab"><i class="fas fa-mountain"></i> Environnement</a>
             </li>
             <li class="nav-item">
-                <a href="#skillTab" data-toggle="tab" id="sTab" class="nav-link">Compétence</a>
+                <a href="#skillTab" data-toggle="tab" id="sTab" class="nav-link"><i class="fas fa-hat-wizard"></i> Compétence</a>
             </li>
             <li class="nav-item">
-                <a href="#abilityTab" data-toggle="tab" id="sTab" class="nav-link">Capacité</a>
+                <a href="#abilityTab" data-toggle="tab" id="aTab" class="nav-link"><i class="fas fa-running"></i> Capacité</a>
+            </li>
+            <li class="nav-item">
+                <a href="#healthTab" id="hTab" class="nav-link" data-toggle="tab"><i class="fas fa-user"></i> Etat</a>
             </li>
         </ul>
         <div class="tab-content">
@@ -539,6 +542,20 @@
                     </div>
                 </div>
             </div>
+            <div id="healthTab" class="tab-pane fade">
+                <div class="fluid-container">
+                    <div class="row">
+                        <div class="col-sm-4" style="border-right: grey solid 1px;">
+                            <div id="listHealth"></div>
+                        </div>
+                        <div class="col-sm-8" style="text-align: center;">
+                            <h1 id="healthName" class="text-primary"></h1>
+                            <hr>
+                            <p id="healthEffect"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </body>
@@ -692,6 +709,8 @@
                 rank: $('#newSkillRank').val(),
                 limit: $('#newSkillLimit')[0].checked,
                 effect: ($('#newSkillEffect').val()).replace("'","\'")
+            },function(data){
+                console.log(data)
             })
         });
 
@@ -988,6 +1007,28 @@
             });
             switchTab('crea','ability');
         }
+        function goHealth(id, from)
+        {
+            $.post("script/get/Health.php",{id:id},function(data){
+                console.log(data)
+                var res = JSON.parse(data.substring(2));
+
+                $('#healthName').html(res.name);
+                $('#healthEffect').html(res.effect);
+            })
+
+            $('#hTab').addClass('active');
+            $('#healthTab').addClass('active show');
+
+            $('#cTab').removeClass('active');
+            $('#creaTab').removeClass('active show');
+            $('#eTab').removeClass('active');
+            $('#envTab').removeClass('active show');
+            $('#sTab').removeClass('active');
+            $('#skillTab').removeClass('active show');
+            $('#aTab').removeClass('active');
+            $('#abilityTab').removeClass('active show');
+        }
         function switchTab(tab1,tab2)
         {
             $('#'+ tab1.substring(0,1) +'Tab').toggleClass('active');
@@ -1132,5 +1173,33 @@
                 })
             })
         });
+    </script>
+    <script>// Gestion tab état
+        var listHealth = new dhtmlXList({
+            container: "listHealth",
+            drag: false,
+            select: false,
+            type:{
+                template: "<p style='color: white'>#name#</p>"
+            }
+        });
+
+        $.post("script/get/ListHealth.php",function(data){
+            var res = JSON.parse(data.substring(2));
+            res.forEach(elem => {
+                listHealth.add(elem);
+            });
+        })
+
+        listHealth.attachEvent('onItemClick',function(id){
+            $.post("script/get/Health.php",{id:id},function(data){
+                console.log(data)
+                var res = JSON.parse(data.substring(2));
+
+                $('#healthName').html(res.name);
+                $('#healthEffect').html(res.effect);
+            })
+        })
+
     </script>
 </html>
