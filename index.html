@@ -37,7 +37,7 @@
                 <a href="#skillTab" data-toggle="tab" id="sTab" class="nav-link">Compétence</a>
             </li>
             <li class="nav-item">
-                <a href="#abilityTab" data-toggle="tab" id="sTab" class="nav-link">Compétence</a>
+                <a href="#abilityTab" data-toggle="tab" id="sTab" class="nav-link">Capacité</a>
             </li>
         </ul>
         <div class="tab-content">
@@ -484,7 +484,7 @@
                                 <textarea id="skillTemplate">
                                     <table class="table table-responsive-sm table-borderless">
                                         <tr>
-                                            <td style="width: 60%;">#path#</td>
+                                            <td style="width: 60%;">#path# - rang #rank#</td>
                                             <td>#name#</td>
                                         </tr>
                                     </table>
@@ -608,15 +608,15 @@
         });
         menu.addButtonSelect("new",0,"Ajouter",[
             ['newCreature','obj','Créature','fas fa-paw'],
-            ['newAbility','obj','Capacité','fas fa-running'],
-            ['newSkill','obj','Compétence','fas fa-hat-wizard'],
             ['newEnvironment','obj','Environnement','fas fa-mountain'],
+            ['newSkill','obj','Compétence','fas fa-hat-wizard'],
+            ['newAbility','obj','Capacité','fas fa-running'],
         ],"fas fa-plus","",true,true)
         menu.addButtonSelect("edit",1,"Modifier",[
             ['editCreature','obj','Créature','fas fa-paw'],
-            ['editAbility','obj','Capacité','fas fa-running'],
-            ['editSkill','obj','Compétence','fas fa-hat-wizard'],
             ['editEnvironment','obj','Environnement','fas fa-mountain'],
+            ['editSkill','obj','Compétence','fas fa-hat-wizard'],
+            ['editAbility','obj','Capacité','fas fa-running'],
         ],"fas fa-edit","",true,true)
         menu.disableItem("edit");
 
@@ -843,7 +843,7 @@
                 creature.skills.forEach(elem => {
                     tmp += "<tr><td style='width: 25%'><button class='btn btn-link' onclick='goSkill("+elem.id+")'>";
                     tmp += elem.name;
-                    elem.limit ? tmp += " (L)" : false;
+                    elem.limit ? tmp += " (L)" : "";
                     tmp += "<p style='font-size: smaller;'>";
                     tmp += elem.path + " - rang " + elem.rank;
                     tmp += "</p></button></td><td>";
@@ -866,7 +866,7 @@
 
                 creature.abilities.forEach(elem => {
                     tmp += "<tr><td style='width: 20%'><button class='btn btn-link' onclick='goAbility("+elem.id+")'>";
-                    tmp += elem.name + (elem.limit ? " (L)" : false);
+                    tmp += elem.name + (elem.limit ? " (L)" : "");
                     tmp += "</button></td><td>" + elem.effect + "</td></tr>";
                 });
 
@@ -1060,7 +1060,8 @@
             $.post("script/get/Skill.php",{id:id},function(data){
                 console.log(data);
                 var res = JSON.parse(data.substring(2));
-                res.name =  res.limit == 1 ? res.name + " (L)" : res.name;
+                res.name = res.limit == 1 ? res.name + " (L)" : res.name;
+                res.path = res.path + " - rang " + res.rank;
 
                 $('#skillName').html(res.name);
                 $('#skillPath').html(res.path);
