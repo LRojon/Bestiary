@@ -33,7 +33,9 @@
             <li class="nav-item">
                 <a id="eTab" class="nav-link" data-toggle="tab" href="#envTab">Environnement</a>
             </li>
-            <li><button type="button" onclick="switchTab('crea','env')"></button></li>
+            <li class="nav-item">
+                <a href="#skillTab" data-toggle="tab" id="sTab" class="nav-link">Compétence</a>
+            </li>
         </ul>
         <div class="tab-content">
             <div id="creaTab" class="tab-pane fade active show">
@@ -463,7 +465,46 @@
                             <div id="paginerEnv"></div>
                         </div>
                         <div class="col-sm-8">
+                            <h2 class="center" id="envName"></h2>
                             <table class="table table-responsive-sm table-striped" id="encouterTable">
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="skillTab" class="tab-pane fade">
+                <div class="fluid-container">
+                    <div class="row">
+                        <div class="col-sm-4" style="border-right: grey solid 1px;">
+                            <div id="listSkill">
+                                <textarea id="skillTemplate">
+                                    <table class="table table-responsive-sm table-borderless">
+                                        <tr>
+                                            <td style="width: 60%;">#path#</td>
+                                            <td>#name#</td>
+                                        </tr>
+                                    </table>
+                                </textarea>
+                            </div>
+                            <div id="paginerSkill"></div>
+                        </div>
+                        <div class="col-sm-8">
+                            <table class="table table-responsive-sm table-striped" style="text-align: center;">
+                                <tr class="bg-primary">
+                                    <th colspan="2">Nom</th>
+                                    <td colspan="4" id="skillName"></td>
+                                    <th colspan="2">Voie</th>
+                                    <td colspan="4" id="skillPath"></td>
+                                </tr>
+                                <tr>
+                                    <th colspan="12">Effet</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="12" id="skillEffect"></td>
+                                </tr>
+                            </table>
+                            <table class="table table-responsive-sm table-striped" id="skillOwners" style="text-align: center;">
 
                             </table>
                         </div>
@@ -477,7 +518,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>// Gestion tab créature
-        $('#details').height(window.innerHeight - 0.1*window.innerHeight)
+        $('#details').height(window.innerHeight - 0.1*window.innerHeight);
+
+        window.onresize = function(){
+            $('#details').height(window.innerHeight - 0.1*window.innerHeight);
+        }
+
         var xhr = new XMLHttpRequest();
 
         var list = new dhtmlXList({
@@ -766,12 +812,12 @@
                 var tmp = "<tr class='table-primary'><th colspan='12'>Compétence</th></tr>";
 
                 creature.skills.forEach(elem => {
-                    tmp += "<tr><td style='width: 20%'>";
+                    tmp += "<tr><td style='width: 25%'><button class='btn btn-link' onclick='goSkill("+elem.id+")'>";
                     tmp += elem.name;
                     elem.limit ? tmp += " (L)" : false;
                     tmp += "<p style='font-size: smaller;'>";
                     tmp += elem.path + " - rang " + elem.rank;
-                    tmp += "</p></td><td>";
+                    tmp += "</p></button></td><td>";
                     tmp += elem.effect;
                     tmp += "</td></tr>";
                 });
@@ -822,8 +868,8 @@
                 return "";
             }
         }
-        
-        function goCreaFromEnv(id)
+
+        function goCrea(id, from)
         {
             $.get("script/get/Creature.php",{id: id}, function(data){
                 console.log(data);
@@ -850,7 +896,7 @@
                 $("#abilities").html(genHTMLFromAbility(creature));
                 $("#environments").html(genHTMLFromEnvironment(creature));
             });
-            switchTab('crea','env')
+            switchTab('crea', from)
         }
         function goEnv(id)
         {
@@ -863,6 +909,29 @@
                 $('#encouterTable').html(tmp);
             });
             switchTab('crea','env');
+        }
+        function goSkill(id)
+        {
+            $.post("script/get/Skill.php",{id:id},function(data){
+                console.log(data);
+                var res = JSON.parse(data.substring(2));
+                res.name =  res.limit == 1 ? res.name + " (L)" : res.name;
+
+                $('#skillName').html(res.name);
+                $('#skillPath').html(res.path);
+                $('#skillEffect').html(res.effect);
+
+                $.post("script/get/SkillOwners.php",{id:id},function(data){
+                    console.log(data);
+                    var res = JSON.parse(data.substring(2));
+                    var tmp = "<tr><th>Possesseur</th></tr>";
+                    res.forEach(elem => {
+                        tmp += "<tr><td><button class='btn btn-link' onclick='goCrea("+elem.id+",\"skill\")'>"+elem.name+"</button></td></tr>";
+                    });
+                    $('#skillOwners').html(tmp);
+                })
+            });
+            switchTab('crea', 'skill');
         }
         function switchTab(tab1,tab2)
         {
@@ -899,14 +968,59 @@
         listEnv.attachEvent('onItemClick',function(id){
             $.get("script/get/EncounterTable.php",{id:id},function(data){
                 var res = JSON.parse(data.substring(2));
-                var tmp = "<tr><th>Nom</th><th>D100</th><th>Quantité<th></tr>";
+                var tmp = "<tr class='bg-primary'><th>Nom</th><th>D100</th><th>Quantité<th></tr>";
                 res.creatures.forEach(elem => {
-                    tmp += "<tr><td><button class='btn btn-link' onclick='goCreaFromEnv("+elem.id+")'>"+elem.name+"</button></td><td>"+elem.rate+"</td><td>"+elem.quantity+"</td></tr>"
+                    tmp += "<tr><td><button class='btn btn-link' onclick='goCrea("+elem.id+",\"env\")'>"+elem.name+"</button></td><td>"+elem.rate+"</td><td>"+elem.quantity+"</td></tr>"
                 });
+                $('#envName').html(res.name);
                 $('#encouterTable').html(tmp);
             });
         })
     </script>
     <script>// Gestion tab compétence
+        var listSkill = new dhtmlXList({
+            container:"listSkill",
+            drag: false,
+            select: false,
+            type:{
+                template: "html->skillTemplate"
+            },
+            pager:{
+                container: "paginerSkill",
+                size: 10,
+                group: 5,
+                template: "{common.first()}{common.pages()}{common.last()}"
+            }
+        });
+
+        $.post("script/get/ListSkill.php",function(data){
+            var res = JSON.parse(data.substring(2));
+            res.forEach(elem => {
+                elem.name = elem.limit == 1 ? elem.name + " (L)" : elem.name;
+                listSkill.add(elem);
+            });
+        })
+
+        listSkill.attachEvent('onItemClick',function(id){
+            $.post("script/get/Skill.php",{id:id},function(data){
+                console.log(data);
+                var res = JSON.parse(data.substring(2));
+                res.name =  res.limit == 1 ? res.name + " (L)" : res.name;
+
+                $('#skillName').html(res.name);
+                $('#skillPath').html(res.path);
+                $('#skillEffect').html(res.effect);
+
+                $.post("script/get/SkillOwners.php",{id:id},function(data){
+                    console.log(data);
+                    var res = JSON.parse(data.substring(2));
+                    var tmp = "<tr><th>Possesseur</th></tr>";
+                    res.forEach(elem => {
+                        tmp += "<tr><td><button class='btn btn-link' onclick='goCrea("+elem.id+",\"skill\")'>"+elem.name+"</button></td></tr>";
+                    });
+                    $('#skillOwners').html(tmp);
+                })
+            })
+        })
     </script>
 </html>
