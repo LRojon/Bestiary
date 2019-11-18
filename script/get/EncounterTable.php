@@ -2,7 +2,7 @@
 
 if(isset($_GET['id']))
 {
-    header('Content-Type: application/json');
+    //header('Content-Type: application/json');
     require_once '../include.php';
 
     $dao = new dao();
