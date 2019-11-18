@@ -36,6 +36,9 @@
             <li class="nav-item">
                 <a href="#skillTab" data-toggle="tab" id="sTab" class="nav-link">Compétence</a>
             </li>
+            <li class="nav-item">
+                <a href="#abilityTab" data-toggle="tab" id="sTab" class="nav-link">Compétence</a>
+            </li>
         </ul>
         <div class="tab-content">
             <div id="creaTab" class="tab-pane fade active show">
@@ -68,7 +71,7 @@
                         </div>
                         <div class="col-8">
                             <br>
-                            <div id="details" style="height: 550px;overflow-y: scroll; padding-right: 1%;">
+                            <div id="details" style="height: auto;overflow-y: scroll; padding-right: 1%;">
                                 <table class="table table-responsive-sm table-striped" style="text-align: center;">
                                     <tr>
                                         <td colspan="4">
@@ -505,7 +508,32 @@
                                 </tr>
                             </table>
                             <table class="table table-responsive-sm table-striped" id="skillOwners" style="text-align: center;">
-
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="abilityTab" class="tab-pane fade">
+                <div class="fluid-container">
+                    <div class="row">
+                        <div class="col-sm-4" style="border-right: grey solid 1px;">
+                            <div id="listAbility" style="color: white;"></div>
+                            <div id="paginerAbility"></div>
+                        </div>
+                        <div class="col-sm-8">
+                            <table class="table table-responsive-sm table-striped" style="text-align: center;">
+                                <tr class="bg-primary">
+                                    <th colspan="2">Nom</th>
+                                    <td colspan="10" id="abilityName"></td>
+                                </tr>
+                                <tr>
+                                    <th colspan="12">Effet</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="12" id="abilityEffect"></td>
+                                </tr>
+                            </table>
+                            <table class="table table-responsive-sm table-striped" style="text-align: center;" id="abilityOwners">
                             </table>
                         </div>
                     </div>
@@ -520,9 +548,9 @@
     <script>// Gestion tab créature
         $('#details').height(window.innerHeight - 0.1*window.innerHeight);
 
-        window.onresize = function(){
+        $(window).resize(function(){
             $('#details').height(window.innerHeight - 0.1*window.innerHeight);
-        }
+        })
 
         var xhr = new XMLHttpRequest();
 
@@ -836,9 +864,9 @@
                 var tmp = "<tr class='table-primary'><th colspan='12'>Capacité</th></tr>";
 
                 creature.abilities.forEach(elem => {
-                    tmp += "<tr><td style='width: 20%'>";
+                    tmp += "<tr><td style='width: 20%'><button class='btn btn-link' onclick='goAbility("+elem.id+")'>";
                     tmp += elem.name + (elem.limit ? " (L)" : false);
-                    tmp += "</td><td>" + elem.effect + "</td></tr>";
+                    tmp += "</button></td><td>" + elem.effect + "</td></tr>";
                 });
 
                 return tmp;
@@ -902,10 +930,11 @@
         {
             $.get("script/get/EncounterTable.php",{id:id},function(data){
                 var res = JSON.parse(data.substring(2));
-                var tmp = "<tr><th>Nom</th><th>D100</th><th>Quantité<th></tr>";
+                var tmp = "<tr class='bg-primary'><th>Nom</th><th>D100</th><th>Quantité<th></tr>";
                 res.creatures.forEach(elem => {
-                    tmp += "<tr><td>"+elem.name+"</td><td>"+elem.rate+"</td><td>"+elem.quantity+"</td></tr>"
+                    tmp += "<tr><td><button class='btn btn-link' onclick='goCrea("+elem.id+",\"env\")'>"+elem.name+"</button></td><td>"+elem.rate+"</td><td>"+elem.quantity+"</td></tr>"
                 });
+                $('#envName').html(res.name);
                 $('#encouterTable').html(tmp);
             });
             switchTab('crea','env');
@@ -924,7 +953,7 @@
                 $.post("script/get/SkillOwners.php",{id:id},function(data){
                     console.log(data);
                     var res = JSON.parse(data.substring(2));
-                    var tmp = "<tr><th>Possesseur</th></tr>";
+                    var tmp = "<tr class='bg-primary'><th>Possesseur</th></tr>";
                     res.forEach(elem => {
                         tmp += "<tr><td><button class='btn btn-link' onclick='goCrea("+elem.id+",\"skill\")'>"+elem.name+"</button></td></tr>";
                     });
@@ -932,6 +961,31 @@
                 })
             });
             switchTab('crea', 'skill');
+        }
+        function goAbility(id)
+        {
+            $.post("script/get/Ability.php",{id:id},function(data){
+                var res = JSON.parse(data.substring(2));
+                $('#abilityName').html((res.limit == 1 ? res.name + " (L)" : res.name))
+                $('#abilityEffect').html(res.effect);
+
+                $.post("script/get/AbilityOwners.php",{id: res.id},function(data){
+                    var owners = JSON.parse(data.substring(2));
+                    if(owners.length > 0)
+                    {
+                        var tmp = "<tr class='bg-primary'><th>Possesseur</th></tr>"
+                        owners.forEach(elem => {
+                            tmp += "<tr><td><button class='btn btn-link' onclick='goCrea("+elem.id+",\"ability\")'>"+elem.name+"</button></td</tr>"
+                        });
+                        $('#abilityOwners').html(tmp);
+                    }
+                    else
+                    {
+                        $('#abilityOwners').html("")
+                    }
+                })
+            });
+            switchTab('crea','ability');
         }
         function switchTab(tab1,tab2)
         {
@@ -1012,15 +1066,69 @@
                 $('#skillEffect').html(res.effect);
 
                 $.post("script/get/SkillOwners.php",{id:id},function(data){
-                    console.log(data);
                     var res = JSON.parse(data.substring(2));
-                    var tmp = "<tr><th>Possesseur</th></tr>";
-                    res.forEach(elem => {
-                        tmp += "<tr><td><button class='btn btn-link' onclick='goCrea("+elem.id+",\"skill\")'>"+elem.name+"</button></td></tr>";
-                    });
-                    $('#skillOwners').html(tmp);
+                    if(res.length > 0)
+                    {
+                        var tmp = "<tr><th class='bg-primary'>Possesseur</th></tr>";
+                        res.forEach(elem => {
+                            tmp += "<tr><td><button class='btn btn-link' onclick='goCrea("+elem.id+",\"skill\")'>"+elem.name+"</button></td></tr>";
+                        });
+                        $('#skillOwners').html(tmp);
+                    }
+                    else
+                    {
+                        $('#skillOwners').html("")
+                    }
                 })
             })
         })
+    </script>
+    <script>// Gestion tab capacité
+        var listAbility = new dhtmlXList({
+            container: "listAbility",
+            drag: false,
+            select: false,
+            type:{
+                template: "<p style='color: white'>#name#</p>"
+            },
+            pager:{
+                container: "paginerAbility",
+                size: 10,
+                group: 5,
+                template: "{common.first()}{common.pages()}{common.last()}"
+            }
+        });
+
+        $.post("script/get/ListAbility.php", function(data){
+            var res = JSON.parse(data.substring(2));
+            res.forEach(elem => {
+                elem.name = elem.name + (elem.limit == 1 ? " (L)" : "");
+                listAbility.add(elem);
+            });
+        })
+
+        listAbility.attachEvent('onItemClick', function(id){
+            $.post("script/get/Ability.php",{id:id},function(data){
+                var res = JSON.parse(data.substring(2));
+                $('#abilityName').html((res.limit == 1 ? res.name + " (L)" : res.name))
+                $('#abilityEffect').html(res.effect);
+
+                $.post("script/get/AbilityOwners.php",{id: res.id},function(data){
+                    var owners = JSON.parse(data.substring(2));
+                    if(owners.length > 0)
+                    {
+                        var tmp = "<tr class='bg-primary'><th>Possesseur</th></tr>"
+                        owners.forEach(elem => {
+                            tmp += "<tr><td><button class='btn btn-link' onclick='goCrea("+elem.id+",\"ability\")'>"+elem.name+"</button></td</tr>"
+                        });
+                        $('#abilityOwners').html(tmp);
+                    }
+                    else
+                    {
+                        $('#abilityOwners').html("")
+                    }
+                })
+            })
+        });
     </script>
 </html>

@@ -5,7 +5,7 @@ require_once '../include.php';
 if(isset($_POST['id']))
 {
     $dao = new dao();
-    $res = $dao->db->query("SELECT * FROM crea_skill WHERE skill_id=".$_POST['id'])->fetchAll();
+    $res = $dao->db->query("SELECT * FROM crea_ability WHERE ability_id=".$_POST['id'])->fetchAll();
     $owners = array();
     foreach ($res as $value) {
         array_push($owners, $dao->db->query("SELECT * FROM creature WHERE id=".$value['creature_id'])->fetch());
