@@ -26,7 +26,7 @@
         <title>Bestiaire</title>
     </head>
     <body style="width: 99%;max-height: max-content;height: 95%">
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs bg-dark">
             <li class="nav-item">
                 <a id="cTab" class="nav-link active" data-toggle="tab" href="#creaTab">Créature</a>
             </li>
@@ -618,7 +618,8 @@
             ['editSkill','obj','Compétence','fas fa-hat-wizard'],
             ['editEnvironment','obj','Environnement','fas fa-mountain'],
         ],"fas fa-edit","",true,true)
-        
+        menu.disableItem("edit");
+
         menu.attachEvent("onClick", function(id){
             console.log(id);
             switch(id){
@@ -690,7 +691,7 @@
                 path: $('#newSkillPath').val(),
                 rank: $('#newSkillRank').val(),
                 limit: $('#newSkillLimit')[0].checked,
-                effect: ($('#newSkillEffect').val()).replace('\'','\\\'')
+                effect: ($('#newSkillEffect').val()).replace("'","\'")
             })
         });
 
@@ -698,7 +699,7 @@
             $.post("script/insert/Ability.php",{
                 name: $('#newAbilityName').val(),
                 limit: $('#newAbilityLimit')[0].checked,
-                effect: ($('#newAbilityEffect').val()).replace('\'','\\\'')
+                effect: ($('#newAbilityEffect').val()).replace("'","\'")
             },function(data){
                 console.log(data);
             })
@@ -799,8 +800,8 @@
             var skills = $('#addSkillSelect').val() + "," + $('#addSkillSelect1').val() + "," + $('#addSkillSelect2').val();
             var abilities = $('#addAbilitySelect').val() + "," + $('#addAbilitySelect1').val() + "," + $('#addAbilitySelect2').val();
             $.post("script/insert/Creature.php",{
-                name: $('#insertName').val().replace('\'','\\\''),
-                description: ($('#insertDescription').val()).replace('\'','\\\''),
+                name: $('#insertName').val().replace("'","\'"),
+                description: ($('#insertDescription').val()).replace("'","\'"),
                 nc: $('#insertNC').val(),
                 stats: stats,
                 attacks: attacksTab.toString(),
