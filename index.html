@@ -588,7 +588,6 @@
         });
         list.attachEvent("onItemClick", function(id){
             $.get("script/get/Creature.php",{id: id}, function(data){
-                console.log(data);
                 var creature = JSON.parse(data.substring(3, data.length));
 
                 $("#name").html(creature.name);
@@ -638,7 +637,6 @@
         menu.disableItem("edit");
 
         menu.attachEvent("onClick", function(id){
-            console.log(id);
             switch(id){
                 case 'go':
                     list.filter("#name#", menu.getValue('search'));
@@ -709,8 +707,6 @@
                 rank: $('#newSkillRank').val(),
                 limit: $('#newSkillLimit')[0].checked,
                 effect: ($('#newSkillEffect').val()).replace("'","\'")
-            },function(data){
-                console.log(data)
             })
         });
 
@@ -719,8 +715,6 @@
                 name: $('#newAbilityName').val(),
                 limit: $('#newAbilityLimit')[0].checked,
                 effect: ($('#newAbilityEffect').val()).replace("'","\'")
-            },function(data){
-                console.log(data);
             })
         })
 
@@ -832,13 +826,12 @@
                 skills: skills,
                 abilities: abilities
             });
-            setTimeout($.post("script/get/ListCreature.php", function(data){
-                console.log(data.substring(3))
+            $.post("script/get/ListCreature.php", function(data){
                 var res = JSON.parse(data.substring(3));
                 res.forEach(elem => {
                     list.add(elem);
                 });
-            }), 5000);
+            });
             
             $('#newCreature').modal('hide');
         })
@@ -920,7 +913,6 @@
         function goCrea(id, from)
         {
             $.get("script/get/Creature.php",{id: id}, function(data){
-                console.log(data);
                 var creature = JSON.parse(data.substring(3, data.length));
 
                 $("#name").html(creature.name);
@@ -962,7 +954,6 @@
         function goSkill(id)
         {
             $.post("script/get/Skill.php",{id:id},function(data){
-                console.log(data);
                 var res = JSON.parse(data.substring(2));
                 res.name =  res.limit == 1 ? res.name + " (L)" : res.name;
 
@@ -971,7 +962,6 @@
                 $('#skillEffect').html(res.effect);
 
                 $.post("script/get/SkillOwners.php",{id:id},function(data){
-                    console.log(data);
                     var res = JSON.parse(data.substring(2));
                     var tmp = "<tr class='bg-primary'><th>Possesseur</th></tr>";
                     res.forEach(elem => {
@@ -1010,7 +1000,6 @@
         function goHealth(id, from)
         {
             $.post("script/get/Health.php",{id:id},function(data){
-                console.log(data)
                 var res = JSON.parse(data.substring(2));
 
                 $('#healthName').html(res.name);
@@ -1099,7 +1088,6 @@
 
         listSkill.attachEvent('onItemClick',function(id){
             $.post("script/get/Skill.php",{id:id},function(data){
-                console.log(data);
                 var res = JSON.parse(data.substring(2));
                 res.name = res.limit == 1 ? res.name + " (L)" : res.name;
                 res.path = res.path + " - rang " + res.rank;
@@ -1193,7 +1181,6 @@
 
         listHealth.attachEvent('onItemClick',function(id){
             $.post("script/get/Health.php",{id:id},function(data){
-                console.log(data)
                 var res = JSON.parse(data.substring(2));
 
                 $('#healthName').html(res.name);
