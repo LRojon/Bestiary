@@ -26,18 +26,21 @@
         <title>Bestiaire</title>
     </head>
     <body style="width: 99%;max-height: max-content;height: 95%">
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs bg-dark">
             <li class="nav-item">
-                <a id="cTab" class="nav-link active" data-toggle="tab" href="#creaTab">Créature</a>
+                <a id="cTab" class="nav-link active" data-toggle="tab" href="#creaTab"><i class="fas fa-paw"></i> Céature</a>
             </li>
             <li class="nav-item">
-                <a id="eTab" class="nav-link" data-toggle="tab" href="#envTab">Environnement</a>
+                <a id="eTab" class="nav-link" data-toggle="tab" href="#envTab"><i class="fas fa-mountain"></i> Environnement</a>
             </li>
             <li class="nav-item">
-                <a href="#skillTab" data-toggle="tab" id="sTab" class="nav-link">Compétence</a>
+                <a href="#skillTab" data-toggle="tab" id="sTab" class="nav-link"><i class="fas fa-hat-wizard"></i> Compétence</a>
             </li>
             <li class="nav-item">
-                <a href="#abilityTab" data-toggle="tab" id="sTab" class="nav-link">Compétence</a>
+                <a href="#abilityTab" data-toggle="tab" id="aTab" class="nav-link"><i class="fas fa-running"></i> Capacité</a>
+            </li>
+            <li class="nav-item">
+                <a href="#healthTab" id="hTab" class="nav-link" data-toggle="tab"><i class="fas fa-user"></i> Etat</a>
             </li>
         </ul>
         <div class="tab-content">
@@ -45,7 +48,6 @@
                 <div class="fluid-container">
                     <div class="row">
                         <div class="col-4" style="border-right: grey solid 1px;">
-                            <div id="tabbar" onload="doOnLoad()"></div>
                             <div id="menu"></div>
                             <div class="table-responsive-sm">
                                 <table class="table table-borderless center">
@@ -484,7 +486,7 @@
                                 <textarea id="skillTemplate">
                                     <table class="table table-responsive-sm table-borderless">
                                         <tr>
-                                            <td style="width: 60%;">#path#</td>
+                                            <td style="width: 60%;">#path# - rang #rank#</td>
                                             <td>#name#</td>
                                         </tr>
                                     </table>
@@ -539,6 +541,20 @@
                     </div>
                 </div>
             </div>
+            <div id="healthTab" class="tab-pane fade">
+                <div class="fluid-container">
+                    <div class="row">
+                        <div class="col-sm-4" style="border-right: grey solid 1px;">
+                            <div id="listHealth"></div>
+                        </div>
+                        <div class="col-sm-8" style="text-align: center;">
+                            <h1 id="healthName" class="text-primary"></h1>
+                            <hr>
+                            <p id="healthEffect"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </body>
@@ -571,7 +587,6 @@
         });
         list.attachEvent("onItemClick", function(id){
             $.get("script/get/Creature.php",{id: id}, function(data){
-                console.log(data);
                 var creature = JSON.parse(data.substring(3, data.length));
 
                 $("#name").html(creature.name);
@@ -608,19 +623,19 @@
         });
         menu.addButtonSelect("new",0,"Ajouter",[
             ['newCreature','obj','Créature','fas fa-paw'],
-            ['newAbility','obj','Capacité','fas fa-running'],
-            ['newSkill','obj','Compétence','fas fa-hat-wizard'],
             ['newEnvironment','obj','Environnement','fas fa-mountain'],
+            ['newSkill','obj','Compétence','fas fa-hat-wizard'],
+            ['newAbility','obj','Capacité','fas fa-running'],
         ],"fas fa-plus","",true,true)
         menu.addButtonSelect("edit",1,"Modifier",[
             ['editCreature','obj','Créature','fas fa-paw'],
-            ['editAbility','obj','Capacité','fas fa-running'],
-            ['editSkill','obj','Compétence','fas fa-hat-wizard'],
             ['editEnvironment','obj','Environnement','fas fa-mountain'],
+            ['editSkill','obj','Compétence','fas fa-hat-wizard'],
+            ['editAbility','obj','Capacité','fas fa-running'],
         ],"fas fa-edit","",true,true)
-        
+        menu.disableItem("edit");
+
         menu.attachEvent("onClick", function(id){
-            console.log(id);
             switch(id){
                 case 'go':
                     list.filter("#name#", menu.getValue('search'));
@@ -690,7 +705,7 @@
                 path: $('#newSkillPath').val(),
                 rank: $('#newSkillRank').val(),
                 limit: $('#newSkillLimit')[0].checked,
-                effect: ($('#newSkillEffect').val()).replace('\'','\\\'')
+                effect: ($('#newSkillEffect').val()).replace("'","\'")
             })
         });
 
@@ -698,9 +713,7 @@
             $.post("script/insert/Ability.php",{
                 name: $('#newAbilityName').val(),
                 limit: $('#newAbilityLimit')[0].checked,
-                effect: ($('#newAbilityEffect').val()).replace('\'','\\\'')
-            },function(data){
-                console.log(data);
+                effect: ($('#newAbilityEffect').val()).replace("'","\'")
             })
         })
 
@@ -708,8 +721,14 @@
             $.post("script/get/ListSkill.php", function(data){
                 var res = JSON.parse(data.substring(2));
                 var tmp = "<option value='null'>Auncune</option>";
+                var path = "";
                 res.forEach(elem => {
-                    tmp += "<option value='"+elem.id+"'>"+elem.path + " - rang " + elem.rank + " :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + elem.name+"</option>";
+                    if(path != elem.path)
+                    {
+                        tmp += "</optgroup><optgroup label='"+elem.path+"'>";
+                        path = elem.path;
+                    }
+                    tmp += "<option value='"+elem.id+"'>Rang "+ elem.rank + " - " + elem.name + "</option>";
                 });
                 $('#addSkillSelect').html(tmp);
                 $('#addSkillSelect1').html(tmp);
@@ -799,8 +818,8 @@
             var skills = $('#addSkillSelect').val() + "," + $('#addSkillSelect1').val() + "," + $('#addSkillSelect2').val();
             var abilities = $('#addAbilitySelect').val() + "," + $('#addAbilitySelect1').val() + "," + $('#addAbilitySelect2').val();
             $.post("script/insert/Creature.php",{
-                name: $('#insertName').val().replace('\'','\\\''),
-                description: ($('#insertDescription').val()).replace('\'','\\\''),
+                name: $('#insertName').val().replace("'","\'"),
+                description: ($('#insertDescription').val()).replace("'","\'"),
                 nc: $('#insertNC').val(),
                 stats: stats,
                 attacks: attacksTab.toString(),
@@ -812,16 +831,17 @@
                 skills: skills,
                 abilities: abilities
             });
-            setTimeout($.post("script/get/ListCreature.php", function(data){
-                console.log(data.substring(3))
+            $.post("script/get/ListCreature.php", function(data){
                 var res = JSON.parse(data.substring(3));
                 res.forEach(elem => {
                     list.add(elem);
                 });
-            }), 5000);
+            });
             
             $('#newCreature').modal('hide');
         })
+
+        $('div[id*="list"]').height(window.innerHeight - 0.15*window.innerHeight);
 
         function genHTMLFromAttack(creature)
         {
@@ -842,7 +862,7 @@
                 creature.skills.forEach(elem => {
                     tmp += "<tr><td style='width: 25%'><button class='btn btn-link' onclick='goSkill("+elem.id+")'>";
                     tmp += elem.name;
-                    elem.limit ? tmp += " (L)" : false;
+                    elem.limit ? tmp += " (L)" : "";
                     tmp += "<p style='font-size: smaller;'>";
                     tmp += elem.path + " - rang " + elem.rank;
                     tmp += "</p></button></td><td>";
@@ -865,7 +885,7 @@
 
                 creature.abilities.forEach(elem => {
                     tmp += "<tr><td style='width: 20%'><button class='btn btn-link' onclick='goAbility("+elem.id+")'>";
-                    tmp += elem.name + (elem.limit ? " (L)" : false);
+                    tmp += elem.name + (elem.limit ? " (L)" : "");
                     tmp += "</button></td><td>" + elem.effect + "</td></tr>";
                 });
 
@@ -900,7 +920,6 @@
         function goCrea(id, from)
         {
             $.get("script/get/Creature.php",{id: id}, function(data){
-                console.log(data);
                 var creature = JSON.parse(data.substring(3, data.length));
 
                 $("#name").html(creature.name);
@@ -942,7 +961,6 @@
         function goSkill(id)
         {
             $.post("script/get/Skill.php",{id:id},function(data){
-                console.log(data);
                 var res = JSON.parse(data.substring(2));
                 res.name =  res.limit == 1 ? res.name + " (L)" : res.name;
 
@@ -951,7 +969,6 @@
                 $('#skillEffect').html(res.effect);
 
                 $.post("script/get/SkillOwners.php",{id:id},function(data){
-                    console.log(data);
                     var res = JSON.parse(data.substring(2));
                     var tmp = "<tr class='bg-primary'><th>Possesseur</th></tr>";
                     res.forEach(elem => {
@@ -986,6 +1003,27 @@
                 })
             });
             switchTab('crea','ability');
+        }
+        function goHealth(id, from)
+        {
+            $.post("script/get/Health.php",{id:id},function(data){
+                var res = JSON.parse(data.substring(2));
+
+                $('#healthName').html(res.name);
+                $('#healthEffect').html(res.effect);
+            })
+
+            $('#hTab').addClass('active');
+            $('#healthTab').addClass('active show');
+
+            $('#cTab').removeClass('active');
+            $('#creaTab').removeClass('active show');
+            $('#eTab').removeClass('active');
+            $('#envTab').removeClass('active show');
+            $('#sTab').removeClass('active');
+            $('#skillTab').removeClass('active show');
+            $('#aTab').removeClass('active');
+            $('#abilityTab').removeClass('active show');
         }
         function switchTab(tab1,tab2)
         {
@@ -1032,6 +1070,7 @@
         })
     </script>
     <script>// Gestion tab compétence
+        var path = "";
         var listSkill = new dhtmlXList({
             container:"listSkill",
             drag: false,
@@ -1057,9 +1096,9 @@
 
         listSkill.attachEvent('onItemClick',function(id){
             $.post("script/get/Skill.php",{id:id},function(data){
-                console.log(data);
                 var res = JSON.parse(data.substring(2));
-                res.name =  res.limit == 1 ? res.name + " (L)" : res.name;
+                res.name = res.limit == 1 ? res.name + " (L)" : res.name;
+                res.path = res.path + " - rang " + res.rank;
 
                 $('#skillName').html(res.name);
                 $('#skillPath').html(res.path);
@@ -1130,5 +1169,32 @@
                 })
             })
         });
+    </script>
+    <script>// Gestion tab état
+        var listHealth = new dhtmlXList({
+            container: "listHealth",
+            drag: false,
+            select: false,
+            type:{
+                template: "<p style='color: white'>#name#</p>"
+            }
+        });
+
+        $.post("script/get/ListHealth.php",function(data){
+            var res = JSON.parse(data.substring(2));
+            res.forEach(elem => {
+                listHealth.add(elem);
+            });
+        })
+
+        listHealth.attachEvent('onItemClick',function(id){
+            $.post("script/get/Health.php",{id:id},function(data){
+                var res = JSON.parse(data.substring(2));
+
+                $('#healthName').html(res.name);
+                $('#healthEffect').html(res.effect);
+            })
+        })
+
     </script>
 </html>
