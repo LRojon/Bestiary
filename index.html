@@ -48,7 +48,6 @@
                 <div class="fluid-container">
                     <div class="row">
                         <div class="col-4" style="border-right: grey solid 1px;">
-                            <div id="tabbar" onload="doOnLoad()"></div>
                             <div id="menu"></div>
                             <div class="table-responsive-sm">
                                 <table class="table table-borderless center">
@@ -722,8 +721,14 @@
             $.post("script/get/ListSkill.php", function(data){
                 var res = JSON.parse(data.substring(2));
                 var tmp = "<option value='null'>Auncune</option>";
+                var path = "";
                 res.forEach(elem => {
-                    tmp += "<option value='"+elem.id+"'>"+elem.path + " - rang " + elem.rank + " :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + elem.name+"</option>";
+                    if(path != elem.path)
+                    {
+                        tmp += "</optgroup><optgroup label='"+elem.path+"'>";
+                        path = elem.path;
+                    }
+                    tmp += "<option value='"+elem.id+"'>Rang "+ elem.rank + " - " + elem.name + "</option>";
                 });
                 $('#addSkillSelect').html(tmp);
                 $('#addSkillSelect1').html(tmp);
@@ -835,6 +840,8 @@
             
             $('#newCreature').modal('hide');
         })
+
+        $('div[id*="list"]').height(window.innerHeight - 0.15*window.innerHeight);
 
         function genHTMLFromAttack(creature)
         {
@@ -1063,6 +1070,7 @@
         })
     </script>
     <script>// Gestion tab compétence
+        var path = "";
         var listSkill = new dhtmlXList({
             container:"listSkill",
             drag: false,

@@ -1,6 +1,6 @@
 ﻿<?php
 
-const ENV="prod";
+const ENV="dev";
 
 class dao{
 
