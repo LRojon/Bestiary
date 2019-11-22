@@ -42,6 +42,9 @@
             <li class="nav-item">
                 <a href="#healthTab" id="hTab" class="nav-link" data-toggle="tab"><i class="fas fa-user"></i> Etat</a>
             </li>
+            <li class="nav-item">
+                <button class="btn bg-dark" id="btnAlea">Créature Aléatoire</button>
+            </li>
         </ul>
         <div class="tab-content">
             <div id="creaTab" class="tab-pane fade active show">
@@ -1196,5 +1199,59 @@
             })
         })
 
+    </script>
+    <script>// Gestion tabBar
+        $('#btnAlea').click(function(){
+            $.post("script/get/ListCreature.php",function(data){
+                var res = JSON.parse(data.substring(3));
+                var n = Math.floor(Math.random() * Math.floor(res.length))
+
+                var id;
+                for(var i = 0; i < res.length; i++)
+                {
+                    if(i == n)
+                    {
+                        id = res[i].id;
+                        break;
+                    }
+                };
+
+                $.get("script/get/Creature.php",{id: id}, function(data){
+                    var creature = JSON.parse(data.substring(3, data.length));
+
+                    $("#name").html(creature.name);
+                    $("#nc").html(creature.nc);
+                    $("#for").html(creature.for);
+                    $("#int").html(creature.int);
+                    $("#description").html(creature.description);
+                    $("#dex").html(creature.dex);
+                    $("#sag").html(creature.sag);
+                    $("#con").html(creature.con);
+                    $("#cha").html(creature.cha);
+                    $("#pv").html(creature.pv);
+                    $("#def").html(creature.def);
+                    $("#init").html(creature.init);
+                    $("#boss").html(creature.bossRank);
+                    $("#family").html(creature.family);
+                    $("#type").html(creature.type);
+                    $("#size").html(creature.size);
+                    $("#attacks").html(genHTMLFromAttack(creature));
+                    $("#skills").html(genHTMLFromSkill(creature));
+                    $("#abilities").html(genHTMLFromAbility(creature));
+                    $("#environments").html(genHTMLFromEnvironment(creature));
+                });
+                $('#cTab').addClass('active');
+                $('#creaTab').addClass('active show');
+
+                $('#hTab').removeClass('active');
+                $('#healthTab').removeClass('active show');
+                $('#eTab').removeClass('active');
+                $('#envTab').removeClass('active show');
+                $('#sTab').removeClass('active');
+                $('#skillTab').removeClass('active show');
+                $('#aTab').removeClass('active');
+                $('#abilityTab').removeClass('active show');
+            })
+        });
     </script>
 </html>
