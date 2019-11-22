@@ -156,313 +156,313 @@
                 <div id="encounterModal"></div>
                 <div id="modal">
 
-            <!-- Modal New Creature -->
-            <div class="modal fade" id="newCreature" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Nouvelle créature</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body" id="formNewCreature">
-                            <form action="" method="get">
-                                <table class="table table-responsive-rm table-striped" style="text-align: center;">
-                                    <tr>
-                                        <td colspan="4">
-                                            <table style="margin: -12px">
-                                                <tr class="table-primary">
-                                                    <th style="width: 10%;">Nom</th>
-                                                    <td style="width: 60%;"><input id="insertName" class="form-control" type="text" name="name"></td>
-                                                    <th style="width: 10%;">NC</th>
-                                                    <td style="width: 20%;"><input id="insertNC" class="form-control" type="text" name="nc"></td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                        <th colspan="8">Description</th>
-                                    </tr>
-                                    <tr>
-                                        <th>FOR</th>
-                                        <td><input id="insertFor" class="form-control" type="number" name="for"></td>
-                                        <th>INT</th>
-                                        <td><input id="insertInt" class="form-control" type="number" name="int"></td>
-                                        <td rowspan="5" colspan="8"><textarea id="insertDescription" class="form-control" rows="10" name="description"></textarea></td>
-                                    </tr>
-                                    <tr>
-                                        <th>DEX</th>
-                                        <td><input id="insertDex" class="form-control" type="number" name="dex"></td>
-                                        <th>SAG</th>
-                                        <td><input id="insertSag" class="form-control" type="number" name="sag"></td>
-                                    </tr>
-                                    <tr>
-                                        <th>CON</th>
-                                        <td><input id="insertCon" class="form-control" type="number" name="con"></td>
-                                        <th>CHA</th>
-                                        <td><input id="insertCha" class="form-control" type="number" name="cha"></td>
-                                    </tr>
-                                    <tr>
-                                        <th>PV</th>
-                                        <td><input id="insertPv" class="form-control" type="number" name="pv"></td>
-                                        <th>DEF</th>
-                                        <td><input id="insertDef" class="form-control" type="number" name="def"></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Init</th>
-                                        <td><input id="insertInit" class="form-control" type="number" name="init"></td>
-                                        <th>Boss</th>
-                                        <td><input id="insertBossRank" class="form-control" type="number" name="bossRank"></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="12">
-                                            <div class="form-inline">
-                                                <select name="size" id="selectSize" class="form-control" style="width:33%;"></select>
-                                                <select name="family" id="selectFamily" class="form-control" style="width:33%;"></select>
-                                                <select name="type" id="selectType" class="form-control" style="width:33%;"></select>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="12">
-                                                <button style="width: 20%;" type="button" class="btn btn-info" onclick="$('#addAttack').modal('show')">Attaques</button>
-                                                <button id="btnAddSkill" style="width: 20%;" type="button" class="btn btn-info">Compétence</button>
-                                                <button id="btnAddAbility" style="width: 20%;" type="button" class="btn btn-info">Capacité</button>
-                                                <button id="btnAddEnvironment" style="width: 20%;" type="button" class="btn btn-info">Environnement</button>
-                                            </td>
-                                    </tr>
-                                </table>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button id="addCreature" type="button" class="btn btn-info">Ajouter</button>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Modal add attack -->
-            <div class="modal fade" id="addAttack" tabindex="5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content bg-light">
-                        <div class="modal-header">
-                            <h5 class="modal-title" style="color: black" id="exampleModalLabel">Attaques</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body" id="addAttackContent">
-                            <form action="" class="form-group form-inline" style="color: black">
-                                <table>
-                                    <tr>
-                                        <td>
-                                            <input type="text" name="addAttackName" id="addAttackName" class="form-control" placeholder="Nom">
-                                            <input type="number" name="addAttackMod" id="addAttackMod" class="form-control" placeholder="Mod. Atk">
-                                            <input type="text" name="addAttackDM" id="addAttackDM" class="form-control" placeholder="DM">
-                                            (Requis)
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input type="text" name="addAttackName" id="addAttackName1" class="form-control" placeholder="Nom">
-                                            <input type="number" name="addAttackMod" id="addAttackMod1" class="form-control" placeholder="Mod. Atk">
-                                            <input type="text" name="addAttackDM" id="addAttackDM1" class="form-control" placeholder="DM">
-                                            (Facultatif)
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input type="text" name="addAttackName" id="addAttackName2" class="form-control" placeholder="Nom">
-                                            <input type="number" name="addAttackMod" id="addAttackMod2" class="form-control" placeholder="Mod. Atk">
-                                            <input type="text" name="addAttackDM" id="addAttackDM2" class="form-control" placeholder="DM">
-                                            (Facultatif)
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input type="text" name="addAttackName" id="addAttackName3" class="form-control" placeholder="Nom">
-                                            <input type="number" name="addAttackMod" id="addAttackMod3" class="form-control" placeholder="Mod. Atk">
-                                            <input type="text" name="addAttackDM" id="addAttackDM3" class="form-control" placeholder="DM">
-                                            (Facultatif)
-                                        </td>
-                                    </tr>
-                                </table>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Modal add skill -->
-            <div class="modal fade" id="addSkill" tabindex="5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content bg-light">
-                        <div class="modal-header">
-                            <h5 class="modal-title" style="color: black" id="exampleModalLabel">Compétence</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body" id="addAttackContent">
-                            <select class="form-control" name="addSkillSelect" id="addSkillSelect">
-                            </select><br>
-                            <select class="form-control" name="addSkillSelect1" id="addSkillSelect1">
-                            </select><br>
-                            <select class="form-control" name="addSkillSelect2" id="addSkillSelect2">
-                            </select>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal add ability -->
-            <div class="modal fade" id="addAbility" tabindex="5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content bg-light">
-                        <div class="modal-header">
-                            <h5 class="modal-title" style="color: black" id="exampleModalLabel">Capacité</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body" id="addAbiltyContent">
-                            <select class="form-control" name="addAbiltySelect" id="addAbilitySelect">
-                            </select><br>
-                            <select class="form-control" name="addAbiltySelect1" id="addAbilitySelect1">
-                            </select><br>
-                            <select class="form-control" name="addAbiltySelect2" id="addAbilitySelect2">
-                            </select>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal add environment -->
-            <div class="modal fade" id="addEnvironment" tabindex="5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content bg-light">
-                        <div class="modal-header">
-                            <h5 class="modal-title" style="color: black" id="exampleModalLabel">Environnement</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body" id="addAbiltyContent">
-                                <div class="form-group form-inline" id="addEnvironment1">
-                                    <label for="env1">Environnement 1: </label>
-                                    <select class="form-control" id="addEnvironmentSelect"></select>
-                                    <input class="form-control" type="text" name="" id="rate" placeholder="Taux d'apparition">
-                                    <input class="form-control" type="text" name="" id="quantity" placeholder="Quantité">
+                    <!-- Modal New Creature -->
+                    <div class="modal fade" id="newCreature" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Nouvelle créature</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
                                 </div>
-                                <div class="form-group form-inline" id="addEnvironment2">
-                                    <label for="env2">Environnement 2: </label>
-                                    <select class="form-control" ></select>
-                                    <input class="form-control" type="text" name="" id="rate" placeholder="Taux d'apparition">
-                                    <input class="form-control" type="text" name="" id="quantity" placeholder="Quantité">
+                                <div class="modal-body" id="formNewCreature">
+                                    <form action="" method="get">
+                                        <table class="table table-responsive-rm table-striped" style="text-align: center;">
+                                            <tr>
+                                                <td colspan="4">
+                                                    <table style="margin: -12px">
+                                                        <tr class="table-primary">
+                                                            <th style="width: 10%;">Nom</th>
+                                                            <td style="width: 60%;"><input id="insertName" class="form-control" type="text" name="name"></td>
+                                                            <th style="width: 10%;">NC</th>
+                                                            <td style="width: 20%;"><input id="insertNC" class="form-control" type="text" name="nc"></td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <th colspan="8">Description</th>
+                                            </tr>
+                                            <tr>
+                                                <th>FOR</th>
+                                                <td><input id="insertFor" class="form-control" type="number" name="for"></td>
+                                                <th>INT</th>
+                                                <td><input id="insertInt" class="form-control" type="number" name="int"></td>
+                                                <td rowspan="5" colspan="8"><textarea id="insertDescription" class="form-control" rows="10" name="description"></textarea></td>
+                                            </tr>
+                                            <tr>
+                                                <th>DEX</th>
+                                                <td><input id="insertDex" class="form-control" type="number" name="dex"></td>
+                                                <th>SAG</th>
+                                                <td><input id="insertSag" class="form-control" type="number" name="sag"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>CON</th>
+                                                <td><input id="insertCon" class="form-control" type="number" name="con"></td>
+                                                <th>CHA</th>
+                                                <td><input id="insertCha" class="form-control" type="number" name="cha"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>PV</th>
+                                                <td><input id="insertPv" class="form-control" type="number" name="pv"></td>
+                                                <th>DEF</th>
+                                                <td><input id="insertDef" class="form-control" type="number" name="def"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Init</th>
+                                                <td><input id="insertInit" class="form-control" type="number" name="init"></td>
+                                                <th>Boss</th>
+                                                <td><input id="insertBossRank" class="form-control" type="number" name="bossRank"></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="12">
+                                                    <div class="form-inline">
+                                                        <select name="size" id="selectSize" class="form-control" style="width:33%;"></select>
+                                                        <select name="family" id="selectFamily" class="form-control" style="width:33%;"></select>
+                                                        <select name="type" id="selectType" class="form-control" style="width:33%;"></select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="12">
+                                                        <button style="width: 20%;" type="button" class="btn btn-info" onclick="$('#addAttack').modal('show')">Attaques</button>
+                                                        <button id="btnAddSkill" style="width: 20%;" type="button" class="btn btn-info">Compétence</button>
+                                                        <button id="btnAddAbility" style="width: 20%;" type="button" class="btn btn-info">Capacité</button>
+                                                        <button id="btnAddEnvironment" style="width: 20%;" type="button" class="btn btn-info">Environnement</button>
+                                                    </td>
+                                            </tr>
+                                        </table>
+                                    </form>
                                 </div>
-                                <div class="form-group form-inline" id="addEnvironment3">
-                                    <label for="env3">Environnement 3: </label>
-                                    <select class="form-control" ></select>
-                                    <input class="form-control" type="text" name="" id="rate" placeholder="Taux d'apparition">
-                                    <input class="form-control" type="text" name="" id="quantity" placeholder="Quantité">
+                                <div class="modal-footer">
+                                    <button id="addCreature" type="button" class="btn btn-info">Ajouter</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
                                 </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                    
+                    <!-- Modal add attack -->
+                    <div class="modal fade" id="addAttack" tabindex="5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content bg-light">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" style="color: black" id="exampleModalLabel">Attaques</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="addAttackContent">
+                                    <form action="" class="form-group form-inline" style="color: black">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <input type="text" name="addAttackName" id="addAttackName" class="form-control" placeholder="Nom">
+                                                    <input type="number" name="addAttackMod" id="addAttackMod" class="form-control" placeholder="Mod. Atk">
+                                                    <input type="text" name="addAttackDM" id="addAttackDM" class="form-control" placeholder="DM">
+                                                    (Requis)
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <input type="text" name="addAttackName" id="addAttackName1" class="form-control" placeholder="Nom">
+                                                    <input type="number" name="addAttackMod" id="addAttackMod1" class="form-control" placeholder="Mod. Atk">
+                                                    <input type="text" name="addAttackDM" id="addAttackDM1" class="form-control" placeholder="DM">
+                                                    (Facultatif)
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <input type="text" name="addAttackName" id="addAttackName2" class="form-control" placeholder="Nom">
+                                                    <input type="number" name="addAttackMod" id="addAttackMod2" class="form-control" placeholder="Mod. Atk">
+                                                    <input type="text" name="addAttackDM" id="addAttackDM2" class="form-control" placeholder="DM">
+                                                    (Facultatif)
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <input type="text" name="addAttackName" id="addAttackName3" class="form-control" placeholder="Nom">
+                                                    <input type="number" name="addAttackMod" id="addAttackMod3" class="form-control" placeholder="Mod. Atk">
+                                                    <input type="text" name="addAttackDM" id="addAttackDM3" class="form-control" placeholder="DM">
+                                                    (Facultatif)
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Modal add skill -->
+                    <div class="modal fade" id="addSkill" tabindex="5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content bg-light">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" style="color: black" id="exampleModalLabel">Compétence</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="addAttackContent">
+                                    <select class="form-control" name="addSkillSelect" id="addSkillSelect">
+                                    </select><br>
+                                    <select class="form-control" name="addSkillSelect1" id="addSkillSelect1">
+                                    </select><br>
+                                    <select class="form-control" name="addSkillSelect2" id="addSkillSelect2">
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-            <!-- Modal new skill -->
-            <div class="modal fade" id="newSkill" tabindex="5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" style="color: black" id="exampleModalLabel">Nouvelle compétence</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body" id="addAttackContent">
-                            <form action="" class="form-group">
-                                <input type="text" name="newSkillName" id="newSkillName" class="form-control" placeholder="Nom">
-                                <input type="text" name="newSkillPath" id="newSkillPath" class="form-control" placeholder="Voie"></input>
-                                <input type="number" name="newSkillRank" id="newSkillRank" class="form-control" placeholder="Rang">
-                                <div class="input-group">
-                                        <label for="newSkillLimit" class="form-control">Limité ?</label>
-                                        <input type="checkbox" name="newSkillLimit" id="newSkillLimit" class="form-control">
+                    <!-- Modal add ability -->
+                    <div class="modal fade" id="addAbility" tabindex="5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content bg-light">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" style="color: black" id="exampleModalLabel">Capacité</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
                                 </div>
-                                <textarea name="newSkillEffect" id="newSkillEffect" cols="88" rows="7">Effet</textarea>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" id="insertSkill" class="btn btn-info" data-dismiss="modal">Ajouter</button>
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal new ability -->
-            <div class="modal fade" id="newAbility" tabindex="5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" style="color: black" id="exampleModalLabel">Nouvelle capacité</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body" id="newAbilityContent">
-                            <form action="" class="form-group">
-                                <input type="text" id="newAbilityName" class="form-control" placeholder="Nom">
-                                <div class="input-group">
-                                        <label for="newAbilityLimit" class="form-control">Limité ?</label>
-                                        <input type="checkbox" id="newAbilityLimit" class="form-control">
+                                <div class="modal-body" id="addAbiltyContent">
+                                    <select class="form-control" name="addAbiltySelect" id="addAbilitySelect">
+                                    </select><br>
+                                    <select class="form-control" name="addAbiltySelect1" id="addAbilitySelect1">
+                                    </select><br>
+                                    <select class="form-control" name="addAbiltySelect2" id="addAbilitySelect2">
+                                    </select>
                                 </div>
-                                <textarea class="form-control" id="newAbilityEffect" cols="88" rows="7" placeholder="Effet"></textarea>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" id="insertAbility" class="btn btn-info" data-dismiss="modal">Ajouter</button>
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- Modal Environment -->
-            <div class="modal fade" id="newEnvironment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Nouvel environnemnt</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="" class="form-group">
-                                <input type="text" name="insertNameEnvironment" id="insertNameEnvironment" class="form-control" placeholder="Nom">
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button id="insertEnvironment" type="button" class="btn btn-info">Ajouter</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <!-- Modal add environment -->
+                    <div class="modal fade" id="addEnvironment" tabindex="5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content bg-light">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" style="color: black" id="exampleModalLabel">Environnement</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="addAbiltyContent">
+                                        <div class="form-group form-inline" id="addEnvironment1">
+                                            <label for="env1">Environnement 1: </label>
+                                            <select class="form-control" id="addEnvironmentSelect"></select>
+                                            <input class="form-control" type="text" name="" id="rate" placeholder="Taux d'apparition">
+                                            <input class="form-control" type="text" name="" id="quantity" placeholder="Quantité">
+                                        </div>
+                                        <div class="form-group form-inline" id="addEnvironment2">
+                                            <label for="env2">Environnement 2: </label>
+                                            <select class="form-control" ></select>
+                                            <input class="form-control" type="text" name="" id="rate" placeholder="Taux d'apparition">
+                                            <input class="form-control" type="text" name="" id="quantity" placeholder="Quantité">
+                                        </div>
+                                        <div class="form-group form-inline" id="addEnvironment3">
+                                            <label for="env3">Environnement 3: </label>
+                                            <select class="form-control" ></select>
+                                            <input class="form-control" type="text" name="" id="rate" placeholder="Taux d'apparition">
+                                            <input class="form-control" type="text" name="" id="quantity" placeholder="Quantité">
+                                        </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+
+                    <!-- Modal new skill -->
+                    <div class="modal fade" id="newSkill" tabindex="5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" style="color: black" id="exampleModalLabel">Nouvelle compétence</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="addAttackContent">
+                                    <form action="" class="form-group">
+                                        <input type="text" name="newSkillName" id="newSkillName" class="form-control" placeholder="Nom">
+                                        <input type="text" name="newSkillPath" id="newSkillPath" class="form-control" placeholder="Voie"></input>
+                                        <input type="number" name="newSkillRank" id="newSkillRank" class="form-control" placeholder="Rang">
+                                        <div class="input-group">
+                                                <label for="newSkillLimit" class="form-control">Limité ?</label>
+                                                <input type="checkbox" name="newSkillLimit" id="newSkillLimit" class="form-control">
+                                        </div>
+                                        <textarea name="newSkillEffect" id="newSkillEffect" cols="88" rows="7">Effet</textarea>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="insertSkill" class="btn btn-info" data-dismiss="modal">Ajouter</button>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal new ability -->
+                    <div class="modal fade" id="newAbility" tabindex="5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" style="color: black" id="exampleModalLabel">Nouvelle capacité</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="newAbilityContent">
+                                    <form action="" class="form-group">
+                                        <input type="text" id="newAbilityName" class="form-control" placeholder="Nom">
+                                        <div class="input-group">
+                                                <label for="newAbilityLimit" class="form-control">Limité ?</label>
+                                                <input type="checkbox" id="newAbilityLimit" class="form-control">
+                                        </div>
+                                        <textarea class="form-control" id="newAbilityEffect" cols="88" rows="7" placeholder="Effet"></textarea>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="insertAbility" class="btn btn-info" data-dismiss="modal">Ajouter</button>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Environment -->
+                    <div class="modal fade" id="newEnvironment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Nouvel environnemnt</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="" class="form-group">
+                                        <input type="text" name="insertNameEnvironment" id="insertNameEnvironment" class="form-control" placeholder="Nom">
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="insertEnvironment" type="button" class="btn btn-info">Ajouter</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div id="envTab" class="tab-pane fade">
@@ -473,7 +473,16 @@
                             <div id="paginerEnv"></div>
                         </div>
                         <div class="col-sm-8">
-                            <h2 class="center" id="envName"></h2>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td>
+                                        <h2 class="center" id="envName"></h2>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <button style="right: 2%;position:absolute;display:inline-block;width: 75px;" class="btn btn-primary" id="btnD100">D100</button>
+                                    </td>
+                                </tr>
+                            </table>
                             <table class="table table-responsive-sm table-striped" id="encouterTable">
 
                             </table>
@@ -1253,5 +1262,9 @@
                 $('#abilityTab').removeClass('active show');
             })
         });
+        
+        $('#btnD100').click(function(){
+            $('#btnD100').html(Math.floor(Math.random() * Math.floor(100))+1)
+        })
     </script>
 </html>
