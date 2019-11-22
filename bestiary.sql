@@ -32,7 +32,7 @@ CREATE TABLE family(
 
 CREATE TABLE environment(
     id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(25) NOT NULL
+    name VARCHAR(25) NOT NULL UNIQUE
 );
 
 CREATE TABLE skill(
@@ -121,3 +121,12 @@ INSERT INTO crea_skill(creature_id, skill_id) VALUES
 INSERT INTO crea_ability(creature_id, ability_id) VALUES
 (1,1),
 (1,2);
+
+DELIMITER $$
+CREATE PROCEDURE encounter_table(env_id INT(11))
+BEGIN
+	SELECT c.id, c.name, p.rate, p.quantity FROM creature c, crea_env p 
+	WHERE c.id = p.creature_id AND p.environment_id = env_id;
+END$$
+
+DELIMITER ;
