@@ -698,7 +698,8 @@
         });
 
         $.post("script/get/ListCreature.php", function(data){
-            var res = JSON.parse(data.substring(3, data.length));
+	    console.log(data.substring(3));
+            var res = JSON.parse(data.substring(3));
             res.forEach(elem => {
                 list.add(elem);
             });
