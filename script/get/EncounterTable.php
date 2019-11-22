@@ -6,7 +6,7 @@ if(isset($_GET['id']))
     require_once '../include.php';
 
     $dao = new dao();
-    $res = $dao->db->query("SELECT c.id, c.name, p.rate, p.quantity FROM crea_env p JOIN creature c ON c.id = p.creature_id WHERE p.environment_id = ".$_GET['id'])->fetchAll();
+    $res = $dao->db->query("CALL encounter_table( ".$_GET['id'].")")->fetchAll();
     $encounters = array();
     foreach ($res as $elem) {
         array_push($encounters, new Encounter($elem['id'], $elem['name'], $elem['rate'], $elem['quantity']));
