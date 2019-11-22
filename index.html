@@ -603,13 +603,13 @@
 
                 $("#name").html(creature.name);
                 $("#nc").html(creature.nc);
-                $("#for").html(creature.for);
-                $("#int").html(creature.int);
                 $("#description").html(creature.description);
-                $("#dex").html(creature.dex);
-                $("#sag").html(creature.sag);
-                $("#con").html(creature.con);
-                $("#cha").html(creature.cha);
+                $("#for").html((creature.for >= 0 ? "+" : "") + creature.for);
+                $("#int").html((creature.int >= 0 ? "+" : "") + creature.int);
+                $("#dex").html((creature.dex >= 0 ? "+" : "") + creature.dex);
+                $("#sag").html((creature.sag >= 0 ? "+" : "") + creature.sag);
+                $("#con").html((creature.con >= 0 ? "+" : "") + creature.con);
+                $("#cha").html((creature.cha >= 0 ? "+" : "") + creature.cha);
                 $("#pv").html(creature.pv);
                 $("#def").html(creature.def);
                 $("#init").html(creature.init);
@@ -713,7 +713,7 @@
 
         $('#insertSkill').click(function(){
             $.post("script/insert/Skill.php",{
-                name: $('#newSkillName').val(),
+                name: ($('#newSkillName').val()).replace("'","\'"),
                 path: $('#newSkillPath').val(),
                 rank: $('#newSkillRank').val(),
                 limit: $('#newSkillLimit')[0].checked,
@@ -723,7 +723,7 @@
 
         $('#insertAbility').click(function(){
             $.post("script/insert/Ability.php",{
-                name: $('#newAbilityName').val(),
+                name: ($('#newAbilityName').val()).replace("'","\'"),
                 limit: $('#newAbilityLimit')[0].checked,
                 effect: ($('#newAbilityEffect').val()).replace("'","\'")
             })
@@ -785,7 +785,7 @@
                 toString: function(){
                     var res = "";
                     this.tab.forEach(elem => {
-                        res += elem.name + " " + elem.mod + " DM " + elem.dm+",";
+                        res += elem.name + "&nbsp;&nbsp;&nbsp;" + (elem.mod > 0 ? "+" : "") + elem.mod + "&nbsp;&nbsp;&nbsp;DM " + elem.dm+",";
                     });
                     return res;
                 },

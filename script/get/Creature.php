@@ -43,7 +43,8 @@ if(isset($_GET['id']))
         $family,
         $envs,
         $abilities,
-        $skills
+        $skills,
+        $res['boss_rank']
     );
 
     //header('Content-Type: application/json');
