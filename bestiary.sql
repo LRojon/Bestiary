@@ -93,6 +93,22 @@ CREATE TABLE crea_env(
     FOREIGN KEY (environment_id) REFERENCES environment(id)
 );
 
+CREATE TABLE `health` (
+  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `effect` text NOT NULL
+);
+
+INSERT INTO health (`name`, effect) VALUES
+('Aveuglé', "-5 en Init, en attaque, et en DEF. -10 en attaque à distances."),
+('Affaibli', "Doit utiliser un D12 au lieu du D20."),
+('Etourdi', "Aucune action n'est possible, -5 DEF."),
+('Immobilisé', "Pas de déplacement et utilise un D12 au lieu du D20."),
+('Paralysé', "Aucune action n'est possible, en cas d'attaque subit elle touche automatiquement en critique."),
+('Ralenti', "Une seule action par tour (action de mouvement ou action d'attaque)."),
+('Renversé', "-5 en attaque et en DEF, nécessite une action de mouvement pour se relever."),
+('Surpris', "Pas d'action et -5 en DEF au premier tour de combat.");
+
 INSERT INTO family(label) VALUES('Ancien'),('Animal'),('Démon'),('Dinosaures'),('Dragon'),('Elémentaire'),('Golem'),('Humain'),('Hydre'),('Peau verte'),('Titan');
 
 INSERT INTO type(label) VALUES('Animal'),('Dragonoïde'),('Goblinoïde'),('Humanoïde'),('Hybride'),('Insectoïde'),('Non-vivant');
