@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link rel="stylesheet" href="https://bootswatch.com/4/superhero/bootstrap.min.css">
+        <link rel="stylesheet" id="css" href="https://bootswatch.com/4/superhero/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="http://cdn.dhtmlx.com/edge/dhtmlx.css" type="text/css"> 
@@ -28,7 +28,7 @@
         <title>Bestiaire</title>
     </head>
     <body style="width: 99%;max-height: max-content;height: 95%">
-        <ul class="nav nav-tabs bg-dark">
+        <ul class="nav nav-tabs ">
             <li class="nav-item">
                 <a id="cTab" class="nav-link active" data-toggle="tab" href="#creaTab"><i class="fas fa-paw"></i> Céature</a>
             </li>
@@ -45,10 +45,18 @@
                 <a href="#healthTab" id="hTab" class="nav-link" data-toggle="tab"><i class="fas fa-user"></i> Etat</a>
             </li>
             <li class="nav-item">
-                <button class="btn bg-dark" id="btnAlea">Créature Aléatoire</button>
+                <button class="btn btn-primary" id="btnAlea">Créature Aléatoire</button>
             </li>
             <li class="nav-item"><button onclick="looting(2)" class="btn bg-dark">NC 2</button></li>
         </ul>
+
+        <div style="top: 0px; right: 5px; position: absolute" class=" dropdown show">
+            <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">Thème</a>
+            <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 39px, 0px); top: 0px; left: 0px; will-change: transform;">
+                <a class="dropdown-item" onclick="changeCSS('superhero')">Default</a>
+                <a class="dropdown-item" onclick="changeCSS('united')">United</a>
+            </div>
+        </div>
         <div class="tab-content">
             <div id="creaTab" class="tab-pane fade active show">
                 <div class="fluid-container">
@@ -1055,7 +1063,7 @@
             drag: false,
             select: false,
             type:{
-                template: "<p style='color:White; text-align:center'>#name#</p>"
+                template: "<p class='text-primary' style='text-align:center'>#name#</p>"
             },
             pager:{
                 container: "paginerEnv",
@@ -1143,7 +1151,7 @@
             drag: false,
             select: false,
             type:{
-                template: "<p style='color: white'>#name#</p>"
+                template: "<p class='text-primary' style='color: white'>#name#</p>"
             },
             pager:{
                 container: "paginerAbility",
@@ -1191,7 +1199,7 @@
             drag: false,
             select: false,
             type:{
-                template: "<p style='color: white'>#name#</p>"
+                template: "<p class='text-primary' style='color: white'>#name#</p>"
             }
         });
 
@@ -1269,5 +1277,11 @@
         $('#btnD100').click(function(){
             $('#btnD100').html(Math.floor(Math.random() * Math.floor(100))+1)
         })
+
+
+        function changeCSS(theme)
+        {
+            $('#css').attr("href", "https://bootswatch.com/4/"+theme+"/bootstrap.min.css")
+        }
     </script>
 </html>
