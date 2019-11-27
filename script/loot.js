@@ -25,6 +25,9 @@ function genPotion(dose)
 {
     let description = "";
     let nom = "";
+    loot.minorObject = [];
+    loot.mediumObject = [];
+    loot.majorObject = [];
     switch (dice(6)) {
         case 1:
         case 2:
@@ -126,16 +129,16 @@ function genPotion(dose)
                     description = "Revêtie une armure élèctrique (Sous tension - Ensorceleur)";
                     break;
                 case 9:
-                    nom = "Potion rare de ";
-                    description = "";
+                    nom = "Potion rare de transformation - éthérée";
+                    description = "Transforme en forme intangible (Forme éthérée - Ensorceleur)";
                     break;
                 case 10:
-                    nom = "Potion rare de ";
-                    description = "";
+                    nom = "Potion rare d'imitation";
+                    description = "Permet de copier à la perfection une créature (Imitation - Ensorceleur)";
                     break;
                 case 11:
-                    nom = "Potion rare de ";
-                    description = "";
+                    nom = "Potion rare vitaminé";
+                    description = "Breuvage étrange permettant de se soigner ";
                     break;
                 case 12:
                     nom = "Potion rare de ";
