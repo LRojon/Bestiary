@@ -3,12 +3,327 @@ function dice(nbFaces)
     return Math.ceil(Math.random()*nbFaces-1)+1;
 }
 
+function genArme(niv)
+{
+    /*let arme = {
+        type: "",
+        categorie: "",
+        atk: 0,
+        formDM: "",
+        dm: 0,
+        caracs: [{ nom: "Fléau des géants", effet: "+1d6 DM contre les géants." }],
+        niv: 0,
+        critique: 20,
+        contains: function(carac){
+            let bool = false;
+            this.caracs.forEach(function(elem){
+                if(elem.nom == carac.nom)
+                    return true;
+            })
+            return bool;
+        }
+    }*/
+    let arme = {
+        type: "",
+        categorie: "",
+        atk: 0,
+        formDM: "",
+        dm: 0,
+        caracs: [],
+        niv: 0,
+        critique: 20,
+    }
+    switch(dice(6)){
+        case 1:
+        case 2:
+        case 3:
+            arme.type = "Contact";
+            break;
+        case 4:
+        case 5:
+            arme.type = "Distance";
+            break;
+        case 6:
+            arme.type = "Sceptre";
+    }
+    switch (arme.type) {
+        case "Contact":
+            var d = dice(20);
+            switch (true) {
+                case d==1:
+                    arme.categorie = "Manique";
+                    arme.formDM = "(1d4)";
+                    break;
+                case d==2:
+                    arme.categorie = "Bâton";
+                    arme.formDM = "1d6";
+                    break;
+                case d<=4:
+                    arme.categorie = "Dague";
+                    arme.formDM = "1d4";
+                    break;
+                case d==5:
+                    arme.categorie = "Epée bâtarde";
+                    arme.formDM = "1d8/1d12";
+                    break;
+                case d<=7:
+                    arme.categorie = "Epée courte";
+                    arme.formDM = "1d6";
+                    break;
+                case d<=10:
+                    arme.categorie = "Epée longue";
+                    arme.formDM = "1d8";
+                    break;
+                case d==11:
+                    arme.categorie = "Hache à 1 main";
+                    arme.formDM = "1d8";
+                    break;
+                case d<=13:
+                    arme.categorie = "Epée à 2 mains";
+                    arme.formDM = "2d6";
+                    break;
+                case d==14:
+                    arme.categorie = "Hache à 2 mains";
+                    arme.formDM = "2d6";
+                    break;
+                case d<=16:
+                    arme.categorie = "Masse/Marteau";
+                    arme.formDM = "1d6";
+                    break;
+                case d<=18:
+                    arme.categorie = "Rapière";
+                    arme.formDM = "1d6";
+                    arme.critique--;
+                    break;
+                case d==19:
+                    arme.categorie = "Vivelame/Katana";
+                    arme.formDM = "1d10";
+                    arme.critique--;
+                    break;
+                case d==20:
+                    arme.categorie = "Autre";
+                    break;
+            }
+            break;
+        case "Distance":
+            var d = dice(20)
+            switch (true) {
+                case d==1:
+                    arme.categorie = "Arbalète de poing";
+                    arme.formDM = "1d6";
+                    break;
+                case d<=3:
+                    arme.categorie = "Arbalète légère";
+                    arme.formDM = "2d4";
+                    break;
+                case d<=5:
+                    arme.categorie = "Arbalète lourde";
+                    arme.formDM = "3d4";
+                    break;
+                case d<=7:
+                    arme.categorie = "Arc court";
+                    arme.formDM = "1d6";
+                    break;
+                case d<=9:
+                    arme.categorie = "Arc long";
+                    arme.formDM = "1d8";
+                    break;
+                case d==10:
+                    arme.categorie = "Dague (5m)";
+                    arme.formDM = "1d4";
+                    break;
+                case d==11:
+                    arme.categorie = "Fronde";
+                    arme.formDM = "1d4";
+                    break;
+                case d==12:
+                    arme.categorie = "Hachette";
+                    arme.formDM = "1d6";
+                    break;
+                case d==13:
+                    arme.categorie = "Javelot";
+                    arme.formDM = "1d6";
+                    break;
+                case d<=15:
+                    arme.categorie = "Carreaux d'arbalète";
+                    arme.formDM = "2";
+                    break;
+                case d<=17:
+                    arme.categorie = "Flèches";
+                    arme.formDM = "1";
+                    break;
+                case d==18:
+                    arme.categorie = "Billes de fronde";
+                    arme.formDM = "2";
+                    break;
+                case d<=20:
+                    arme.categorie = "Mousquet";
+                    arme.formDM = "2d6";
+                    break;
+            }
+            break;
+        case "Sceptre":
+            switch (dice(3)) {
+                case 1:
+                    arme.categorie = "Feu";
+                    arme.formDM = "1d6 DM Feu";
+                    break;
+                case 2:
+                    arme.categorie = "Foudre";
+                    arme.formDM = "1d6 DM Foudre";
+                    break;
+                case 3:
+                    arme.categorie = "Esprit";
+                    arme.formDM = "1d6 DM Magique";
+                    break;
+            }
+            break;
+    }
+
+    if(dice(6) <= niv)
+    {
+        let tmp = arme.caracs;
+        for(let i = 1; i > 0; i--) {
+            let carac = {
+                nom: "",
+                effet: "",
+            };
+            switch (dice(12)) {
+                case 1:
+                case 2://Affuté
+                    if (arme.type = "Contact")
+                        carac.nom = "Affuté";
+                    else
+                        carac.nom = "Précis";
+                    carac.effet = "Critique +1, +1d6 DM critique (non doublé)";
+                    ind = arme.index(carac);
+                    arme.caracs.push(carac);
+                    arme.critique--;
+                    arme.niv++;
+                    break;
+                case 3://morts-vivants
+                    carac.nom = "Fléau des morts";
+                    carac.effet = "+1d6 DM contre les morts-vivants";
+                    arme.caracs.push(carac);
+                    arme.niv++;
+                    break;
+                case 4://dragons
+                    carac.nom = "Fléau des dragons";
+                    carac.effet = "+1d6 DM contre les dragons";
+                    arme.caracs.push(carac);
+                    arme.niv++;
+                    break;
+                case 5:
+                    carac.nom = "Fléau des géants";
+                    carac.effet = "+1d6 DM contre les géants";
+                    arme.caracs.push(carac);
+                    arme.niv++;
+                    break;
+                case 6:
+                    carac.nom = "Fléau des goblinoïdes";
+                    carac.effet = "+1d6 DM contre les goblinoïdes";
+                    arme.caracs.push(carac);
+                    arme.niv++;
+                    break;
+                case 7:
+                    carac.nom = "Fléau des démons";
+                    carac.effet = "+1d6 DM contre les démons";
+                    arme.caracs.push(carac);
+                    arme.niv++;
+                    break;
+                case 8:
+                    carac.nom = "Feu";
+                    carac.effet = "+1d6 DM feu.";
+                    arme.caracs.push(carac);
+                    arme.niv += 2;
+                    break;
+                case 9:
+                    carac.nom = "Froid";
+                    carac.effet = "+1d6 DM froid";
+                    arme.caracs.push(carac);
+                    arme.niv += 2;
+                    break;
+                case 10:
+                    carac.nom = "Foudre";
+                    carac.effet = "+1d6 DM foudre";
+                    arme.caracs.push(carac);
+                    arme.niv += 2;
+                    break;
+                case 11:
+                case 12:
+                    i += 2;
+                    break;
+            }
+        }
+
+        console.log(arme.caracs)
+    }
+    arme.atk += (niv - arme.niv);
+    arme.dm += (niv - arme.niv);
+    arme.dm < 0 ? arme.dm = 0 : arme.dm;
+    arme.atk < 0 ? arme.atk = 0 : arme.atk;
+
+    return arme;
+}
+
+function genBaguette(niv)
+{
+    var parchemin = genParchemin(niv);
+
+    let baguette = {
+        voie: parchemin.voie,
+        rang: parchemin.rang,
+        nbSort: dice(20) + dice(20),
+        mot: ""
+    }
+
+    let words = [
+        "Strixortia",
+        "Silenectum",
+        "Puriforus",
+        "Serpenicum",
+        "Etheus",
+        "Banarbus",
+        "Incenegris",
+        "Enormiate",
+        "Mufite",
+        "Pristes",
+        "Locomoesco",
+        "Tremendorgio",
+        "Extingum",
+        "Moraro",
+        "Sancenta",
+        "Extermineum",
+        "Repeiate",
+        "Aracheom",
+        "Reduerbus",
+        "Pestate",
+        "Scoundis",
+        "Arachniasi",
+        "Purifendius",
+        "Refenis",
+        "Defeneous",
+        "Infernortus",
+        "Expindo",
+        "Tremendundo",
+        "Inceptiate",
+        "Obliterorus",
+        "Sanctego",
+        "Increnio",
+    ]
+
+    baguette.mot = words[dice(words.length) - 1];
+
+    return baguette;
+}
+
 function genParchemin(niv)
 {
     let parchemin = {
+        nom : "",
         voie: "",
         rang: 0,
-    }
+    };
 
     switch(niv)
     {
@@ -30,22 +345,96 @@ function genParchemin(niv)
             }
             break;
         case "medium":
-            switch(dice(6))
-            {
-                case 1:
-                case 2:
-                    parchemin.rang = 3;
-                    break;
-                case 3:
-                case 4:
-                    parchemin.rang = 4;
-                    break;
-                case 5:
-                case 6:
-                    parchemin.rang = 5;
-                    break;
-            }
+            var tmp = dice(6);
+            parchemin.rang = Math.ceil((tmp / 2)) + 2
+            break;
     }
+
+    switch(dice(20))
+    {
+        case 1:
+            parchemin.nom = "Parchemin des airs - " + parchemin.rang
+            parchemin.voie = "Ensorceleur - Voie de l'air"
+            break;
+        case 2:
+            parchemin.nom = "Parchemin de divination - " + parchemin.rang
+            parchemin.voie = "Ensorceleur - Voie de la divination"
+            break;
+        case 3:
+            parchemin.nom = "Parchemin d'envoûteur - " + parchemin.rang
+            parchemin.voie = "Ensorceleur - Voie de l'envoûteur"
+            break;
+        case 4:
+            parchemin.nom = "Parchemin d'illusions - " + parchemin.rang
+            parchemin.voie = "Ensorceleur - Voie des illusions"
+            break;
+        case 5:
+            parchemin.nom = "Parchemin d'invocation - " + parchemin.rang
+            parchemin.voie = "Ensorceleur - Voie de l'invocation"
+            break;
+        case 6:
+            parchemin.nom = "Parchemin des arcanes - " + parchemin.rang
+            parchemin.voie = "Magicien - Voie dela magie des arcanes"
+            break;
+        case 7:
+            parchemin.nom = "Parchemin destructeur - " + parchemin.rang
+            parchemin.voie = "Magicien - Voie de la magie destructrice"
+            break;
+        case 8:
+            parchemin.nom = "Parchemin élémentaire - " + parchemin.rang
+            parchemin.voie = "Magicien - Voie de la magie élémentaire"
+            break;
+        case 9:
+            parchemin.nom = "Parchemin protecteur - " + parchemin.rang
+            parchemin.voie = "Magicien - Voie de la magie protectrice"
+            break;
+        case 10:
+            parchemin.nom = "Parchemin de magie universelle - " + parchemin.rang
+            parchemin.voie = "Magicien - Voie de la magie universelle"
+            break;
+        case 11:
+            parchemin.nom = "Parchemin du démon - " + parchemin.rang
+            parchemin.voie = "Nécromancien - Voie du démon"
+            break;
+        case 12:
+            parchemin.nom = "Parchemin de mort - " + parchemin.rang
+            parchemin.voie = "Nécromancien - Voie de la mort"
+            break;
+        case 13:
+            parchemin.nom = "Parchemin de l'outre-tombe" + parchemin.rang
+            parchemin.voie = "Nécromancien - Voie de l'outre-tombe"
+            break;
+        case 14:
+            parchemin.nom = "Parchemin du sang" + parchemin.rang
+            parchemin.voie = "Nécromancien - Voie du sang"
+            break;
+        case 15:
+            parchemin.nom = "Parchemin de sombre magie" + parchemin.rang
+            parchemin.voie = "Nécromancien - Voie de la sombre magie"
+            break;
+        case 16:
+            parchemin.nom = "Parchemin de la foi" + parchemin.rang
+            parchemin.voie = "Prêtre - Voie de la foi"
+            break;
+        case 17:
+            parchemin.nom = "Parchemin de prière" + parchemin.rang
+            parchemin.voie = "Prêtre - Voie de la prière"
+            break;
+        case 18:
+            parchemin.nom = "Parchemin des soins" + parchemin.rang
+            parchemin.voie = "Prêtre - Voie des soins"
+            break;
+        case 19:
+            parchemin.nom = "Parchemin de spiritualité" + parchemin.rang
+            parchemin.voie = "Prêtre - Voie de la spiritualité"
+            break;
+        case 20:
+            parchemin.nom = "Parchemin des végétaux" + parchemin.rang
+            parchemin.voie = "Druide - Voie des végétaux"
+            break;
+    }
+
+    return parchemin
 }
 
 function genPotion(dose)
@@ -56,7 +445,6 @@ function genPotion(dose)
         case 1:
         case 2:
         case 3:
-            console.log("1,2,3");
             switch (dice(6)) {
                 case 1:
                 case 2:
@@ -223,7 +611,6 @@ function genMinorObject()
     let typeRes = dice(12);
     switch (true) {
         case (typeRes <= 4):
-            console.log(typeRes + " - type: Potion");
             type = "Potion";
             break;
         case (typeRes <= 6):
@@ -244,7 +631,18 @@ function genMinorObject()
         case "Potion":
             return genPotion(1);
         case "Parchemin":
-            return genParchemin('minor')
+            return genParchemin('minor');
+        case "Baguette":
+            return genBaguette('minor');
+        case "Objet":
+            switch (dice(3)) {
+                case 1:
+                    return genArme(niv);
+                case 2:
+                    return genArmure(niv);
+                case 3:
+                    return genObjPou(niv);
+            }
         default:
             return {nom: "Other"}
     }
@@ -309,7 +707,6 @@ function looting(nc)
     }
     for (let i = 0; i < minorN; i++)
     {
-        console.log("inFor");
         loot.minorObject.push(genMinorObject());
     }
 
