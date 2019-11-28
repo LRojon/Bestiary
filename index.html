@@ -21,6 +21,10 @@
                 padding-bottom: 20px;
                 background-color: #df691ac2;
             }
+            .dhx_tooltip
+            {
+                width: 250px;
+            }
         </style>
 
         <title>Bestiaire</title>
@@ -50,7 +54,7 @@
             <div id="creaTab" class="tab-pane fade active show">
                 <div class="fluid-container">
                     <div class="row">
-                        <div class="col-4" style="border-right: grey solid 1px;">
+                        <div class="col-sm-4" style="border-right: grey solid 1px;">
                             <div id="menu"></div>
                             <div class="table-responsive-sm">
                                 <table class="table table-borderless center">
@@ -61,20 +65,21 @@
                                     </tr>
                                 </table>
                             </div>
-                            <div id="list">
-                                <textarea id="template" class="table-responsive-sm">
-                                    <table class="table table-borderless center">
-                                        <tr>
-                                            <td style="width: 10%;">#nc#</td>
-                                            <td style="width: 30%;">#name#</td>
-                                            <td style="width: 60%; font-size:smaller;">#description#</td>
-                                        </tr>
-                                    </table>
-                                </textarea>
+                            <div id="listPart">
+                                <div id="list">
+                                    <textarea id="template" class="table-responsive-sm">
+                                        <table class="table table-borderless center">
+                                            <tr>
+                                                <td style="width: 10%;">#nc#</td>
+                                                <td style="width: 30%;font-size: x-small;">#name#</td>
+                                                <td style="width: 60%; font-size:x-small;">#desc#</td>
+                                            </tr>
+                                        </table>
+                                    </textarea>
+                                </div>
                             </div>
-                            <div id="paging"></div>
                         </div>
-                        <div class="col-8">
+                        <div class="col-sm-8">
                             <br>
                             <div id="details" style="height: auto;overflow-y: scroll; padding-right: 1%;">
                                 <table class="table table-responsive-sm table-striped" style="text-align: center;">
@@ -574,7 +579,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>// Gestion tab créature
-        $('#details').height(window.innerHeight - 0.1*window.innerHeight);
+        $('#details').height(window.innerHeight*0.9);
+        $('#list').ready(function()
+        {
+            $('#list').css("height", Math.floor(window.innerHeight*0.8))
+            $('#list').css("overflow-y", "scroll")
+        })
 
         $(window).resize(function(){
             $('#details').height(window.innerHeight - 0.1*window.innerHeight);
@@ -590,11 +600,8 @@
             type:{
                 template: "html->template"
             },
-            pager:{
-                container: "paging",
-                size: 10,
-                group: 5,
-                template: "{common.first()}{common.pages()}{common.last()}"
+            tooltip:{
+                template:"<p style='text-align: center;'><strong>Description:</strong><br>#description#</p>"
             }
         });
         list.attachEvent("onItemClick", function(id){
