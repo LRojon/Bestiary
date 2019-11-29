@@ -3,26 +3,339 @@ function dice(nbFaces)
     return Math.ceil(Math.random()*nbFaces-1)+1;
 }
 
+function genObjPui(niv)
+{
+    let objPui = {
+        carac: "",
+        nom: "",
+        bonus: 0,
+        niv: 0,
+    };
+
+    switch (dice(6))
+    {
+        case 1:
+            objPui.carac = "FOR";
+            objPui.nom = "Ceinture de force";
+            break;
+        case 2:
+            objPui.carac = "DEX";
+            objPui.nom = "Gantelet de dextérité";
+            break;
+        case 3:
+            objPui.carac = "CON";
+            objPui.nom = "Amulette de constitution";
+            break;
+        case 4:
+            objPui.carac = "INT";
+            objPui.nom = "Bandeau d'intelligence";
+            break;
+        case 5:
+            objPui.carac = "SAG";
+            objPui.nom = "Bague de sagesse";
+            break;
+        case 6:
+            objPui.carac = "CHA";
+            objPui.nom = "Cape de charisme";
+            break;
+    }
+
+    objPui.bonus = niv -1;
+    objPui.niv = niv;
+
+    return objPui;
+}
+
+function genObjPou(niv)
+{
+    let objPui = {
+        sorts: [],
+        niv: 0,
+    }
+
+    let rgGlo = 0;
+    while(rgGlo < 1000) {
+        let sort = {
+            profil: "",
+            voie: "",
+            rang: 0
+        }
+
+        let d = dice(8);
+        switch (true) {
+            case d <= 2:
+                rgGlo += 1;
+                sort.rang = 1;
+                break;
+            case d<=4:
+                rgGlo += 2;
+                sort.rang = 2;
+                break;
+            case d<=6:
+                rgGlo += 3;
+                sort.rang = 3;
+                break;
+            case d==7:
+                rgGlo += 4;
+                sort.rang = 4;
+                break;
+            case d==8:
+                rgGlo += 5;
+                sort.rang = 5;
+                break;
+        }
+
+        switch (dice(20)) {
+            case 1:
+                sort.profil = "Arquebusier";
+                sort.voie = dice(5);
+                break;
+            case 2:
+                sort.profil = "Barde";
+                sort.voie = dice(5);
+                break;
+            case 3:
+                sort.profil = "Barbare";
+                sort.voie = dice(5);
+                break;
+            case 4:
+                sort.profil = "Chevalier";
+                sort.voie = dice(5);
+                break;
+            case 5:
+            case 6:
+                sort.profil = "Druide";
+                sort.voie = dice(5);
+                break;
+            case 7:
+            case 8:
+                sort.profil = "Ensorceleur";
+                sort.voie = dice(5);
+                break;
+            case 9:
+            case 10:
+                sort.profil = "Forgesort";
+                sort.voie = dice(5);
+                break;
+            case 11:
+                sort.profil = "Guerrier";
+                sort.voie = dice(5);
+                break;
+            case 12:
+            case 13:
+                sort.profil = "Magicien";
+                sort.voie = dice(5);
+                break;
+            case 14:
+                sort.profil = "Moine";
+                sort.voie = dice(5);
+                break;
+            case 15:
+            case 16:
+                sort.profil = "Nécromancien";
+                sort.voie = dice(5);
+                break;
+            case 17:
+            case 18:
+                sort.profil = "Prêtre";
+                sort.voie = dice(5);
+                break;
+            case 19:
+                sort.profil = "Rôdeur";
+                sort.voie = dice(5);
+                break;
+            case 20:
+                sort.profil = "Voleur";
+                sort.voie = dice(5);
+                break;
+        }
+
+        if(rgGlo >= niv)
+        {
+            rgGlo -= sort.rang;
+            sort.rang = niv - rgGlo;
+            rgGlo += sort.rang;
+            objPui.sorts.push(sort);
+            break;
+        }
+        else
+        {
+            objPui.sorts.push(sort);
+        }
+    }
+
+    objPui.niv = rgGlo;
+
+    return objPui;
+}
+
+function genArmure(niv, type)
+{
+    let armure = {
+        type: "",
+        caracs: [],
+        def: 0,
+        rd: 0,
+        niv: 0,
+    }
+
+    let d = dice(20);
+    switch (true) {
+        case d==1:
+            armure.type = "Anneau de protection";
+            armure.def += 0;
+            break;
+        case d==2:
+            armure.type = "Cape de protection";
+            armure.def += 0;
+            break;
+        case d<=4:
+            armure.type = "Bracelet de défense";
+            armure.def += 0;
+            break;
+        case d==5:
+            armure.type = "Robe de mage";
+            armure.def += 0;
+            break;
+        case d==6:
+            armure.type = "Tissus matelassé";
+            armure.def += 1;
+            break;
+        case d<=8:
+            armure.type = "Armure de cuir";
+            armure.def += 2;
+            break;
+        case d==9:
+            armure.type = "Armure de cuir renforcé";
+            armure.def += 3;
+            break;
+        case d<=11:
+            armure.type = "Chemise de maille";
+            armure.def += 4;
+            break;
+        case d<=13:
+            armure.type = "Cotte de maille";
+            armure.def += 5;
+            break;
+        case d<=15:
+            armure.type = "Armure de demi-plaque";
+            armure.def += 6;
+            break;
+        case d==16:
+            armure.type = "Armure de plaque complète";
+            armure.def += 8;
+            break;
+        case d<=18:
+            armure.type = "Petit bouclier";
+            armure.def += 1;
+            break;
+        case d<=20:
+            armure.type = "Grand bouclier";
+            armure.def += 2;
+            break;
+    }
+
+    if(dice(6) <= niv) {
+        for (let i = 1; i > 0; i--) {
+            let carac = {
+                nom: "",
+                effet: "",
+            }
+
+            switch (dice(12)) {
+                case 1:
+                    carac.nom = "Action libre";
+                    carac.effet = "Immunité à la paralysie, l'immobilité et le ralentissement magique. +5 au test de résistance si c'est d'origine physique.";
+                    armure.caracs.push(carac);
+                    armure.niv ++;
+                    break;
+                case 2:
+                    if(type == 'minor')
+                    {
+                        carac.nom = "Défense mineur";
+                        carac.effet = "Réduit les DM de 2";
+                        armure.rd += 2;
+                        armure.niv ++;
+                    }
+                    else if (type == 'medium')
+                    {
+                        carac.nom = "Défense moyenne";
+                        carac.effet = "Réduit les DM de 3";
+                        armure.rd += 3;
+                        armure.niv ++;
+                    }
+                    else if (type == 'major')
+                    {
+                        carac.nom = "Défense majeur";
+                        carac.effet = "Réduit les DM de 4";
+                        armure.rd += 4;
+                        armure.niv += 2;
+                    }
+                    armure.caracs.push(carac);
+                    break;
+                case 3:
+                    carac.nom = "Natation";
+                    carac.effet = "+5 au test de natation.";
+                    if (d<=11 && d>=16)
+                        carac.effet += " De plus, elle flotte.";
+                    armure.niv ++;
+                    armure.caracs.push(carac);
+                    break;
+                case 4:
+                    carac.nom = "Ombre";
+                    carac.effet = "+5 au test de discrétion.";
+                    armure.caracs.push(carac);
+                    armure.niv ++;
+                    break;
+                case 5:
+                    carac.nom = "Protection";
+                    carac.effet = "Les DM critique et d'attaque sournoise sont divisé par 2."
+                    armure.caracs.push(carac);
+                    armure.niv ++;
+                    break;
+                case 6:
+                    carac.nom = "Résistance à la magie";
+                    carac.effet = "+5 DEF ou aux tests pour resister à la magie.";
+                    armure.caracs.push(carac);
+                    armure.niv ++;
+                    break;
+                case 7:
+                    carac.nom = "Résistance au feu";
+                    carac.effet = "+"+(dice(10)+5)+" RD feu.";
+                    armure.caracs.push(carac);
+                    armure.niv ++;
+                    break;
+                case 8:
+                    carac.nom = "Résistance au froid";
+                    carac.effet = "+"+(dice(10)+5)+" RD froid.";
+                    armure.caracs.push(carac);
+                    armure.niv ++;
+                    break;
+                case 9:
+                    carac.nom = "Résistance à la foudre";
+                    carac.effet = "+"+(dice(10)+5)+" RD foudre.";
+                    armure.caracs.push(carac);
+                    armure.niv ++;
+                    break;
+                case 10:
+                    carac.nom = "Résistance à l'acide";
+                    carac.effet = "+"+(dice(10)+5)+" RD acide. Se désagrége moins vite au contact de l'acide.";
+                    armure.caracs.push(carac);
+                    armure.niv ++;
+                    break;
+                case 11:
+                case 12:
+                    i += 2;
+                    break;
+            }
+        }
+    }
+
+    return armure;
+}
+
 function genArme(niv)
 {
-    /*let arme = {
-        type: "",
-        categorie: "",
-        atk: 0,
-        formDM: "",
-        dm: 0,
-        caracs: [{ nom: "Fléau des géants", effet: "+1d6 DM contre les géants." }],
-        niv: 0,
-        critique: 20,
-        contains: function(carac){
-            let bool = false;
-            this.caracs.forEach(function(elem){
-                if(elem.nom == carac.nom)
-                    return true;
-            })
-            return bool;
-        }
-    }*/
     let arme = {
         type: "",
         categorie: "",
@@ -196,7 +509,6 @@ function genArme(niv)
                     else
                         carac.nom = "Précis";
                     carac.effet = "Critique +1, +1d6 DM critique (non doublé)";
-                    ind = arme.index(carac);
                     arme.caracs.push(carac);
                     arme.critique--;
                     arme.niv++;
@@ -256,7 +568,6 @@ function genArme(niv)
             }
         }
 
-        console.log(arme.caracs)
     }
     arme.atk += (niv - arme.niv);
     arme.dm += (niv - arme.niv);
@@ -401,35 +712,35 @@ function genParchemin(niv)
             parchemin.voie = "Nécromancien - Voie de la mort"
             break;
         case 13:
-            parchemin.nom = "Parchemin de l'outre-tombe" + parchemin.rang
+            parchemin.nom = "Parchemin de l'outre-tombe - " + parchemin.rang
             parchemin.voie = "Nécromancien - Voie de l'outre-tombe"
             break;
         case 14:
-            parchemin.nom = "Parchemin du sang" + parchemin.rang
+            parchemin.nom = "Parchemin du sang - " + parchemin.rang
             parchemin.voie = "Nécromancien - Voie du sang"
             break;
         case 15:
-            parchemin.nom = "Parchemin de sombre magie" + parchemin.rang
+            parchemin.nom = "Parchemin de sombre magie - " + parchemin.rang
             parchemin.voie = "Nécromancien - Voie de la sombre magie"
             break;
         case 16:
-            parchemin.nom = "Parchemin de la foi" + parchemin.rang
+            parchemin.nom = "Parchemin de la foi - " + parchemin.rang
             parchemin.voie = "Prêtre - Voie de la foi"
             break;
         case 17:
-            parchemin.nom = "Parchemin de prière" + parchemin.rang
+            parchemin.nom = "Parchemin de prière - " + parchemin.rang
             parchemin.voie = "Prêtre - Voie de la prière"
             break;
         case 18:
-            parchemin.nom = "Parchemin des soins" + parchemin.rang
+            parchemin.nom = "Parchemin des soins - " + parchemin.rang
             parchemin.voie = "Prêtre - Voie des soins"
             break;
         case 19:
-            parchemin.nom = "Parchemin de spiritualité" + parchemin.rang
+            parchemin.nom = "Parchemin de spiritualité - " + parchemin.rang
             parchemin.voie = "Prêtre - Voie de la spiritualité"
             break;
         case 20:
-            parchemin.nom = "Parchemin des végétaux" + parchemin.rang
+            parchemin.nom = "Parchemin des végétaux - " + parchemin.rang
             parchemin.voie = "Druide - Voie des végétaux"
             break;
     }
@@ -480,7 +791,7 @@ function genPotion(dose)
                     break;
                 case 4:
                     nom = "Potion commune de hâte";
-                    description = "Permet de gagner en vitesse (Hâte - Magicien";
+                    description = "Permet de gagner en vitesse (Hâte - Magicien)";
                     break;
                 case 5:
                     nom = "Potion commune de protection";
@@ -639,7 +950,7 @@ function genMinorObject()
                 case 1:
                     return genArme(niv);
                 case 2:
-                    return genArmure(niv);
+                    return genArmure(niv, 'minor');
                 case 3:
                     return genObjPou(niv);
             }
@@ -648,8 +959,103 @@ function genMinorObject()
     }
 }
 
+function genMediumObject()
+{
+    let type = "";
+    let niv = 0;
+    let typeRes = dice(12);
+    switch (true) {
+        case (typeRes <= 2):
+            type = "Potion";
+            break;
+        case typeRes == 3:
+            type = "Parchemin";
+            break;
+        case typeRes == 4:
+            type = "Baguette";
+            break;
+        case (typeRes <= 8):
+            type = "Objet";
+            niv = 2;
+            break;
+        case (typeRes <= 11):
+            type = "Objet";
+            niv = 3;
+            break;
+        case (typeRes == 12):
+            type = "Objet";
+            niv = 4;
+            break;
+    };
+    switch (type) {
+        case "Potion":
+            return genPotion(3);
+        case "Parchemin":
+            return genParchemin('medium');
+        case "Baguette":
+            return genBaguette('medium');
+        case "Objet":
+            switch (dice(12)) {
+                case 1:
+                case 2:
+                case 3:
+                    return genArme(niv);
+                case 4:
+                case 5:
+                case 6:
+                    return genArmure(niv, 'medium');
+                case 7:
+                case 8:
+                    return genObjPui(niv);
+                case 9:
+                case 10:
+                case 11:
+                case 12:
+                    return genObjPou(niv);
+            }
+        default:
+            return {nom: "Other"}
+    }
+}
+
+function genMajorObject()
+{
+    let niv = 0;
+    let typeRes = dice(12);
+    switch (true) {
+        case (typeRes <= 3):
+            niv = 3;
+            break;
+        case (typeRes <= 9):
+            niv = 4;
+            break;
+        case (typeRes <= 12):
+            niv = 5;
+            break;
+    };
+    switch (dice(12)) {
+        case 1:
+        case 2:
+        case 3:
+            return genArme(niv);
+        case 4:
+        case 5:
+        case 6:
+            return genArmure(niv, 'medium');
+        case 7:
+        case 8:
+            return genObjPui(niv);
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+            return genObjPou(niv);
+    }
+}
+
 function looting(nc)
 {
+    nc = (nc < 0.5 ? 0.5 : (nc > 28 ? 28 : nc));
     let loot = {
         money: 0,
         jewelry: 0,
@@ -679,6 +1085,8 @@ function looting(nc)
     let mediumN = 0;
     let majorN = 0;
 
+    let tmp = 0;
+    console.log(nc)
     switch(nc)
     {
         case 0.5:
@@ -702,13 +1110,299 @@ function looting(nc)
                 minorN = 1;
 
             break;
-        default:
+        case 3:
+            loot.money = dice(6) * 10;
+            if (dice(20) >= 14)
+                loot.jewelry = dice(6) * 100;
+            if (dice(20) >=19)
+                minorN = 1;
+
+            break;
+        case 4:
+            loot.money = (dice(6) + dice(6)) * 10;
+            if(dice(20) >= 12)
+                loot.jewelry = dice(6) * 100;
+            if(dice(20) >= 17)
+                minorN = 1;
+
+            break;
+        case 5:
+            loot.money = (dice(6) + dice(6) + dice(6)) * 10;
+            if(dice(20) >= 10)
+                loot.jewelry = dice(12) * 100;
+            if(dice(20) >= 15)
+                minorN = 1;
+
+            break;
+        case 6:
+            loot.money = (dice(6) + dice(6) + dice(6) + dice(6)) * 10;
+            if (dice(20) >= 8)
+                loot.jewelry = dice(12) * 100;
+            if (dice(20) >= 15)
+                minorN = 2;
+            if(dice(20) == 20)
+                mediumN = 1;
+
+            break;
+        case 7:
+            loot.money = (dice(6) + dice(6) + dice(6) + dice(6) + dice(6)) * 10;
+            if (dice(20) >= 6)
+                loot.jewelry = dice(12) * 100;
+            if (dice(20) >= 14)
+                minorN = 2;
+            if(dice(20) >= 19)
+                mediumN = 1;
+
+            break;
+        case 8:
+            loot.money = (dice(6)) * 100;
+            if (dice(20) >= 4)
+                loot.jewelry = dice(20) * 100;
+            if (dice(20) >= 13)
+                minorN = 2;
+            if(dice(20) >= 17)
+                mediumN = 1;
+
+            break;
+        case 9:
+            loot.money = (dice(6) + dice(6)) * 100;
+            if (dice(20) >= 2)
+                loot.jewelry = dice(20) * 100;
+            if (dice(20) >= 12)
+                minorN = 2;
+            if(dice(20) >= 15)
+                mediumN = 1;
+
+            break;
+        case 10:
+            loot.money = (dice(6) + dice(6) + dice(6)) * 100;
+            loot.jewelry = dice(20) * 100;
+            if (dice(20) >= 11)
+                minorN = 2;
+            if(dice(20) >= 15)
+                mediumN = 2;
+            if(dice(20) == 20)
+                majorN = 1;
+
+            break;
+        case 11:
+            loot.money = (dice(6) + dice(6) + dice(6) + dice(6)) * 100;
+            loot.jewelry = (dice(12) + dice(12)) * 100;
+            if (dice(20) >= 10)
+                minorN = 2;
+            if(dice(20) >= 14)
+                mediumN = 2;
+            if(dice(20) >= 19)
+                majorN = 1;
+
+            break;
+        case 12:
+            loot.money = (dice(6) + dice(6) + dice(6) + dice(6) + dice(6)) * 100;
+            loot.jewelry = (dice(10) + dice(10) + dice(10)) * 100;
+            if (dice(20) >= 10)
+                minorN = 3;
+            if(dice(20) >= 13)
+                mediumN = 2;
+            if(dice(20) >= 17)
+                majorN = 1;
+
+            break;
+        case 13:
+            loot.money = (dice(6)) * 1000;
+            loot.jewelry = (dice(12) + dice(12) + dice(12)) * 100;
+            if (dice(20) >= 9)
+                minorN = 3;
+            if(dice(20) >= 12)
+                mediumN = 2;
+            if(dice(20) >= 15)
+                majorN = 1;
+
+            break;
+        case 14:
+            loot.money = (dice(6) + dice(6)) * 1000;
+            loot.jewelry = (dice(20) + dice(20)) * 100;
+            if (dice(20) >= 8)
+                minorN = 3;
+            if(dice(20) >= 11)
+                mediumN = 2;
+            if(dice(20) >= 15)
+                majorN = 2;
+
+            break;
+        case 15:
+            loot.money = (dice(6) + dice(6) + dice(6)) * 1000;
+            loot.jewelry = (dice(6)) * 1000;
+            if (dice(20) >= 7)
+                minorN = 3;
+            if(dice(20) >= 10)
+                mediumN = 2;
+            if(dice(20) >= 14)
+                majorN = 2;
+
+            break;
+        case 16:
+            loot.money = (dice(6) + dice(6) + dice(6) + dice(6)) * 1000;
+            loot.jewelry = (dice(12)) * 1000;
+            if (dice(20) >= 6)
+                minorN = 3;
+            if(dice(20) >= 10)
+                mediumN = 3;
+            if(dice(20) >= 13)
+                majorN = 2;
+
+            break;
+        case 17:
+            loot.money = (dice(6)) * 10000;
+            loot.jewelry = (dice(20)) * 1000;
+            if (dice(20) >= 5)
+                minorN = 3;
+            if(dice(20) >= 9)
+                mediumN = 3;
+            if(dice(20) >= 12)
+                majorN = 2;
+
+            break;
+        case 18:
+            loot.money = (dice(6) + dice(6)) * 10000;
+            loot.jewelry = (dice(12) + dice(12)) * 1000;
+            if (dice(20) >= 5)
+                minorN = 4;
+            if(dice(20) >= 8)
+                mediumN = 3;
+            if(dice(20) >= 11)
+                majorN = 2;
+
+            break;
+        case 19:
+            loot.money = (dice(6) + dice(6) + dice(6)) * 10000;
+            loot.jewelry = (dice(10) + dice(10) + dice(10)) * 1000;
+            if (dice(20) >= 5)
+                minorN = 4;
+            if(dice(20) >= 7)
+                mediumN = 3;
+            if(dice(20) >= 10)
+                majorN = 2;
+
+            break;
+        case 20:
+            loot.money = (dice(6) + dice(6) + dice(6) + dice(6)) * 10000;
+            loot.jewelry = (dice(12) + dice(12) + dice(12)) * 1000;
+            if (dice(20) >= 5)
+                minorN = 5;
+            if(dice(20) >= 6)
+                mediumN = 3;
+            if(dice(20) >= 10)
+                majorN = 3;
+
+            break;
+        case 21:
+            loot.money = (dice(6) + dice(6) + dice(6) + dice(6) + dice(6)) * 10000;
+            loot.jewelry = (dice(20) + dice(20)) * 1000;
+            if (dice(20) >= 5)
+                minorN = 5;
+            if(dice(20) >= 5)
+                mediumN = 3;
+            if(dice(20) >= 9)
+                majorN = 3;
+
+            break;
+        case 22:
+            for(let i = 0; i < 6;i++){tmp += dice(6);}
+            loot.money = tmp * 10000;
+            loot.jewelry = (dice(6)) * 10000;
+            if (dice(20) >= 5)
+                minorN = 6;
+            if(dice(20) >= 5)
+                mediumN = 4;
+            if(dice(20) >= 8)
+                majorN = 3;
+
+            break;
+        case 23:
+            for(let i = 0; i < 7;i++){tmp += dice(6);}
+            loot.money = tmp * 10000;
+            loot.jewelry = (dice(12)) * 10000;
+            if (dice(20) >= 5)
+                minorN = 6;
+            if(dice(20) >= 5)
+                mediumN = 4;
+            if(dice(20) >= 7)
+                majorN = 3;
+
+            break;
+        case 24:
+            for(let i = 0; i < 8;i++){tmp += dice(6);}
+            loot.money = tmp * 10000;
+            loot.jewelry = (dice(20)) * 10000;
+            if (dice(20) >= 5)
+                minorN = 7;
+            if(dice(20) >= 5)
+                mediumN = 5;
+            if(dice(20) >= 6)
+                majorN = 3;
+
+            break;
+        case 25:
+            for(let i = 0; i < 9;i++){tmp += dice(6);}
+            loot.money = tmp * 10000;
+            loot.jewelry = (dice(12) + dice(12)) * 10000;
+            if (dice(20) >= 5)
+                minorN = 7;
+            if(dice(20) >= 5)
+                mediumN = 5;
+            if(dice(20) >= 5)
+                majorN = 3;
+
+            break;
+        case 26:
+            for(let i = 0; i < 10;i++){tmp += dice(6);}
+            loot.money = tmp * 10000;
+            loot.jewelry = (dice(10) + dice(10) + dice(10)) * 10000;
+            if (dice(20) >= 5)
+                minorN = 8;
+            if(dice(20) >= 5)
+                mediumN = 6;
+            if(dice(20) >= 5)
+                majorN = 4;
+
+            break;
+        case 27:
+            for(let i = 0; i < 11;i++){tmp += dice(6);}
+            loot.money = tmp * 10000;
+            loot.jewelry = (dice(12) + dice(12) + dice(12)) * 10000;
+            if (dice(20) >= 5)
+                minorN = 8;
+            if(dice(20) >= 5)
+                mediumN = 6;
+            if(dice(20) >= 5)
+                majorN = 4;
+
+            break;
+        case 28:
+            for(let i = 0; i < 12;i++){tmp += dice(6);}
+            loot.money = tmp * 10000;
+            loot.jewelry = (dice(20) + dice(20)) * 10000;
+            if (dice(20) >= 5)
+                minorN = 8;
+            if(dice(20) >= 5)
+                mediumN = 6;
+            if(dice(20) >= 5)
+                majorN = 4;
+
             break;
     }
     for (let i = 0; i < minorN; i++)
     {
         loot.minorObject.push(genMinorObject());
     }
+    for(let i = 0; i < mediumN; i++)
+    {
+        loot.mediumObject.push(genMediumObject());
+    }
+    for(let i = 0; i < majorN; i++)
+    {
+        loot.majorObject.push(genMajorObject());
+    }
 
-    console.log(loot);
+    return loot;
 }
