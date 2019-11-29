@@ -10,6 +10,12 @@ function genObjPui(niv)
         nom: "",
         bonus: 0,
         niv: 0,
+        toString: function () {
+            return this.nom + " : " + this.carac + " +" + this.bonus;
+        },
+        getValeur: function () {
+            return Math.pow(this.niv, 2) * 2000;
+        }
     };
 
     switch (dice(6))
@@ -51,6 +57,16 @@ function genObjPou(niv)
     let objPui = {
         sorts: [],
         niv: 0,
+        toString: function () {
+            let res = "";
+            this.sorts.forEach(function(elem){
+                res += (elem.profil + " " + elem.voie + " - rang " + elem.rang + "<br>");
+            });
+            return res;
+        },
+        getValeur: function () {
+            return Math.pow(this.niv, 2) * 2000;
+        }
     }
 
     let rgGlo = 0;
@@ -177,6 +193,16 @@ function genArmure(niv, type)
         def: 0,
         rd: 0,
         niv: 0,
+        getValeur: function () {
+            return Math.pow(this.nivniv, 2) * 2000;
+        },
+        toString: function () {
+            let res = this.type + ' +' + this.def + ' DEF  RD ' + this.rd + (this.caracs.length != 0 ? '<br>Propriété<br>' : '');
+            this.caracs.forEach(function (elem) {
+                res += elem.nom + ': ' + elem.effet + '<br>';
+            })
+            return res;
+        }
     }
 
     let d = dice(20);
@@ -345,6 +371,15 @@ function genArme(niv)
         caracs: [],
         niv: 0,
         critique: 20,
+        getValeur: function () {
+            return Math.pow(this.niv, 2) * 2000;
+        },
+        toString: function () {
+            let res = this.categorie + " +" + this.atk + " DM " + this.formDM + " +" + this.dm + "  Crit." + this.critique + (this.caracs.length != 0 ? '<br>Propriété:<br>' : '');
+            this.caracs.forEach(function (elem) {
+                res += elem.nom + ": " + elem.effet + "<br>";
+            })
+        }
     }
     switch(dice(6)){
         case 1:
@@ -585,7 +620,13 @@ function genBaguette(niv)
         voie: parchemin.voie,
         rang: parchemin.rang,
         nbSort: dice(20) + dice(20),
-        mot: ""
+        mot: "",
+        getValeur: function () {
+            return Math.pow(this.rang, 2) * (50 * this.nbSort);
+        },
+        toString: function(){
+            return this.voie + " " + this.rang + " Charge: " + this.nbSort + " Mot d'activation: " + this.mot;
+        }
     }
 
     let words = [
@@ -634,6 +675,12 @@ function genParchemin(niv)
         nom : "",
         voie: "",
         rang: 0,
+        getValeur: function () {
+            return Math.pow(this.rang, 2) * 50;
+        },
+        toString: function(){
+            return this.voie + "  rang:" + this.rang;
+        }
     };
 
     switch(niv)
@@ -752,6 +799,7 @@ function genPotion(dose)
 {
     let description = "";
     let nom = "";
+    let rang = 0;
     switch (dice(6)) {
         case 1:
         case 2:
@@ -762,15 +810,18 @@ function genPotion(dose)
                 case 3:
                     nom = "Potion de soins légers";
                     description = "Soigne de [1d8+niv] pv";
+                    rang = 1;
                     break;
                 case 4:
                 case 5:
                     nom = "Potion de soins modérés";
                     description = "Soigne [2d8+niv] pv";
+                    rang = 2;
                     break;
                 case 6:
                     nom = "Potion de délivrance";
                     description = "Purge de toute malédiction, poison, douleur, pénalité, etc...";
+                    rang = 3;
                     break;
             }
             break;
@@ -780,42 +831,53 @@ function genPotion(dose)
                 case 1:
                     nom = "Potion commune de détection";
                     description = "Permet de voir l'invisible. (Détection de l'invisible - Ensorceleur)";
+                    rang = 2;
                     break;
                 case 2:
                     nom = "Potion commune d'agrandissement";
                     description = "Fait grandir de la moitié de la taille (Agrandissement - Magicien)";
+                    rang = 1;
                     break;
                 case 3:
                     nom = "Potion commune de forme gazeuse";
                     description = "Permet de prendre une forme gazeuse (Forme gazeuse - Magicien)";
+                    rang = 2;
                     break;
                 case 4:
                     nom = "Potion commune de hâte";
                     description = "Permet de gagner en vitesse (Hâte - Magicien)";
+                    rang = 3;
                     break;
                 case 5:
                     nom = "Potion commune de protection";
                     description = "Renforce contre les élément (Protection contre les éléments - Magicien, RD 10)";
+                    rang = 2;
                     break;
                 case 6:
                     nom = "Potion commune de respiration aquatique";
                     description = "Permet de respirer sous l'eau (Respiration aquatique - Magicien)";
+                    rang = 4;
                     break;
                 case 7:
                     nom = "Potion commune d'armure";
                     description = "Permet de se protéger (Armure de mage - Magicien)";
+                    rang = 1;
                     break;
                 case 8:
                     nom = "Potion commune d'anti-chute";
                     description = "Ralentie les chutes du buveur (Chute ralentie - Magicien)";
+                    rang = 2;
                     break;
                 case 9:
                     nom = "Potion commune d'invisibilité";
                     description = "Rend momentanément invisible (Invisibilité - Magicien)";
+                    rang = 3;
                     break;
                 case 10:
                     nom = "Potion commune de vol";
                     description = "Permet de vol dans les airs (Vol - Magicien)";
+                    rang = 4;
+                    break;
             }
             break;
         case 6:
@@ -823,82 +885,102 @@ function genPotion(dose)
                 case 1:
                     nom = "Potion rare de communication";
                     description = "Permet de parler au animaux (Langage des animaux - Druide, 1d6 min)";
+                    rang = 1;
                     break;
                 case 2:
                     nom = "Potion rare de prédation";
                     description = "Recouvre le buveur d'une apparence de fauve (Masque du prédateur - Druide)";
+                    rang = 4;
                     break;
                 case 3:
                     nom = "Potion rare de transformation - Animal";
                     description = "Transforme en animal (Forme animale - Druide, 1d6 min)";
+                    rang = 5;
                     break;
                 case 4:
-                    nom = "Potion rare d'animation";
-                    description = "Anime les arbres alentours (Marche sylvestre - Druide, 2d6 h)";
+                    nom = "Potion rare d'adaptation";
+                    description = "Adapte le buveur au milieu naturel (Marche sylvestre - Druide, 2d6 h)";
+                    rang = 2;
                     break;
                 case 5:
                     nom = "Potion rare de transformation - Arbre";
                     description = "Transforme en arbre (Forme d'arbre - Druide, 2d6 min)";
+                    rang = 4;
                     break;
                 case 6:
                     nom = "Potion rare de renforcement";
                     description = "Solidifie la peau (Peau d'écorce - Duide, +5 DEF)";
+                    rang = 1;
                     break;
                 case 7:
                     nom = "Potion rare de clairvoyance";
                     description = "Permet une grande lucidité (Clairvoyance - Ensorceleur, 1d6 tours)";
+                    rang = 3;
                     break;
                 case 8:
                     nom = "Potion rare de tension";
                     description = "Revêtie une armure élèctrique (Sous tension - Ensorceleur)";
+                    rang = 2;
                     break;
                 case 9:
                     nom = "Potion rare de transformation - éthérée";
                     description = "Transforme en forme intangible (Forme éthérée - Ensorceleur)";
+                    rang = 5;
                     break;
                 case 10:
                     nom = "Potion rare d'imitation";
                     description = "Permet de copier à la perfection une créature (Imitation - Ensorceleur)";
+                    rang = 3;
                     break;
                 case 11:
                     nom = "Potion rare vitaminé";
                     description = "Breuvage étrange permettant de se soigner (Fortifiant - Forgesort)";
+                    rang = 1;
                     break;
                 case 12:
                     nom = "Potion rare de destruction";
                     description = "Attention ne pas boire !! Se rapproche du feu grégois (Feu grégois - Forgesort)";
+                    rang = 2;
                     break;
                 case 13:
                     nom = "Potion rare de guérison";
                     description = "Permet de se purger du poison, et peut aussi guérir des blessures (Elixir de guérison - Forgesort)";
+                    rang = 3;
                     break;
                 case 14:
                     nom = "Potion rare d'esquive";
                     description = "Rend le buveur flou et difficile à touché (Flou - Magicien)";
+                    rang = 3;
                     break;
                 case 15:
                     nom = "Potion rare de transformation - Succube";
                     description = "Transforme en succube (Aspect de la succube - Nécromancien)";
+                    rang = 2;
                     break;
                 case 16:
                     nom = "Potion rare de transformation - Démon";
                     description = "Transforme en démon (Aspect du démon - Nécromancien)";
+                    rang = 4;
                     break;
                 case 17:
                     nom = "Potion rare de transformation - Mort";
                     description = "Transforme en (fausse) mort (Masque mortuaire - Nécromancien)";
+                    rang = 2;
                     break;
                 case 18:
                     nom = "Potion rare d'araignée";
                     description = "Fait pousser des pattes d'araignée (temporairement) au buveur (Pattes d'araignées - Nécromancien)";
+                    rang = 2;
                     break;
                 case 19:
                     nom = "Potion rare d'ailes";
                     description = "Fait apparaitre des ailes dans le dos du buveur (Ailes célestes - Prêtre)";
+                    rang = 3;
                     break;
                 case 20:
                     nom = "Potion rare de protection";
                     description = "Déploie une aura de protection (Sanctuaire - Prêtre)";
+                    rang = 3;
                     break;
             }
     }
@@ -907,10 +989,14 @@ function genPotion(dose)
         nom: nom, 
         desc: description, 
         dose: dose,
+        rang: rang,
         toString: function()
         {
-            return this.name + " (" + this.nb + ") - " + this.desc;
-        }
+            return this.nom + " (" + this.dose + ") - " + this.desc;
+        },
+        getValeur: function () {
+            return Math.pow(this.rang, 2) * 50 * this.dose;
+        },
     };
     return potion;
 }
