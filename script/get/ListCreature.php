@@ -7,7 +7,7 @@ $res = array();
 $query =  $dao->db->query("SELECT * FROM creature")->fetchAll();
 foreach($query as $row)
 {
-    $row['description'] = trim(substr($row['description'], 0, 47)).'...';
+    $row['desc'] = trim(substr($row['description'], 0, 47)).'...';
     array_push($res, $row);
 }
 echo json_encode(utf8ize($res));

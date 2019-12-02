@@ -10,7 +10,7 @@ if(isset($_POST['name']))
     {
         $res = $dao->db->prepare('INSERT INTO creature(`name`,`description`,nc,stats,attack,boss_rank,family_id,type_id,size_id) VALUES(:name, :description, :nc, :stats, :attack, :boss_rank, :family_id, :type_id, :size_id)')->execute(array(
             ':name' => $_POST['name'],
-            ':description' => $_POST['description'],
+            ':description' => nl2br($_POST['description']),
             ':nc' => $_POST['nc'],
             ':stats' => $_POST['stats'],
             ':attack' => $_POST['attacks'],

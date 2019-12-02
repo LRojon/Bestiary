@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link rel="stylesheet" href="https://bootswatch.com/4/superhero/bootstrap.min.css">
+        <link rel="stylesheet" id="css" href="https://bootswatch.com/4/superhero/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="http://cdn.dhtmlx.com/edge/dhtmlx.css" type="text/css"> 
@@ -21,12 +21,18 @@
                 padding-bottom: 20px;
                 background-color: #df691ac2;
             }
+            .dhx_tooltip
+            {
+                width: 250px;
+            }
         </style>
+
+        <script src="script/loot.js"></script>
 
         <title>Bestiaire</title>
     </head>
     <body style="width: 99%;max-height: max-content;height: 95%">
-        <ul class="nav nav-tabs bg-dark">
+        <ul class="nav nav-tabs ">
             <li class="nav-item">
                 <a id="cTab" class="nav-link active" data-toggle="tab" href="#creaTab"><i class="fas fa-paw"></i> Céature</a>
             </li>
@@ -43,14 +49,23 @@
                 <a href="#healthTab" id="hTab" class="nav-link" data-toggle="tab"><i class="fas fa-user"></i> Etat</a>
             </li>
             <li class="nav-item">
-                <button class="btn bg-dark" id="btnAlea">Créature Aléatoire</button>
+                <button class="btn btn-primary" id="btnAlea">Créature Aléatoire</button>
             </li>
+            <li class="nav-item"><button onclick="looting(2)" class="btn bg-dark">NC 2</button></li>
         </ul>
+
+        <div style="top: 0px; right: 5px; position: absolute" class=" dropdown show">
+            <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">Thème</a>
+            <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 39px, 0px); top: 0px; left: 0px; will-change: transform;">
+                <a class="dropdown-item" onclick="changeCSS('superhero')">Default</a>
+                <a class="dropdown-item" onclick="changeCSS('united')">United</a>
+            </div>
+        </div>
         <div class="tab-content">
             <div id="creaTab" class="tab-pane fade active show">
                 <div class="fluid-container">
                     <div class="row">
-                        <div class="col-4" style="border-right: grey solid 1px;">
+                        <div class="col-sm-4" style="border-right: grey solid 1px;">
                             <div id="menu"></div>
                             <div class="table-responsive-sm">
                                 <table class="table table-borderless center">
@@ -61,20 +76,21 @@
                                     </tr>
                                 </table>
                             </div>
-                            <div id="list">
-                                <textarea id="template" class="table-responsive-sm">
-                                    <table class="table table-borderless center">
-                                        <tr>
-                                            <td style="width: 10%;">#nc#</td>
-                                            <td style="width: 30%;">#name#</td>
-                                            <td style="width: 60%; font-size:smaller;">#description#</td>
-                                        </tr>
-                                    </table>
-                                </textarea>
+                            <div id="listPart">
+                                <div id="list">
+                                    <textarea id="template" class="table-responsive-sm">
+                                        <table class="table table-borderless center">
+                                            <tr>
+                                                <td style="width: 10%;">#nc#</td>
+                                                <td style="width: 30%;font-size: x-small;">#name#</td>
+                                                <td style="width: 60%; font-size:x-small;">#desc#</td>
+                                            </tr>
+                                        </table>
+                                    </textarea>
+                                </div>
                             </div>
-                            <div id="paging"></div>
                         </div>
-                        <div class="col-8">
+                        <div class="col-sm-8">
                             <br>
                             <div id="details" style="height: auto;overflow-y: scroll; padding-right: 1%;">
                                 <table class="table table-responsive-sm table-striped" style="text-align: center;">
@@ -119,8 +135,7 @@
                                     <tr>
                                         <th>Init</th>
                                         <td id="init"></td>
-                                        <th>Boss</th>
-                                        <td id="boss"></td>
+                                        <td colspan="2" class="bg-primary"><button id="btnLoot" class="btn btn-primary">Trésors</button></td>
                                     </tr>
                                     <tr>
                                         <td id="size" colspan="4">Taille</td>
@@ -574,7 +589,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>// Gestion tab créature
-        $('#details').height(window.innerHeight - 0.1*window.innerHeight);
+        $('#details').height(window.innerHeight*0.9);
+        $('#list').ready(function()
+        {
+            $('#list').css("height", Math.floor(window.innerHeight*0.8))
+            $('#list').css("overflow-y", "scroll")
+        })
 
         $(window).resize(function(){
             $('#details').height(window.innerHeight - 0.1*window.innerHeight);
@@ -590,11 +610,8 @@
             type:{
                 template: "html->template"
             },
-            pager:{
-                container: "paging",
-                size: 10,
-                group: 5,
-                template: "{common.first()}{common.pages()}{common.last()}"
+            tooltip:{
+                template:"<p style='text-align: center;'><strong>Description:</strong><br>#description#</p>"
             }
         });
         list.attachEvent("onItemClick", function(id){
@@ -1053,7 +1070,7 @@
             drag: false,
             select: false,
             type:{
-                template: "<p style='color:White; text-align:center'>#name#</p>"
+                template: "<p class='text-primary' style='text-align:center'>#name#</p>"
             },
             pager:{
                 container: "paginerEnv",
@@ -1141,7 +1158,7 @@
             drag: false,
             select: false,
             type:{
-                template: "<p style='color: white'>#name#</p>"
+                template: "<p class='text-primary' style='color: white'>#name#</p>"
             },
             pager:{
                 container: "paginerAbility",
@@ -1189,7 +1206,7 @@
             drag: false,
             select: false,
             type:{
-                template: "<p style='color: white'>#name#</p>"
+                template: "<p class='text-primary' style='color: white'>#name#</p>"
             }
         });
 
@@ -1267,5 +1284,90 @@
         $('#btnD100').click(function(){
             $('#btnD100').html(Math.floor(Math.random() * Math.floor(100))+1)
         })
+
+        $('#btnLoot').one("click", function(){
+            var tmp = "         <div class=\"modal fade\" id=\"affLoot\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n" +
+            "                       <div class=\"modal-dialog modal-lg\" role=\"document\">\n" +
+            "                           <div class=\"modal-content\">\n" +
+            "                               <div class=\"modal-header\">\n" +
+            "                                   <h5 class=\"modal-title\" id=\"exampleModalLabel\">Trésors pouvant être trouvé</h5>\n" +
+            "                                   <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n" +
+            "                                   <span aria-hidden=\"true\">&times;</span>\n" +
+            "                                   </button>\n" +
+            "                               </div>\n" +
+            "                               <div id='affLootContent' class=\"modal-body\">";
+            tmp += "                        </div>\n" +
+                "                           <div class=\"modal-footer\">\n" +
+                "                               <button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">Ok</button>\n" +
+                "                           </div>\n" +
+                "                       </div>\n" +
+                "                   </div>\n" +
+                "               </div>";
+
+            $('#modal').append(tmp);
+        })
+
+        $('#btnLoot').click(function () {
+            if($('#int').html() != '')
+            {
+                var mod = 0;
+                switch ($('#type').html()) {
+                    case 'Humanoïde':
+                        mod = 0;
+                        break;
+                    case 'Non-vivant':
+                        mod = -4;
+                        break;
+                    case 'Dragonoïde':
+                        mod = +4;
+                        break;
+                    default:
+                        mod = 0;
+                        break;
+                }
+                var nt = parseFloat($('#nc').html()) + parseFloat($('#int').html()) + mod;
+                var loot = looting(nt);
+                console.log(loot);
+
+                var tmp = "";
+                tmp += "<table class='table table-responsive-sm table-striped'>";
+                tmp += "<tr><th>Argent</th><td>" + findValue(loot.money) + "</td></tr>";
+                tmp += "<tr><th>Joyeaux/Bijoux</th><td>" + findValue(loot.jewelry) + "</td></tr>";
+                if (loot.minorObject.length > 0) tmp += "<tr><th colspan='3' style='text-align: center' class='bg-primary'>Objet mineur</th></tr>";
+                loot.minorObject.forEach(function(elem){
+                    tmp += "<tr>" + elem.toString() + "<td>" + findValue(elem.getValeur()) + "</td>";
+                });
+                if (loot.mediumObject.length > 0) tmp += "<tr><th colspan='3' style='text-align: center' class='bg-primary'>Objet moyen</th></tr>";
+                loot.mediumObject.forEach(function(elem){
+                    tmp += "<tr>" + elem.toString() + "<td>" + findValue(elem.getValeur()) + "</td>";
+                });
+                if (loot.majorObject.length > 0) tmp += "<tr><th colspan='3' style='text-align: center' class='bg-primary'>Objet majeur</th></tr>";
+                loot.majorObject.forEach(function(elem){
+                    tmp += "<tr>" + elem.toString() + "<td>" + findValue(elem.getValeur()) + "</td>";
+                });
+                tmp += "</table>";
+
+                $('#affLootContent').html(tmp);
+                $('#affLoot').modal('show');
+            }
+        });
+
+        function findValue(number)
+        {
+            var devise = 0;
+            while (number > 99 && devise < 2)
+            {
+                devise++;
+                number /= 10;
+            }
+            devise = (devise == 0 ? "PA" : (devise == 1 ? "PO" : (devise == 2 ? "PP" : "N/A")));
+
+            return number + " " + devise;
+        }
+
+        function changeCSS(theme)
+        {
+            $('#css').attr("href", "https://bootswatch.com/4/"+theme+"/bootstrap.min.css")
+        }
     </script>
 </html>
