@@ -1,3 +1,20 @@
+let voie = {
+    Arquebusier:    ["Voie de l'artilleur",             "Voie des explosifs",               "Voie du champ de bataille",    "Voie du pistolero",            "Voie de la précision"],
+    Barbare:        ["Voie de la brute",                "Voie du pagne",                    "Voie du pourfendeur",          "Voie du primitif",             "Voie de la rage"],
+    Barde:          ["Voie de l'escrime",               "Voie du musicien",                 "Voie du saltimbanque",         "Voie de la séduction",         "Voie du vagabond"],
+    Chevalier:      ["Voie du cavalier",                "Voie de la guerre",                "Voie du héros",                "Voie du meneur d'hommes",      "Voie de la noblesse"],
+    Druide:         ["Voie des animaux",                "Voie du fauve",                    "Voie de la nature",            "Voie du protecteur",           "Voie des végétaux"],
+    Ensorceleur:    ["Voie de l'air",                   "Voie de la divination",            "Voie de l'envoûteur",          "Voie des illusions",           "Voie de l'invocation"],
+    Forgesort:      ["Voie des artefacts",              "Voie des élixirs",                 "Voie du métal",                "Voie du golem",                "Voie des runes"],
+    Guerrier:       ["Voie du bouclier",                "Voie du combat",                   "Voie du maître d'armes",       "Voie de la résistance",        "Voie du soldat"],
+    Magicien:       ["Voie de la magie des arcanes",    "Voie de la magie destructrice",    "Voie de la magie élémentaire", "Voie de la magie protectrice", "Voie de la magie universelle"],
+    Moine:          ["Voie de l'énergie vitale",        "Voie de la maîtrise",              "Voie de la méditation",        "Voie du poing",                "Voie du vent"],
+    Nécromancien:   ["Voie du démon",                   "Voie de la mort",                  "Voie de l'outre-tombe",        "Voie du sang",                 "Voie de la sombre magie"],
+    Prêtre:         ["Voie de la foi",                  "Voie de la guerre sainte",         "Voie de la prière",            "Voie des soins",               "Voie de la spiritualité"],
+    Rôdeur:         ["Voie de l'archer",                "Voie du compagnon animal",         "Voie de l'escarmouche",        "Voie de la survie",            "Voie du traqueur"],
+    Voleur:         ["Voie de l'assassin",              "Voie de l'aventurier",             "Voie du déplacement",          "Voie du roublard",             "Voie du spadassin"]
+};
+
 function dice(nbFaces)
 {
     return Math.ceil(Math.random()*nbFaces-1)+1;
@@ -11,7 +28,7 @@ function genObjPui(niv)
         bonus: 0,
         niv: 0,
         toString: function () {
-            return this.nom + " : " + this.carac + " +" + this.bonus;
+            return "<th>Objet de puissance</th><td>" + this.nom + " : " + this.carac + " +" + this.bonus+ "</td>";
         },
         getValeur: function () {
             return Math.pow(this.niv, 2) * 2000;
@@ -60,9 +77,9 @@ function genObjPou(niv)
         toString: function () {
             let res = "";
             this.sorts.forEach(function(elem){
-                res += (elem.profil + " " + elem.voie + " - rang " + elem.rang + "<br>");
+                res += (elem.profil + " " + voie[elem.profil][elem.voie - 1] + " - rang " + elem.rang + "<br>");
             });
-            return res;
+            return "<th>Objet de pouvoir</th><td>" + res + "</td>";
         },
         getValeur: function () {
             return Math.pow(this.niv, 2) * 2000;
@@ -79,7 +96,7 @@ function genObjPou(niv)
 
         let d = dice(8);
         switch (true) {
-            case d <= 2:
+            case d<=2:
                 rgGlo += 1;
                 sort.rang = 1;
                 break;
@@ -194,14 +211,14 @@ function genArmure(niv, type)
         rd: 0,
         niv: 0,
         getValeur: function () {
-            return Math.pow(this.nivniv, 2) * 2000;
+            return Math.pow(this.niv, 2) * 2000;
         },
         toString: function () {
-            let res = this.type + ' +' + this.def + ' DEF  RD ' + this.rd + (this.caracs.length != 0 ? '<br>Propriété<br>' : '');
+            let res = this.type + ' +' + this.def + ' DEF  RD ' + this.rd + (this.caracs.length != 0 ? '<br><strong>Propriété</strong><br>' : '');
             this.caracs.forEach(function (elem) {
                 res += elem.nom + ': ' + elem.effet + '<br>';
             })
-            return res;
+            return "<th>Armure</th><td>" + res + "</td>";
         }
     }
 
@@ -357,6 +374,8 @@ function genArmure(niv, type)
         }
     }
 
+    armure.niv = niv;
+
     return armure;
 }
 
@@ -375,10 +394,12 @@ function genArme(niv)
             return Math.pow(this.niv, 2) * 2000;
         },
         toString: function () {
-            let res = this.categorie + " +" + this.atk + " DM " + this.formDM + " +" + this.dm + "  Crit." + this.critique + (this.caracs.length != 0 ? '<br>Propriété:<br>' : '');
+            let res = this.categorie + " +" + this.atk + " DM " + this.formDM + " +" + this.dm + "  Crit." + this.critique + (this.caracs.length != 0 ? '<br><strong>Propriété</strong><br>' : '');
             this.caracs.forEach(function (elem) {
                 res += elem.nom + ": " + elem.effet + "<br>";
             })
+
+            return "<th>Arme</th><td>" + res + "</td>";
         }
     }
     switch(dice(6)){
@@ -513,15 +534,15 @@ function genArme(niv)
         case "Sceptre":
             switch (dice(3)) {
                 case 1:
-                    arme.categorie = "Feu";
+                    arme.categorie = "Sceptre de feu";
                     arme.formDM = "1d6 DM Feu";
                     break;
                 case 2:
-                    arme.categorie = "Foudre";
+                    arme.categorie = "Sceptre de foudre";
                     arme.formDM = "1d6 DM Foudre";
                     break;
                 case 3:
-                    arme.categorie = "Esprit";
+                    arme.categorie = "Sceptre d'esprit";
                     arme.formDM = "1d6 DM Magique";
                     break;
             }
@@ -608,6 +629,7 @@ function genArme(niv)
     arme.dm += (niv - arme.niv);
     arme.dm < 0 ? arme.dm = 0 : arme.dm;
     arme.atk < 0 ? arme.atk = 0 : arme.atk;
+    arme.niv = niv;
 
     return arme;
 }
@@ -625,7 +647,7 @@ function genBaguette(niv)
             return Math.pow(this.rang, 2) * (50 * this.nbSort);
         },
         toString: function(){
-            return this.voie + " " + this.rang + " Charge: " + this.nbSort + " Mot d'activation: " + this.mot;
+            return "<th>Baguette</th><td>" + this.voie + " rang " + this.rang + " Charge: " + this.nbSort + " Mot d'activation: " + this.mot + "</td>";
         }
     }
 
@@ -679,7 +701,7 @@ function genParchemin(niv)
             return Math.pow(this.rang, 2) * 50;
         },
         toString: function(){
-            return this.voie + "  rang:" + this.rang;
+            return "<th>Parchemin</th><td>" + this.voie + "  rang " + this.rang + "</td>";
         }
     };
 
@@ -992,7 +1014,7 @@ function genPotion(dose)
         rang: rang,
         toString: function()
         {
-            return this.nom + " (" + this.dose + ") - " + this.desc;
+            return "<th>Potion</th><td>" + this.nom + " (" + this.dose + ") - " + this.desc + "</td>";
         },
         getValeur: function () {
             return Math.pow(this.rang, 2) * 50 * this.dose;

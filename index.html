@@ -130,8 +130,7 @@
                                     <tr>
                                         <th>Init</th>
                                         <td id="init"></td>
-                                        <th>Boss</th>
-                                        <td id="boss"></td>
+                                        <td colspan="2" class="bg-primary"><button id="btnLoot" class="btn btn-primary">Trésors</button></td>
                                     </tr>
                                     <tr>
                                         <td id="size" colspan="4">Taille</td>
@@ -1278,6 +1277,85 @@
             $('#btnD100').html(Math.floor(Math.random() * Math.floor(100))+1)
         })
 
+        $('#btnLoot').one("click", function(){
+            var tmp = "         <div class=\"modal fade\" id=\"affLoot\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n" +
+            "                       <div class=\"modal-dialog modal-lg\" role=\"document\">\n" +
+            "                           <div class=\"modal-content\">\n" +
+            "                               <div class=\"modal-header\">\n" +
+            "                                   <h5 class=\"modal-title\" id=\"exampleModalLabel\">Trésors pouvant être trouvé</h5>\n" +
+            "                                   <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n" +
+            "                                   <span aria-hidden=\"true\">&times;</span>\n" +
+            "                                   </button>\n" +
+            "                               </div>\n" +
+            "                               <div id='affLootContent' class=\"modal-body\">";
+            tmp += "                        </div>\n" +
+                "                           <div class=\"modal-footer\">\n" +
+                "                               <button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">Ok</button>\n" +
+                "                           </div>\n" +
+                "                       </div>\n" +
+                "                   </div>\n" +
+                "               </div>";
+
+            $('#modal').append(tmp);
+        })
+
+        $('#btnLoot').click(function () {
+            if($('#int').html() != '')
+            {
+                var mod = 0;
+                switch ($('#type').html()) {
+                    case 'Humanoïde':
+                        mod = 0;
+                        break;
+                    case 'Non-vivant':
+                        mod = -4;
+                        break;
+                    case 'Dragonoïde':
+                        mod = +4;
+                        break;
+                    default:
+                        mod = 0;
+                        break;
+                }
+                var nt = parseFloat($('#nc').html()) + parseFloat($('#int').html()) + mod;
+                var loot = looting(nt);
+                console.log(loot);
+
+                var tmp = "";
+                tmp += "<table class='table table-responsive-sm table-striped'>";
+                tmp += "<tr><th>Argent</th><td>" + findValue(loot.money) + "</td></tr>";
+                tmp += "<tr><th>Joyeaux/Bijoux</th><td>" + findValue(loot.jewelry) + "</td></tr>";
+                if (loot.minorObject.length > 0) tmp += "<tr><th colspan='3' style='text-align: center' class='bg-primary'>Objet mineur</th></tr>";
+                loot.minorObject.forEach(function(elem){
+                    tmp += "<tr>" + elem.toString() + "<td>" + findValue(elem.getValeur()) + "</td>";
+                });
+                if (loot.mediumObject.length > 0) tmp += "<tr><th colspan='3' style='text-align: center' class='bg-primary'>Objet moyen</th></tr>";
+                loot.mediumObject.forEach(function(elem){
+                    tmp += "<tr>" + elem.toString() + "<td>" + findValue(elem.getValeur()) + "</td>";
+                });
+                if (loot.majorObject.length > 0) tmp += "<tr><th colspan='3' style='text-align: center' class='bg-primary'>Objet majeur</th></tr>";
+                loot.majorObject.forEach(function(elem){
+                    tmp += "<tr>" + elem.toString() + "<td>" + findValue(elem.getValeur()) + "</td>";
+                });
+                tmp += "</table>";
+
+                $('#affLootContent').html(tmp);
+                $('#affLoot').modal('show');
+            }
+        });
+
+        function findValue(number)
+        {
+            var devise = 0;
+            while (number > 99 && devise < 2)
+            {
+                devise++;
+                number /= 10;
+            }
+            devise = (devise == 0 ? "PA" : (devise == 1 ? "PO" : (devise == 2 ? "PP" : "N/A")));
+
+            return number + " " + devise;
+        }
 
         function changeCSS(theme)
         {
