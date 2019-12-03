@@ -134,7 +134,7 @@
                                     <tr>
                                         <th>Init</th>
                                         <td id="init"></td>
-                                        <td colspan="2" class="bg-primary"><button id="btnLoot" class="btn btn-primary">Trésors</button></td>
+                                        <td colspan="2" class=""><button id="btnLoot" style="height: max-content" class="btn btn-primary btn-block">Trésors</button></td>
                                     </tr>
                                     <tr>
                                         <td id="size" colspan="4">Taille</td>
@@ -241,7 +241,7 @@
                                                         <button style="width: 20%;" type="button" class="btn btn-info" onclick="$('#addAttack').modal('show')">Attaques</button>
                                                         <button id="btnAddSkill" style="width: 20%;" type="button" class="btn btn-info">Compétence</button>
                                                         <button id="btnAddAbility" style="width: 20%;" type="button" class="btn btn-info">Capacité</button>
-                                                        <button id="btnAddEnvironment" style="width: 20%;" type="button" class="btn btn-info">Environnement</button>
+                                                        <!--<button id="btnAddEnvironment" style="width: 20%;" type="button" class="btn btn-info">Environnement</button>-->
                                                     </td>
                                             </tr>
                                         </table>
@@ -512,7 +512,7 @@
                                 <textarea id="skillTemplate">
                                     <table class="table table-responsive-sm table-borderless">
                                         <tr>
-                                            <td style="width: 60%;">#path# - rang #rank#</td>
+                                            <td id="skill#id#" style="width: 60%;">#path# - rang #rank#</td>
                                             <td>#name#</td>
                                         </tr>
                                     </table>
@@ -1120,6 +1120,9 @@
             res.forEach(elem => {
                 elem.name = elem.limit == 1 ? elem.name + " (L)" : elem.name;
                 listSkill.add(elem);
+                console.log(stringToColor(elem.path));
+                console.log(elem.id);
+                $('#skill'+elem.id).css("color", stringToColor(elem.path + "p"));
             });
         })
 
@@ -1330,19 +1333,20 @@
 
                 var tmp = "";
                 tmp += "<table class='table table-responsive-sm table-striped'>";
-                tmp += "<tr><th>Argent</th><td>" + findValue(loot.money) + "</td></tr>";
-                tmp += "<tr><th>Joyeaux/Bijoux</th><td>" + findValue(loot.jewelry) + "</td></tr>";
+                tmp += "<tr><th>Type</th><th>Description</th><th style='width: 10%'>Valeur (Achat)</th></tr>"
+                tmp += "<tr><th>Argent</th><td colspan='2' style='text-align: right'>" + findValue(loot.money) + "</td></tr>";
+                tmp += "<tr><th>Joyeaux/Bijoux</th><td colspan='2' style='text-align: right'>" + findValue(loot.jewelry) + "</td></tr>";
                 if (loot.minorObject.length > 0) tmp += "<tr><th colspan='3' style='text-align: center' class='bg-primary'>Objet mineur</th></tr>";
                 loot.minorObject.forEach(function(elem){
-                    tmp += "<tr>" + elem.toString() + "<td>" + findValue(elem.getValeur()) + "</td>";
+                    tmp += "<tr>" + elem.toString() + "<td style='text-align: right'>" + findValue(elem.getValeur()) + "</td>";
                 });
                 if (loot.mediumObject.length > 0) tmp += "<tr><th colspan='3' style='text-align: center' class='bg-primary'>Objet moyen</th></tr>";
                 loot.mediumObject.forEach(function(elem){
-                    tmp += "<tr>" + elem.toString() + "<td>" + findValue(elem.getValeur()) + "</td>";
+                    tmp += "<tr>" + elem.toString() + "<td style='text-align: right'>" + findValue(elem.getValeur()) + "</td>";
                 });
                 if (loot.majorObject.length > 0) tmp += "<tr><th colspan='3' style='text-align: center' class='bg-primary'>Objet majeur</th></tr>";
                 loot.majorObject.forEach(function(elem){
-                    tmp += "<tr>" + elem.toString() + "<td>" + findValue(elem.getValeur()) + "</td>";
+                    tmp += "<tr>" + elem.toString() + "<td style='text-align: right'>" + findValue(elem.getValeur()) + "</td>";
                 });
                 tmp += "</table>";
 
@@ -1356,6 +1360,8 @@
             var devise = 0;
             while (number > 99 && devise < 2)
             {
+                if(!number.toString().includes("0"))
+                    break;
                 devise++;
                 number /= 10;
             }
@@ -1367,6 +1373,36 @@
         function changeCSS(theme)
         {
             $('#css').attr("href", "https://bootswatch.com/4/"+theme+"/bootstrap.min.css")
+        }
+
+
+        function stringToColor(str)
+        {
+            var res = 0;
+            for(let i = 0; i < str.length; i++)
+            {
+                res += str.charCodeAt(i);
+            }
+            res = parseInt(res * Math.pow(res, Math.PI));
+            while (res > 999999999)
+            {
+                str = res.toString();
+                res = 0;
+                for(let i = 0; i < str.length; i++)
+                {
+                    res += str.charCodeAt(i);
+                }
+            }
+            res = Math.pow(res, 3);
+            let r = res.toString().substring(0,3);
+            let g = res.toString().substring(3,6);
+            let b = res.toString().substring(6,9);
+            r = r%256;
+            g = g%256;
+            b = b%256;
+            return "#" + ("0"+(Number(r).toString(16))).slice(-2).toUpperCase() +
+                ("0"+(Number(g).toString(16))).slice(-2).toUpperCase() +
+                ("0"+(Number(b).toString(16))).slice(-2).toUpperCase();
         }
     </script>
 </html>
