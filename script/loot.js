@@ -77,7 +77,7 @@ function genObjPou(niv)
         toString: function () {
             let res = "";
             this.sorts.forEach(function(elem){
-                res += (elem.profil + " " + voie[elem.profil][elem.voie - 1] + " - rang " + elem.rang + "<br>");
+                res += (voie[elem.profil][elem.voie - 1] + " (" + elem.profil + ") - rang " + elem.rang + "<br>");
             });
             return "<th>Objet de pouvoir</th><td>" + res + "</td>";
         },
@@ -374,6 +374,7 @@ function genArmure(niv, type)
         }
     }
 
+    armure.def += niv - armure.niv;
     armure.niv = niv;
 
     return armure;
@@ -647,7 +648,7 @@ function genBaguette(niv)
             return Math.pow(this.rang, 2) * (50 * this.nbSort);
         },
         toString: function(){
-            return "<th>Baguette</th><td>" + this.voie + " rang " + this.rang + " Charge: " + this.nbSort + " Mot d'activation: " + this.mot + "</td>";
+            return "<th>Baguette</th><td>" + this.voie + " rang " + this.rang + "<br>Charge: " + this.nbSort + "<br>Mot d'activation: " + this.mot + "</td>";
         }
     }
 
@@ -1014,7 +1015,7 @@ function genPotion(dose)
         rang: rang,
         toString: function()
         {
-            return "<th>Potion</th><td>" + this.nom + " (" + this.dose + ") - " + this.desc + "</td>";
+            return "<th>Potion</th><td>" + this.nom + " (" + this.dose + ")<br>" + this.desc + "</td>";
         },
         getValeur: function () {
             return Math.pow(this.rang, 2) * 50 * this.dose;
