@@ -589,11 +589,12 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>// Gestion tab créature
         $('#details').height(window.innerHeight*0.9);
-        $('#list').ready(function()
+        setTimeout(function()
         {
-            $('#list').css("height", Math.floor(window.innerHeight*0.8))
+	    $('#listPart').css("height", Math.floor(window.innerHeight*0.75))
+            $('#list').css("height", Math.floor(window.innerHeight*0.75))
             $('#list').css("overflow-y", "scroll")
-        })
+        }, 750)
 
         $(window).resize(function(){
             $('#details').height(window.innerHeight - 0.1*window.innerHeight);
