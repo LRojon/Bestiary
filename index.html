@@ -614,7 +614,7 @@
             }
         });
         list.attachEvent("onItemClick", function(id){
-            $.get("script/get/Creature.php",{id: id}, function(data){
+            $.get("http://bestiaire.alwaysdata.net/script/get/Creature.php",{id: id}, function(data){
                 var creature = JSON.parse(data.substring(3, data.length));
 
                 $("#name").html(creature.name);
@@ -673,7 +673,7 @@
                 case 'edit':
                     break;
                 case 'newCreature':
-                    $.post("script/get/ListSize.php", function(data){
+                    $.post("http://bestiaire.alwaysdata.net/script/get/ListSize.php", function(data){
                         var res = JSON.parse(data.substring(2));
                         var tmp = "";
                         res.forEach(elem => {
@@ -681,7 +681,7 @@
                         });
                         $("#selectSize").html(tmp);
                     });
-                    $.post("script/get/ListFamily.php", function(data){
+                    $.post("http://bestiaire.alwaysdata.net/script/get/ListFamily.php", function(data){
                         var res = JSON.parse(data.substring(2, data.length));
                         var tmp = "";
                         res.forEach(elem => {
@@ -689,7 +689,7 @@
                         });
                         $("#selectFamily").html(tmp);
                     });
-                    $.post("script/get/ListType.php", function(data){
+                    $.post("http://bestiaire.alwaysdata.net/script/get/ListType.php", function(data){
                         var res = JSON.parse(data.substring(2));
                         var tmp = "";
                         res.forEach(elem => {
@@ -697,7 +697,7 @@
                         });
                         $("#selectType").html(tmp);
                     });
-                    $.post("script/get/ListEnvironment.php", function(data){
+                    $.post("http://bestiaire.alwaysdata.net/script/get/ListEnvironment.php", function(data){
                         var res = JSON.parse(data.substring(2));
                         var tmp = "";
                         res.forEach(elem => {
@@ -713,7 +713,7 @@
             }
         });
 
-        $.post("script/get/ListCreature.php", function(data){
+        $.post("http://bestiaire.alwaysdata.net/script/get/ListCreature.php", function(data){
             var res = JSON.parse(data.substring(3, data.length));
             res.forEach(elem => {
                 list.add(elem);
@@ -721,14 +721,14 @@
         });
 
         $('#insertEnvironment').click(function(){
-            $.post("script/insert/Environment.php", {name: $('#insertNameEnvironment').val()}, function(){
+            $.post("http://bestiaire.alwaysdata.net/script/insert/Environment.php", {name: $('#insertNameEnvironment').val()}, function(){
                 $('#selectEnvironment').html($('#selectEnvironment').html() + "<option>" + $('#insertNameEnvironment').val() + "</option>");
             });
             $('#newEnvironment').modal('hide');
         });
 
         $('#insertSkill').click(function(){
-            $.post("script/insert/Skill.php",{
+            $.post("http://bestiaire.alwaysdata.net/script/insert/Skill.php",{
                 name: ($('#newSkillName').val()).replace("'","\'"),
                 path: $('#newSkillPath').val(),
                 rank: $('#newSkillRank').val(),
@@ -738,7 +738,7 @@
         });
 
         $('#insertAbility').click(function(){
-            $.post("script/insert/Ability.php",{
+            $.post("http://bestiaire.alwaysdata.net/script/insert/Ability.php",{
                 name: ($('#newAbilityName').val()).replace("'","\'"),
                 limit: $('#newAbilityLimit')[0].checked,
                 effect: ($('#newAbilityEffect').val()).replace("'","\'")
@@ -746,7 +746,7 @@
         })
 
         $('#btnAddSkill').click(function(){
-            $.post("script/get/ListSkill.php", function(data){
+            $.post("http://bestiaire.alwaysdata.net/script/get/ListSkill.php", function(data){
                 var res = JSON.parse(data.substring(2));
                 var tmp = "<option value='null'>Auncune</option>";
                 var path = "";
@@ -766,7 +766,7 @@
         })
 
         $('#btnAddAbility').click(function(){
-            $.post("script/get/ListAbility.php", function(data){
+            $.post("http://bestiaire.alwaysdata.net/script/get/ListAbility.php", function(data){
                 var res = JSON.parse(data.substring(2));
                 var tmp = "<option value='null'>Auncune</option>";
                 res.forEach(elem => {
@@ -780,7 +780,7 @@
         })
 
         $('#btnAddEnvironment').click(function(){
-            $.post("script/get/ListEnvironment.php", function(data){
+            $.post("http://bestiaire.alwaysdata.net/script/get/ListEnvironment.php", function(data){
                 var res = JSON.parse(data.substring(2));
                 var tmp = "";
                 res.forEach(elem => {
@@ -845,7 +845,7 @@
 
             var skills = $('#addSkillSelect').val() + "," + $('#addSkillSelect1').val() + "," + $('#addSkillSelect2').val();
             var abilities = $('#addAbilitySelect').val() + "," + $('#addAbilitySelect1').val() + "," + $('#addAbilitySelect2').val();
-            $.post("script/insert/Creature.php",{
+            $.post("http://bestiaire.alwaysdata.net/script/insert/Creature.php",{
                 name: $('#insertName').val().replace("'","\'"),
                 description: ($('#insertDescription').val()).replace("'","\'"),
                 nc: $('#insertNC').val(),
@@ -859,7 +859,7 @@
                 skills: skills,
                 abilities: abilities
             });
-            $.post("script/get/ListCreature.php", function(data){
+            $.post("http://bestiaire.alwaysdata.net/script/get/ListCreature.php", function(data){
                 var res = JSON.parse(data.substring(3));
                 res.forEach(elem => {
                     list.add(elem);
@@ -947,7 +947,7 @@
 
         function goCrea(id, from)
         {
-            $.get("script/get/Creature.php",{id: id}, function(data){
+            $.get("http://bestiaire.alwaysdata.net/script/get/Creature.php",{id: id}, function(data){
                 var creature = JSON.parse(data.substring(3, data.length));
 
                 $("#name").html(creature.name);
@@ -975,7 +975,7 @@
         }
         function goEnv(id)
         {
-            $.get("script/get/EncounterTable.php",{id:id},function(data){
+            $.get("http://bestiaire.alwaysdata.net/script/get/EncounterTable.php",{id:id},function(data){
                 var res = JSON.parse(data.substring(2));
                 var tmp = "<tr class='bg-primary'><th>Nom</th><th>D100</th><th>Quantité<th></tr>";
                 res.creatures.forEach(elem => {
@@ -988,7 +988,7 @@
         }
         function goSkill(id)
         {
-            $.post("script/get/Skill.php",{id:id},function(data){
+            $.post("http://bestiaire.alwaysdata.net/script/get/Skill.php",{id:id},function(data){
                 var res = JSON.parse(data.substring(2));
                 res.name =  res.limit == 1 ? res.name + " (L)" : res.name;
 
@@ -996,7 +996,7 @@
                 $('#skillPath').html(res.path);
                 $('#skillEffect').html(res.effect);
 
-                $.post("script/get/SkillOwners.php",{id:id},function(data){
+                $.post("http://bestiaire.alwaysdata.net/script/get/SkillOwners.php",{id:id},function(data){
                     var res = JSON.parse(data.substring(2));
                     var tmp = "<tr class='bg-primary'><th>Possesseur</th></tr>";
                     res.forEach(elem => {
@@ -1009,12 +1009,12 @@
         }
         function goAbility(id)
         {
-            $.post("script/get/Ability.php",{id:id},function(data){
+            $.post("http://bestiaire.alwaysdata.net/script/get/Ability.php",{id:id},function(data){
                 var res = JSON.parse(data.substring(2));
                 $('#abilityName').html((res.limit == 1 ? res.name + " (L)" : res.name))
                 $('#abilityEffect').html(res.effect);
 
-                $.post("script/get/AbilityOwners.php",{id: res.id},function(data){
+                $.post("http://bestiaire.alwaysdata.net/script/get/AbilityOwners.php",{id: res.id},function(data){
                     var owners = JSON.parse(data.substring(2));
                     if(owners.length > 0)
                     {
@@ -1034,7 +1034,7 @@
         }
         function goHealth(id, from)
         {
-            $.post("script/get/Health.php",{id:id},function(data){
+            $.post("http://bestiaire.alwaysdata.net/script/get/Health.php",{id:id},function(data){
                 var res = JSON.parse(data.substring(2));
 
                 $('#healthName').html(res.name);
@@ -1078,7 +1078,7 @@
             }
         });
         document.body.onload = function(){
-            $.post("script/get/ListEnvironment.php", function(data){
+            $.post("http://bestiaire.alwaysdata.net/script/get/ListEnvironment.php", function(data){
                 var res = JSON.parse(data.substring(2));
                 res.forEach(elem => {
                     listEnv.add(elem);
@@ -1086,7 +1086,7 @@
             });
         }
         listEnv.attachEvent('onItemClick',function(id){
-            $.get("script/get/EncounterTable.php",{id:id},function(data){
+            $.get("http://bestiaire.alwaysdata.net/script/get/EncounterTable.php",{id:id},function(data){
                 var res = JSON.parse(data.substring(2));
                 var tmp = "<tr class='bg-primary'><th>Nom</th><th>D100</th><th>Quantité<th></tr>";
                 res.creatures.forEach(elem => {
@@ -1114,7 +1114,7 @@
             }
         });
 
-        $.post("script/get/ListSkill.php",function(data){
+        $.post("http://bestiaire.alwaysdata.net/script/get/ListSkill.php",function(data){
             var res = JSON.parse(data.substring(2));
             res.forEach(elem => {
                 elem.name = elem.limit == 1 ? elem.name + " (L)" : elem.name;
@@ -1126,7 +1126,7 @@
         })
 
         listSkill.attachEvent('onItemClick',function(id){
-            $.post("script/get/Skill.php",{id:id},function(data){
+            $.post("http://bestiaire.alwaysdata.net/script/get/Skill.php",{id:id},function(data){
                 var res = JSON.parse(data.substring(2));
                 res.name = res.limit == 1 ? res.name + " (L)" : res.name;
                 res.path = res.path + " - rang " + res.rank;
@@ -1135,7 +1135,7 @@
                 $('#skillPath').html(res.path);
                 $('#skillEffect').html(res.effect);
 
-                $.post("script/get/SkillOwners.php",{id:id},function(data){
+                $.post("http://bestiaire.alwaysdata.net/script/get/SkillOwners.php",{id:id},function(data){
                     var res = JSON.parse(data.substring(2));
                     if(res.length > 0)
                     {
@@ -1169,7 +1169,7 @@
             }
         });
 
-        $.post("script/get/ListAbility.php", function(data){
+        $.post("http://bestiaire.alwaysdata.net/script/get/ListAbility.php", function(data){
             var res = JSON.parse(data.substring(2));
             res.forEach(elem => {
                 elem.name = elem.name + (elem.limit == 1 ? " (L)" : "");
@@ -1178,12 +1178,12 @@
         })
 
         listAbility.attachEvent('onItemClick', function(id){
-            $.post("script/get/Ability.php",{id:id},function(data){
+            $.post("http://bestiaire.alwaysdata.net/script/get/Ability.php",{id:id},function(data){
                 var res = JSON.parse(data.substring(2));
                 $('#abilityName').html((res.limit == 1 ? res.name + " (L)" : res.name))
                 $('#abilityEffect').html(res.effect);
 
-                $.post("script/get/AbilityOwners.php",{id: res.id},function(data){
+                $.post("http://bestiaire.alwaysdata.net/script/get/AbilityOwners.php",{id: res.id},function(data){
                     var owners = JSON.parse(data.substring(2));
                     if(owners.length > 0)
                     {
@@ -1211,7 +1211,7 @@
             }
         });
 
-        $.post("script/get/ListHealth.php",function(data){
+        $.post("http://bestiaire.alwaysdata.net/script/get/ListHealth.php",function(data){
             var res = JSON.parse(data.substring(2));
             res.forEach(elem => {
                 listHealth.add(elem);
@@ -1219,7 +1219,7 @@
         })
 
         listHealth.attachEvent('onItemClick',function(id){
-            $.post("script/get/Health.php",{id:id},function(data){
+            $.post("http://bestiaire.alwaysdata.net/script/get/Health.php",{id:id},function(data){
                 var res = JSON.parse(data.substring(2));
 
                 $('#healthName').html(res.name);
@@ -1230,7 +1230,7 @@
     </script>
     <script>// Gestion tabBar
         $('#btnAlea').click(function(){
-            $.post("script/get/ListCreature.php",function(data){
+            $.post("http://bestiaire.alwaysdata.net/script/get/ListCreature.php",function(data){
                 var res = JSON.parse(data.substring(3));
                 var n = Math.floor(Math.random() * Math.floor(res.length))
 
@@ -1244,7 +1244,7 @@
                     }
                 };
 
-                $.get("script/get/Creature.php",{id: id}, function(data){
+                $.get("http://bestiaire.alwaysdata.net/script/get/Creature.php",{id: id}, function(data){
                     var creature = JSON.parse(data.substring(3, data.length));
 
                     $("#name").html(creature.name);
